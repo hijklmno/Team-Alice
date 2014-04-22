@@ -1,0 +1,5 @@
+INDEX VERSION 1.126+C:\Users\Watson\Dropbox\UCSD\SP14\CSE110\Backup\.metadata\.plugins\org.eclipse.jdt.core
+201172289.index
+334313890.index
+2601326555.index
+1284074322.index
