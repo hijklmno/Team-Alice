@@ -1,5 +1,10 @@
 package cse110.TeamNom.projectnom;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -23,6 +28,8 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        
+        Parse.initialize(this, "d3r42N8HSeVbFU3RicMpjmjfgiRNHEKTOiSEcofn", "hsnuWjlI3k6gh19PrySFajFZwTvpuWwjbUZkFEo8");
     }
 
 
@@ -62,4 +69,23 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void sendMessage(View view) {
+    	ParseObject testObject = new ParseObject("TestObject");
+    	testObject.put("foo", "bar");
+    	testObject.saveInBackground();
+    }
+    
+    public void getMessage(View view) {
+    	ParseQuery<ParseObject> query = ParseQuery.getQuery("TestObject");
+    	query.whereEqualTo("foo", "bar");
+//    	query.findInBackground(new FindCallback<ParseObject>() {
+//    	    public void done(List<ParseObject> scoreList, ParseException e) {
+//    	        if (e == null) {
+//    	            Log.d("score", "Retrieved " + scoreList.size() + " scores");
+//    	        } else {
+//    	            Log.d("score", "Error: " + e.getMessage());
+//    	        }
+//    	    }
+//    	});
+    }
 }
