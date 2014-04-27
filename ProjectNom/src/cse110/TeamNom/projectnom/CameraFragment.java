@@ -164,8 +164,8 @@ public class CameraFragment extends Fragment {
 	 */ 
 	 
 	private void addPhotoToMealAndReturn(ParseFile photoFile) {
-		((NewMealActivity) getActivity()).getCurrentMeal().setPhotoFile(
-				photoFile);
+		//((NewMealActivity) getActivity()).getCurrentMeal().setPhotoFile(
+		//		photoFile);
 		FragmentManager fm = getActivity().getFragmentManager();
 		fm.popBackStack("NewMealFragment",
 				FragmentManager.POP_BACK_STACK_INCLUSIVE);
