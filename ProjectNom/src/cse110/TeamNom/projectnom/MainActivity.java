@@ -26,6 +26,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 
+	// Testing comment
 	// Tab titles
 	private String[] tabs = { "Camera", "Profile", "Search", "News Feed" };
 
