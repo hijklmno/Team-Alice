@@ -1,8 +1,12 @@
 package cse110.TeamNom.projectnom;
 
 
+
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -51,6 +55,7 @@ public class CameraFragment extends Fragment {
             public void onClick(View v) {
                 // capture picture
                 captureImage();
+                previewCapturedImage();
             }
         });
  
@@ -87,4 +92,31 @@ public class CameraFragment extends Fragment {
 		startActivity(intent);
 
 	} 
+	
+
+    /**
+     * Display image from a path to ImageView
+     */
+    private void previewCapturedImage() {
+        try {
+            // hide video preview
+            videoPreview.setVisibility(View.GONE);
+ 
+            imgPreview.setVisibility(View.VISIBLE);
+ 
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
+ 
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+            options.inSampleSize = 8;
+ 
+            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                    options);
+ 
+            imgPreview.setImageBitmap(bitmap);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
 }

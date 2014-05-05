@@ -1,16 +1,24 @@
 package cse110.TeamNom.projectnom;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
+
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,9 +27,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -40,6 +50,11 @@ public class CameraActivity extends Activity {
     private ImageView imgPreview;
     private VideoView videoPreview;
     private Button btnCapturePicture, btnRecordVideo;
+    private Camera camera;
+	private SurfaceView surfaceView;
+	private ParseFile photoFile;
+	private ImageButton photoButton;
+	
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +69,7 @@ public class CameraActivity extends Activity {
  
         // start the image capture Intent
         startActivityForResult(camAint, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+     
 	}
 
 	   /**
@@ -120,7 +136,7 @@ public class CameraActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
                 // display it in image view
-                previewCapturedImage();
+               finish();
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
@@ -132,7 +148,10 @@ public class CameraActivity extends Activity {
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                         .show();
             }
-        } /**else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
+        } else {
+        	super.onActivityResult(requestCode, resultCode, data);
+        }
+        	/**else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // video successfully recorded
                 // preview the recorded video
@@ -149,6 +168,7 @@ public class CameraActivity extends Activity {
                         .show();
             }
         }*/
+        
     }
  
     /**
@@ -283,4 +303,7 @@ public class CameraActivity extends Activity {
 		}
 	}
  **/
+
+	
+   
 }
