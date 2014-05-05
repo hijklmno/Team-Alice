@@ -18,6 +18,9 @@ public final class R {
         public static final int gray=0x7f040005;
         public static final int green=0x7f04000c;
         public static final int lime=0x7f04000a;
+        public static final int list_row_default_bg=0x7f040012;
+        public static final int list_row_pressed_bg=0x7f040013;
+        public static final int list_row_selected_bg=0x7f040014;
         public static final int maroon=0x7f040008;
         public static final int navy=0x7f04000e;
         public static final int olive=0x7f040006;
@@ -25,6 +28,8 @@ public final class R {
         public static final int red=0x7f040003;
         public static final int silver=0x7f040004;
         public static final int teal=0x7f04000b;
+        public static final int text_color_default=0x7f040010;
+        public static final int text_color_inverse=0x7f040011;
         public static final int white=0x7f040000;
         public static final int yellow=0x7f040001;
     }
@@ -46,19 +51,27 @@ public final class R {
         public static final int ic_action_refresh=0x7f020003;
         public static final int ic_action_search=0x7f020004;
         public static final int ic_launcher=0x7f020005;
-        public static final int round_button=0x7f020006;
+        public static final int list_item_text_selector=0x7f020006;
+        public static final int list_placeholder=0x7f020007;
+        public static final int list_selector_flatcolor=0x7f020008;
+        public static final int round_button=0x7f020009;
     }
     public static final class id {
         public static final int Mmm=0x7f090008;
         public static final int NOM=0x7f090007;
-        public static final int action_settings=0x7f090009;
+        public static final int action_settings=0x7f09000e;
         public static final int btnCapturePicture=0x7f090004;
         public static final int camera_preview=0x7f090002;
         public static final int container=0x7f090000;
+        public static final int custom_list=0x7f090009;
+        public static final int date=0x7f09000d;
         public static final int edit_message=0x7f090005;
         public static final int imgPreview=0x7f090003;
         public static final int pager=0x7f090001;
+        public static final int reporter=0x7f09000c;
         public static final int textView1=0x7f090006;
+        public static final int thumbImage=0x7f09000a;
+        public static final int title=0x7f09000b;
     }
     public static final class layout {
         public static final int activity_camera=0x7f030000;
@@ -69,6 +82,7 @@ public final class R {
         public static final int fragment_newsfeed=0x7f030005;
         public static final int fragment_profile=0x7f030006;
         public static final int fragment_search=0x7f030007;
+        public static final int list_row_layout=0x7f030008;
     }
     public static final class menu {
         public static final int camera=0x7f080000;
