@@ -1,228 +1,90 @@
 package cse110.TeamNom.projectnom;
 
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 public class CameraFragment extends Fragment {
+	
+	// Activity request codes
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+ 
+    // directory name to store captured images and videos
+    private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
+ 
+    private Uri fileUri; // file url to store image/video
+ 
+    private ImageView imgPreview;
+    private VideoView videoPreview;
+    private Button btnCapturePicture, btnRecordVideo;
+    
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
          
+        imgPreview = (ImageView) rootView.findViewById(R.id.imgPreview);
+      //   videoPreview = (VideoView) findViewById(R.id.videoPreview);
+        btnCapturePicture = (Button) rootView.findViewById(R.id.btnCapturePicture);
+      //   btnRecordVideo = (Button) findViewById(R.id.btnRecordVideo);
+ 
+
+        /**
+         * Capture image button click event
+         */
+        btnCapturePicture.setOnClickListener(new View.OnClickListener() {
+ 
+            @Override
+            public void onClick(View v) {
+                // capture picture
+                captureImage();
+            }
+        });
+ 
+        // Checking camera availability
+        if (!isDeviceSupportCamera()) {
+            Toast.makeText( super.getActivity().getApplicationContext(),
+                    "Sorry! Your device doesn't support camera",
+                    Toast.LENGTH_LONG).show();
+            // will close the app if the device does't have camera
+            super.getActivity().finish();
+        }
+        
         return rootView;
     }
+	
+	
+	/**
+     * Checking device has camera hardware or not
+     */
+    private boolean isDeviceSupportCamera() {
+        if (super.getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+    
+	public void captureImage() {
+		Intent intent = new Intent(super.getActivity(), CameraActivity.class);
+		
+		startActivity(intent);
+
+	} 
 }
-
-
-
-
-
-
-
-
-
-///**
-// * 
-// */
-//package cse110.TeamNom.projectnom;
-//
-//import java.io.ByteArrayOutputStream;
-//
-//import java.io.IOException;
-//
-//import android.app.Fragment;
-//import android.app.FragmentManager;
-//import android.graphics.Bitmap;
-//import android.graphics.BitmapFactory;
-//import android.graphics.Matrix;
-//import android.hardware.Camera;
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.LayoutInflater;
-//import android.view.SurfaceHolder;
-//import android.view.SurfaceHolder.Callback;
-//import android.view.SurfaceView;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.ImageButton;
-//import android.widget.Toast;
-//
-//import cse110.TeamNom.projectnom.R;
-//import com.parse.ParseException;
-//import com.parse.ParseFile;
-//import com.parse.SaveCallback;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.Fragment;
-///**
-// * @author Jean Park
-// *
-// */
-//public class CameraFragment extends Fragment {
-////
-////	public static final String TAG = "CameraFragment";
-////
-////	private Camera camera;
-////	private SurfaceView surfaceView;
-////	private ParseFile photoFile;
-////	private ImageButton photoButton;
-////
-////	@Override
-////	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-////			Bundle savedInstanceState) {
-////		View v = inflater.inflate(R.layout.fragment_camera, parent, false);
-////
-////		photoButton = (ImageButton) v.findViewById(R.id.camera_photo_button);
-////
-////		if (camera == null) {
-////			try {
-////				camera = Camera.open();
-////				photoButton.setEnabled(true);
-////			} catch (Exception e) {
-////				Log.e(TAG, "No camera with exception: " + e.getMessage());
-////				photoButton.setEnabled(false);
-////				Toast.makeText(getActivity(), "No camera detected",
-////						Toast.LENGTH_LONG).show();
-////			}
-////		}
-////
-////		photoButton.setOnClickListener(new View.OnClickListener() {
-////
-////			@Override
-////			public void onClick(View v) {
-////				if (camera == null)
-////					return;
-////				camera.takePicture(new Camera.ShutterCallback() {
-////
-////					@Override
-////					public void onShutter() {
-////						// nothing to do
-////					}
-////
-////				}, null, new Camera.PictureCallback() {
-////
-////					@Override
-////					public void onPictureTaken(byte[] data, Camera camera) {
-////						saveScaledPhoto(data);
-////					}
-////
-////				});
-////
-////			}
-////		});
-////
-////		surfaceView = (SurfaceView) v.findViewById(R.id.camera_surface_view);
-////		SurfaceHolder holder = surfaceView.getHolder();
-////		holder.addCallback(new Callback() {
-////
-////			public void surfaceCreated(SurfaceHolder holder) {
-////				try {
-////					if (camera != null) {
-////						camera.setDisplayOrientation(90);
-////						camera.setPreviewDisplay(holder);
-////						camera.startPreview();
-////					}
-////				} catch (IOException e) {
-////					Log.e(TAG, "Error setting up preview", e);
-////				}
-////			}
-////
-////			public void surfaceChanged(SurfaceHolder holder, int format,
-////					int width, int height) {
-////				// nothing to do here
-////			}
-////
-////			public void surfaceDestroyed(SurfaceHolder holder) {
-////				// nothing here
-////			}
-////
-////		});
-////
-////		return v;
-////	}
-////
-////	/*
-////	 * ParseQueryAdapter loads ParseFiles into a ParseImageView at whatever size
-////	 * they are saved. Since we never need a full-size image in our app, we'll
-////	 * save a scaled one right away.
-////	 */
-////	private void saveScaledPhoto(byte[] data) {
-////
-////		// Resize photo from camera byte array
-////		Bitmap mealImage = BitmapFactory.decodeByteArray(data, 0, data.length);
-////		Bitmap mealImageScaled = Bitmap.createScaledBitmap(mealImage, 200, 200
-////				* mealImage.getHeight() / mealImage.getWidth(), false);
-////
-////		// Override Android default landscape orientation and save portrait
-////		Matrix matrix = new Matrix();
-////		matrix.postRotate(90);
-////		Bitmap rotatedScaledMealImage = Bitmap.createBitmap(mealImageScaled, 0,
-////				0, mealImageScaled.getWidth(), mealImageScaled.getHeight(),
-////				matrix, true);
-////
-////		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-////		rotatedScaledMealImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-////
-////		byte[] scaledData = bos.toByteArray();
-////
-////		// Save the scaled image to Parse
-////		photoFile = new ParseFile("meal_photo.jpg", scaledData);
-////		photoFile.saveInBackground(new SaveCallback() {
-////
-////			public void done(ParseException e) {
-////				if (e != null) {
-////					Toast.makeText(getActivity(),
-////							"Error saving: " + e.getMessage(),
-////							Toast.LENGTH_LONG).show();
-////				} else {
-////					addPhotoToMealAndReturn(photoFile);
-////				}
-////			}
-////		});
-////	}
-////
-////	/*
-////	 * Once the photo has saved successfully, we're ready to return to the
-////	 * NewMealFragment. When we added the CameraFragment to the back stack, we
-////	 * named it "NewMealFragment". Now we'll pop fragments off the back stack
-////	 * until we reach that Fragment.
-////	 */ 
-////	 
-////	private void addPhotoToMealAndReturn(ParseFile photoFile) {
-////		//((NewMealActivity) getActivity()).getCurrentMeal().setPhotoFile(
-////		//		photoFile);
-////		FragmentManager fm = getActivity().getFragmentManager();
-////		fm.popBackStack("NewMealFragment",
-////				FragmentManager.POP_BACK_STACK_INCLUSIVE);
-////	}
-////
-////	@Override
-////	public void onResume() {
-////		super.onResume();
-////		if (camera == null) {
-////			try {
-////				camera = Camera.open();
-////				photoButton.setEnabled(true);
-////			} catch (Exception e) {
-////				Log.i(TAG, "No camera: " + e.getMessage());
-////				photoButton.setEnabled(false);
-////				Toast.makeText(getActivity(), "No camera detected",
-////						Toast.LENGTH_LONG).show();
-////			}
-////		}
-////	}
-////
-////	@Override
-////	public void onPause() {
-////		if (camera != null) {
-////			camera.stopPreview();
-////			camera.release();
-////		}
-////		super.onPause();
-////	}
-//
-//}
