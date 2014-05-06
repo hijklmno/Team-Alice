@@ -47,6 +47,28 @@
         android:textColor="@drawable/list_item_text_selector"
         android:textSize="12sp" />
 
-    
+    <Button
+        android:id="@+id/NOM"
+        android:tag=""
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="124dp"
+        android:layout_marginTop="109dp"
+        android:text="NOM"  />
+
+    <Button
+        android:id="@+id/Mmm"
+        android:tag=""
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/NOM"
+        android:layout_alignBottom="@+id/NOM"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/NOM"
+        android:text="Mmm" />
 
 </RelativeLayout>

@@ -14,28 +14,6 @@
         android:text="News Feed"
         android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/NOM"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="109dp"
-        android:text="NOM"  />
-
-    <Button
-        android:id="@+id/Mmm"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/NOM"
-        android:layout_alignBottom="@+id/NOM"
-        android:layout_marginLeft="69dp"
-        android:layout_toRightOf="@+id/NOM"
-        android:text="Mmm" />
-
     <ListView
         android:id="@+id/custom_list"
         android:layout_width="fill_parent"

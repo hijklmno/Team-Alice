@@ -6,7 +6,7 @@ public class NewsItem {
 	private String reporterName;
 	private String date;
 	private String url;
-
+	
 	public String getUrl() {
 		return url;
 	}

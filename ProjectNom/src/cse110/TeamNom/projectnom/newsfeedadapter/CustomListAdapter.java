@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +48,9 @@ public class CustomListAdapter extends BaseAdapter {
 			holder.headlineView = (TextView) convertView.findViewById(R.id.title);
 			holder.reporterNameView = (TextView) convertView.findViewById(R.id.reporter);
 			holder.reportedDateView = (TextView) convertView.findViewById(R.id.date);
-//			holder.imageView = (ImageView) convertView.findViewById(R.id.thumbImage);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.thumbImage);
+			holder.mmm = (Button) convertView.findViewById(R.id.Mmm);
+			holder.nom = (Button) convertView.findViewById(R.id.NOM);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -58,6 +61,8 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.headlineView.setText(newsItem.getHeadline());
 		holder.reporterNameView.setText("By, " + newsItem.getReporterName());
 		holder.reportedDateView.setText(newsItem.getDate());
+		holder.mmm.setTag(newsItem.getReporterName());
+		holder.nom.setTag(newsItem.getReporterName());
 
 //		if (holder.imageView != null) {
 //			new ImageDownloaderTask(holder.imageView).execute(newsItem.getUrl());
@@ -71,5 +76,7 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView reporterNameView;
 		TextView reportedDateView;
 		ImageView imageView;
+		Button nom;
+		Button mmm;
 	}
 }
