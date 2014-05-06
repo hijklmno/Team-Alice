@@ -42,12 +42,12 @@ public class CustomListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = layoutInflater.inflate(R.layout.list_row_layout, null);
+			convertView = layoutInflater.inflate(R.layout.newsfeed_list_row_layout, null);
 			holder = new ViewHolder();
 			holder.headlineView = (TextView) convertView.findViewById(R.id.title);
 			holder.reporterNameView = (TextView) convertView.findViewById(R.id.reporter);
 			holder.reportedDateView = (TextView) convertView.findViewById(R.id.date);
-			holder.imageView = (ImageView) convertView.findViewById(R.id.thumbImage);
+//			holder.imageView = (ImageView) convertView.findViewById(R.id.thumbImage);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -59,9 +59,9 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.reporterNameView.setText("By, " + newsItem.getReporterName());
 		holder.reportedDateView.setText(newsItem.getDate());
 
-		if (holder.imageView != null) {
-			new ImageDownloaderTask(holder.imageView).execute(newsItem.getUrl());
-		}
+//		if (holder.imageView != null) {
+//			new ImageDownloaderTask(holder.imageView).execute(newsItem.getUrl());
+//		}
 
 		return convertView;
 	}
