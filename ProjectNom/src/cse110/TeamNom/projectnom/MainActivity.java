@@ -5,7 +5,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import cse110.TeamNom.projectnom.adapter.TabsPagerAdapter;
+import cse110.TeamNom.projectnom.tabsadapter.TabsPagerAdapter;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.ActionBar;

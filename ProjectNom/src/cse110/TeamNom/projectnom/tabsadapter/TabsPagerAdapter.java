@@ -1,4 +1,4 @@
-package cse110.TeamNom.projectnom.adapter;
+package cse110.TeamNom.projectnom.tabsadapter;
 
 import cse110.TeamNom.projectnom.CameraFragment;
 import cse110.TeamNom.projectnom.NewsFeedFragment;
