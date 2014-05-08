@@ -5,6 +5,10 @@
     <string name="button_send">Send</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="app_id">236218606571033</string>
     <string name="title_activity_camera">Camera Activity</string>
+    
+    <!-- fb -->
+	<string name="get_started">To get started, log in using Facebook</string>
+    <string name="app_id">1404288516518686</string>
+    <!-- end fb -->
 </resources>
