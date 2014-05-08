@@ -37,20 +37,19 @@ public class CameraFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
- 
+
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
          
-        imgPreview = (ImageView) rootView.findViewById(R.id.imgPreview);
+ //       imgPreview = (ImageView) rootView.findViewById(R.id.imgPreview);
       //   videoPreview = (VideoView) findViewById(R.id.videoPreview);
-        btnCapturePicture = (Button) rootView.findViewById(R.id.btnCapturePicture);
+      btnCapturePicture = (Button) rootView.findViewById(R.id.btnCapturePicture);
       //   btnRecordVideo = (Button) findViewById(R.id.btnRecordVideo);
  
-
+        System.out.println("Check point 1");
         /**
          * Capture image button click event
          */
         btnCapturePicture.setOnClickListener(new View.OnClickListener() {
- 
             @Override
             public void onClick(View v) {
                 // capture picture
@@ -58,7 +57,7 @@ public class CameraFragment extends Fragment {
                 previewCapturedImage();
             }
         });
- 
+        System.out.println("Check point 2 ");
         // Checking camera availability
         if (!isDeviceSupportCamera()) {
             Toast.makeText( super.getActivity().getApplicationContext(),
