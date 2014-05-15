@@ -49,9 +49,21 @@ public class SplashMain extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+        Bundle passedData = getIntent().getExtras();
+        if (passedData != null && passedData.getString("logoutCall") == "logout") {
+        	onClickLogout();
+        }
         Session.getActiveSession().addCallback(statusCallback);
     }
 
+    public void onResume() {
+    	super.onResume();
+    	Bundle passedData = getIntent().getExtras();
+        if (passedData != null && passedData.getString("logoutCall") == "logout") {
+        	onClickLogout();
+        }
+        Session.getActiveSession().removeCallback(statusCallback);
+    }
     @Override
     public void onStop() {
         super.onStop();
@@ -92,11 +104,13 @@ public class SplashMain extends Activity {
         Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
             session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+            
+            Intent intent = new Intent(SplashMain.this, MainActivity.class);
+            startActivity(intent);
+            
         } else {
             Session.openActiveSession(this, true, statusCallback);
         }
-        Intent intent = new Intent(SplashMain.this, MainActivity.class);
-        startActivity(intent);
     }
 
     private void onClickLogout() {
