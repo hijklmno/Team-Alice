@@ -18,9 +18,9 @@ public class SelectionFragment extends Fragment {
 	            container, false);
 	    
 	    Log.w("UD", "selection");
-	    Intent intent = new Intent();
-        intent.setClass(getActivity(), MainActivity.class);
-        getActivity().startActivity(intent);
+//	    Intent intent = new Intent();
+//        intent.setClass(getActivity(), MainActivity.class);
+//        getActivity().startActivity(intent);
 	    return view;
 	}
 }

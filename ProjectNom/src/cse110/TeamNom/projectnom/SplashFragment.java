@@ -45,7 +45,7 @@ public class SplashFragment extends Fragment {
 	}
 	
 	private void configButton() {
-		LoginButton NOM = (LoginButton) getActivity().findViewById(R.id.login_button); 
+//		LoginButton NOM = (LoginButton) getActivity().findViewById(R.id.login_button); 
 //		Log.w("UD", NOM.getSessionStatusCallback()); 
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
