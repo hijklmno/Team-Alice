@@ -32,10 +32,13 @@ public class ProfileFragment extends Fragment {
         Session session = Session.getActiveSession();
         if (!session.isClosed()) {
             session.closeAndClearTokenInformation();
-            Intent intent = new Intent(getActivity(), SplashMain.class);
-            intent.putExtra("logoutCall", "logout");
-            startActivity(intent);
+           //  Intent intent = new Intent(getActivity(), SplashMain.class);
+           // intent.putExtra("logoutCall", "logout");
+           // startActivity(intent);
+            
+            
         }
+        getActivity().finish();
     }
 }
 
