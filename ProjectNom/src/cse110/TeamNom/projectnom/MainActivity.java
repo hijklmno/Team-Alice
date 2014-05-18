@@ -1,5 +1,6 @@
 package cse110.TeamNom.projectnom;
 
+import com.facebook.Session;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
@@ -15,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+//		Session session = Session.getActiveSession();
+		Intent i = getIntent();
+		Session session = (Session)i.getSerializableExtra("FacebookSession");
+		
+		if (session != null && session.isOpened()) {
+			Log.d("MainActivityFacebookSession", "Logged in");
+		}
+		else {
+			Log.d("MainActivityFacebookSession", "Logged out");
+		}
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		

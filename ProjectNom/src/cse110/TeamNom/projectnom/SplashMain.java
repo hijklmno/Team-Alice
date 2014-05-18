@@ -29,6 +29,12 @@ public class SplashMain extends Activity {
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
+        
+        Bundle passedData = getIntent().getExtras();
+        if (passedData != null && passedData.getString("logoutCall") == "logout") {
+        	onClickLogout();
+        }
+        
         Session session = Session.getActiveSession();
         if (session == null) {
             if (savedInstanceState != null) {
@@ -40,6 +46,8 @@ public class SplashMain extends Activity {
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+                
+                System.out.println("CREATED_TOKEN_LOADED");
             }
         }
 
@@ -54,6 +62,7 @@ public class SplashMain extends Activity {
         	onClickLogout();
         }
         Session.getActiveSession().addCallback(statusCallback);
+//        updateView(); 
     }
 
     public void onResume() {
@@ -63,6 +72,7 @@ public class SplashMain extends Activity {
         	onClickLogout();
         }
         Session.getActiveSession().addCallback(statusCallback);
+//        updateView();
     }
     @Override
     public void onStop() {
@@ -85,15 +95,14 @@ public class SplashMain extends Activity {
 
     private void updateView() {
         Session session = Session.getActiveSession();
-        if (session.isOpened()) {
+        if (session != null && session.isOpened()) {
             textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
             buttonLoginLogout.setText("Logout...but we shouldn't see this");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
             
-            Intent intent = new Intent(SplashMain.this, MainActivity.class);
-            startActivity(intent);
+            gotoMainAndEnd();
         } else {
             textInstructionsOrLink.setText("Logged out...press dat");
             buttonLoginLogout.setText("Login nao");
@@ -106,17 +115,11 @@ public class SplashMain extends Activity {
     private void onClickLogin() {
         Session session = Session.getActiveSession();
         if (session == null || session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-            
-            Intent intent = new Intent(SplashMain.this, MainActivity.class);
-            startActivity(intent);
-            
+            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));            
         } else {
             Session.openActiveSession(this, true, statusCallback);
-            
-            Intent intent = new Intent(SplashMain.this, MainActivity.class);
-            startActivity(intent);
         }
+//        gotoMainAndEnd();
     }
 
     private void onClickLogout() {
@@ -124,6 +127,14 @@ public class SplashMain extends Activity {
         if (!session.isClosed()) {
             session.closeAndClearTokenInformation();
         }
+    }
+    
+    private void gotoMainAndEnd() {
+        Intent intent = new Intent(SplashMain.this, MainActivity.class);
+        intent.putExtra("FacebookSession", Session.getActiveSession());
+        startActivity(intent);
+        
+        finish();
     }
 
     private class SessionStatusCallback implements Session.StatusCallback {
