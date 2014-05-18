@@ -13,9 +13,12 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -38,41 +41,33 @@ import android.widget.Toast;
 
 public class CameraFragment extends Fragment {
 
-	// Activity request codes
+	// Final variables used to avoid MAGIC strings.
 	public static final int MEDIA_TYPE_IMAGE = 1;
-	private static final int ACTION_TAKE_PHOTO_B = 1;
-
-	private Button picBtn;
-
+	private static final int TAKE_PHOTO = 1;
+	private static final String JPEG_FILE_PREFIX = "IMG_";
+	private static final String JPEG_FILE_SUFFIX = ".jpg";
+	private static final String ALBUM_NAME = "NOM";
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
+
+	// Misc variables
+	private Button picBtn;
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
 
-
+	// The current Photo path
 	private String mCurrentPhotoPath;
 	private String pathtophoto;
 
-	private static final String JPEG_FILE_PREFIX = "IMG_";
-	private static final String JPEG_FILE_SUFFIX = ".jpg";
-
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
-
-	/* Photo album for this application */
-	private String getAlbumName() {
-		return "NOM";
-	}
 
 	private File getAlbumDir() {
 		File storageDir = null;
-
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
-			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
-
+			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(ALBUM_NAME);
 			if (storageDir != null) {
-				if (! storageDir.mkdirs()) {
-					if (! storageDir.exists()){
+				if (!storageDir.mkdirs()) {
+					if (!storageDir.exists()){
 						Log.d("CameraSample", "failed to create directory");
 						return null;
 					}
@@ -86,7 +81,7 @@ public class CameraFragment extends Fragment {
 		return storageDir;
 	}
 
-	private File createImageFile() throws IOException {
+	@SuppressLint("SimpleDateFormat") private File createImageFile() throws IOException {
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
@@ -145,9 +140,8 @@ public class CameraFragment extends Fragment {
 	}
 
 	private void dispatchTakePictureIntent(int actionCode) {
-
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		if(actionCode == ACTION_TAKE_PHOTO_B){
+		if(actionCode == TAKE_PHOTO){
 			File f = null;
 			try {
 				f = setUpPhotoFile();
@@ -162,7 +156,7 @@ public class CameraFragment extends Fragment {
 		startActivityForResult(takePictureIntent, actionCode);
 	}
 
-	private void handleBigCameraPhoto() {
+	private void handlePhoto() {
 		if (mCurrentPhotoPath != null) {
 			setPic();
 			galleryAddPic();
@@ -175,7 +169,7 @@ public class CameraFragment extends Fragment {
 			new Button.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B);
+			dispatchTakePictureIntent(TAKE_PHOTO);
 		}
 	};
 
@@ -210,8 +204,7 @@ public class CameraFragment extends Fragment {
 				} else {
 					mAlbumStorageDirFactory = new BaseAlbumDirFactory();
 				}
-
-				dispatchTakePictureIntent(ACTION_TAKE_PHOTO_B);
+				dispatchTakePictureIntent(TAKE_PHOTO);
 			}
 		});
 		System.out.println("Check point 2 big boiiii ");
@@ -228,20 +221,36 @@ public class CameraFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACTION_TAKE_PHOTO_B && resultCode == -1) {
+		if (requestCode == TAKE_PHOTO && resultCode == -1) {
 			// Work with this
-			handleBigCameraPhoto();
-			try {
-				// uncomment this to send photo to parse, ask william or david
-				compressFile(pathtophoto);
-				System.out.println("The photopath: " + pathtophoto);
-				//finish();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			handlePhoto();
+			CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
+			// TODO
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setCancelable(false);
+			builder.setTitle("Upload to NOM?");
+			builder.setItems(colors, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch(which){
+					case 0:{
+						try {
+							compressFile(pathtophoto);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						break;
+					}
+					case 1:{
+						dialog.cancel();
+						break;
+					}
+					}
+				}
+			});
+			builder.show();
 		}
-		System.out.println("badasssssssswholes");
 	}
 
 	// Some lifecycle callbacks so that the image can survive orientation change
@@ -305,8 +314,8 @@ public class CameraFragment extends Fragment {
 			});
 
 			object.put("Food_photo", file);
-			object.put("Like", 1);
-			object.put("Bookmark", 1);
+			object.put("Like", 100);
+			object.put("Bookmark", 100);
 			object.saveInBackground();
 			System.out.println("after parsing blue balls");
 		}
