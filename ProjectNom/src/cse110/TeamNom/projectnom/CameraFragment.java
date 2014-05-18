@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -54,6 +55,9 @@ public class CameraFragment extends Fragment {
 	private Button picBtn;
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
+	private EditText title;
+	private EditText restaurant;
+	private EditText caption;
 
 	// The current Photo path
 	private String mCurrentPhotoPath;
@@ -182,6 +186,15 @@ public class CameraFragment extends Fragment {
 
 		picBtn = (Button) rootView.findViewById(R.id.btnCapturePicture);
 
+		title = (EditText) rootView.findViewById(R.id.TitleID);
+		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
+		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
+		
+
+		title.setVisibility(View.INVISIBLE);
+		restaurant.setVisibility(View.INVISIBLE);
+		caption.setVisibility(View.INVISIBLE);
+		
 		System.out.println("Check point 1");
 		/**
 		 * Capture image button click event
@@ -222,6 +235,11 @@ public class CameraFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PHOTO && resultCode == -1) {
+
+			title.setVisibility(View.VISIBLE);
+			restaurant.setVisibility(View.VISIBLE);
+			caption.setVisibility(View.VISIBLE);
+			
 			// Work with this
 			handlePhoto();
 			CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
