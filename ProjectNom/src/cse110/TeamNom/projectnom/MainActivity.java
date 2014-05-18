@@ -35,10 +35,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-//		Session session = Session.getActiveSession();
+		//retrieves the facebook session established in the splash page
 		Intent i = getIntent();
 		Session session = (Session)i.getSerializableExtra("FacebookSession");
 		
+		//debugging, test if session is logged in
 		if (session != null && session.isOpened()) {
 			Log.d("MainActivityFacebookSession", "Logged in");
 		}

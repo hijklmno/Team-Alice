@@ -19,8 +19,9 @@ public class ProfileFragment extends Fragment {
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        buttonLogout = (Button)rootView.findViewById(R.id.buttonLogout);
         
+        //start configuration for the logout button
+        buttonLogout = (Button)rootView.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(new OnClickListener() {
             public void onClick(View view) { onClickLogout(); }
         });
@@ -28,16 +29,15 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 	
+	//called when pressing the logout button
 	private void onClickLogout() {
         Session session = Session.getActiveSession();
-        if (!session.isClosed()) {
-            session.closeAndClearTokenInformation();
-            
-            Intent intent = new Intent(getActivity(), SplashMain.class);
-            intent.putExtra("logoutCall", "logout");
-            startActivity(intent);
-            getActivity().finish();
-        }
+        session.closeAndClearTokenInformation(); //end session and go 
+        //create splash page
+        Intent intent = new Intent(getActivity(), SplashMain.class);
+        intent.putExtra("logoutCall", "logout");
+        startActivity(intent);
+        getActivity().finish();
     }
 }
 
