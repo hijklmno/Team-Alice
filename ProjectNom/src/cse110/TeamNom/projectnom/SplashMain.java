@@ -1,12 +1,18 @@
 package cse110.TeamNom.projectnom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
@@ -19,7 +25,13 @@ import com.facebook.Settings;
  */
 public class SplashMain extends Activity {
 	private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
-
+	private static final List<String> PERMISSIONS = new ArrayList<String>() {
+        {
+            add("user_friends");
+            add("public_profile");
+        }
+    };
+    
     private TextView textInstructionsOrLink;
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
@@ -48,9 +60,11 @@ public class SplashMain extends Activity {
         if (session == null) {
             if (savedInstanceState != null) {
                 session = Session.restoreSession(this, null, statusCallback, savedInstanceState);
+                Log.d("FacebookSessionSplash", "restored session");
             }
             if (session == null) {
                 session = new Session(this);
+                Log.d("FacebookSessionSplash", "created new session");
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
@@ -58,6 +72,8 @@ public class SplashMain extends Activity {
                 
                 System.out.println("CREATED_TOKEN_LOADED");
             }
+            Log.d("FacebookSessionIfNull", "nulled!");
+            
         }
 
         updateView();
@@ -140,10 +156,15 @@ public class SplashMain extends Activity {
      */
     private void onClickLogin() {
         Session session = Session.getActiveSession();
+        Context context = this.getApplicationContext();
+            
         if (session == null || session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));            
+        	Session.setActiveSession(session);
+//            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback)); 
+        	Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
+            Toast.makeText(context, "Loading Facebook. Please wait...", 3).show();
         } else {
-            Session.openActiveSession(this, true, statusCallback);
+            Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
         }
     }
 
