@@ -23,4 +23,21 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:onClick="onClickLogout" />
+    
+    <!-- Facebook test stuff --> 
+    <Button 
+        android:id="@+id/facebookTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit to Facebook"
+        android:layout_marginTop="44dp" />
+    <TextView 
+        android:id="@+id/facebookDebugBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Facebook goes here"
+        android:layout_marginTop="88dp"
+        android:textSize="20dp" />
+    
+    
 </RelativeLayout>
