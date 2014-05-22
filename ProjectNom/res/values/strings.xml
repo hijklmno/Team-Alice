@@ -11,14 +11,19 @@
 	<string name="get_started">To get started, log in using Facebook</string>
     <string name="app_id">642123995834625</string>
     <!-- end fb -->
-    
+     
     
     <!-- Camera -->
     <string name="hello">Hello World, PhotoIntentActivity!</string>
     <string name="btnIntend">Take Picture</string>
-    <string name="btnIntendV">Take Video</string>
+    <string name="restID">Restaurant Title</string>
     <string name="cannot">Cannot</string>
     <string name="album_name">CameraSample</string>
+    <string name="cap">Caption</string>
+    <string name="submit">Submit</string>
+    <string name="titleID">Title of Picture</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     
     <!-- End of Camera -->
 </resources>

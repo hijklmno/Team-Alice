@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_frag"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="right"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" 
+	android:fillViewport="true"
+	android:scrollbars="none">
+
+	<RelativeLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical">
 
     <Button
        android:id="@+id/btnCapturePicture"
@@ -12,14 +18,17 @@
        android:layout_height="wrap_content"
        android:gravity="center"
        android:src="@drawable/ic_action_photo"
-       android:text="Take Picture" >
+       android:text="@string/btnIntend" >
     </Button>
     <EditText
         android:id="@+id/TitleID"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="visible" 
-        android:text="Title of Photo" 
+        android:hint="@string/titleID" 
+        android:singleLine="true"
+    	android:lines="1"
+    	android:scrollHorizontally="true"
         android:layout_below="@id/btnCapturePicture"
         android:layout_alignParentLeft="true">
     </EditText>
@@ -35,21 +44,31 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="visible" 
-        android:text="Name of Restaurant"
+        android:singleLine="true"
+    	android:lines="1"
+    	android:scrollHorizontally="true"
+        android:hint="@string/restID"
         android:layout_below="@id/imageView1"
         android:layout_alignParentLeft="True" >
-     </EditText>
+     </EditText> 
      <EditText
          android:id="@+id/pictureCaption"
          android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-         android:text="Caption"
+         android:layout_height="200dp"
+         android:hint="@string/cap"
+         android:gravity="top|left"
          android:layout_below="@id/RestaurantTitle"
          android:layout_alignParentLeft="True"
          android:visibility="visible" />
+     <Button
+         android:id="@+id/submitButton"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/submit"
+         android:layout_below="@+id/pictureCaption"
+         android:layout_alignParentLeft="True"
+         android:visibility="visible">
+     </Button>
 
-    
-
-    
-
-</RelativeLayout>
+	</RelativeLayout>
+</ScrollView>
