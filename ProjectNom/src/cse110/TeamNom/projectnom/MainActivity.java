@@ -13,6 +13,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -22,12 +23,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.os.Build;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
+	private EditText mSearchTerm;
+	private EditText mSearchLocation;
 
 	// Testing comment
 	// Tab titles
@@ -50,6 +54,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		
+		GPSFragment gps = new GPSFragment(this);
+		double longitude;
+		double latitude;
+		
+		if(gps.canGetLocation())
+		{
+			longitude = gps.getLongitude();
+			latitude = gps.getLatitude();
+			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
+			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
+
+		}
+		else
+		{
+			gps.showSettingsAlert();
+			longitude = gps.getLongitude();
+			latitude = gps.getLatitude();
+			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
+			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
+		}
 		// Parse stuff
 		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW", "KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
 
@@ -103,5 +128,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
  
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-    }    
+    }   
+    
+	public void search(View v) {
+ 	    mSearchTerm = (EditText)findViewById(R.id.searchTerm);
+ 	    mSearchLocation = (EditText)findViewById(R.id.searchLocation);
+		String term = mSearchTerm.getText().toString();
+		String location = mSearchLocation.getText().toString();
+		Intent intent = new Intent(this, YelpSearchListActivity.class);
+		intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).build());
+		startActivity(intent);
+	}
 }
