@@ -201,7 +201,6 @@ public class CameraFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Parse.initialize(getActivity(), "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW", "KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
 
 		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
