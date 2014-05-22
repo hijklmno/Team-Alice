@@ -60,7 +60,7 @@ public class CameraFragment extends Fragment {
 	private EditText caption;
 	private Button subBut;
 	private Context context;
-	private Boolean uploadBool = false;
+	//private Boolean uploadBool = false;
 
 	// String variables
 	String parseTitle;
