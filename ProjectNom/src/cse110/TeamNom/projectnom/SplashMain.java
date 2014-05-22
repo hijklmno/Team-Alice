@@ -50,6 +50,27 @@ public class SplashMain extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+//        Swagging the hash key to the logcat
+//        PackageInfo info;
+//        try {
+//            info = getPackageManager().getPackageInfo("cse110.TeamNom.projectnom", PackageManager.GET_SIGNATURES);
+//            for (android.content.pm.Signature signature : info.signatures) {
+//                MessageDigest md;
+//                md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                String something = new String(Base64.encode(md.digest(), 0));
+//                //String something = new String(Base64.encodeBytes(md.digest()));
+//                Log.d("hash key", something);
+//            }
+//        } catch (NameNotFoundException e1) {
+//            Log.e("name not found", e1.toString());
+//        } catch (NoSuchAlgorithmException e) {
+//            Log.e("no such an algorithm", e.toString());
+//        } catch (Exception e) {
+//            Log.e("exception", e.toString());
+//        }
+        
         setContentView(R.layout.splash_main);
         buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
@@ -84,26 +105,6 @@ public class SplashMain extends Activity {
         }
 
         updateView();
-        
-        
-        PackageInfo info;
-        try {
-            info = getPackageManager().getPackageInfo("cse110.TeamNom.projectnom", PackageManager.GET_SIGNATURES);
-            for (android.content.pm.Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                //String something = new String(Base64.encodeBytes(md.digest()));
-                Log.d("hash key", something);
-            }
-        } catch (NameNotFoundException e1) {
-            Log.e("name not found", e1.toString());
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("no such an algorithm", e.toString());
-        } catch (Exception e) {
-            Log.e("exception", e.toString());
-        }
     }
 
     // Called when activity is started
