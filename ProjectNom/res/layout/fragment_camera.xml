@@ -50,7 +50,7 @@
         android:hint="@string/restID"
         android:layout_below="@id/imageView1"
         android:layout_alignParentLeft="True" >
-     </EditText>
+     </EditText> 
      <EditText
          android:id="@+id/pictureCaption"
          android:layout_width="fill_parent"
