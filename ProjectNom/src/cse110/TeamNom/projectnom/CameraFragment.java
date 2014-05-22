@@ -58,7 +58,15 @@ public class CameraFragment extends Fragment {
 	private EditText title;
 	private EditText restaurant;
 	private EditText caption;
+	private Button subBut;
+	private Context context;
+	private Boolean uploadBool = false;
 
+	// String variables
+	String parseTitle;
+	String parseRestaurant;
+	String parseCaption;
+	
 	// The current Photo path
 	private String mCurrentPhotoPath;
 	private String pathtophoto;
@@ -177,6 +185,19 @@ public class CameraFragment extends Fragment {
 		}
 	};
 
+	private void resetFragment() {
+		title.setVisibility(View.INVISIBLE);
+		restaurant.setVisibility(View.INVISIBLE);
+		caption.setVisibility(View.INVISIBLE);
+		subBut.setVisibility(View.INVISIBLE);
+		mImageView.setVisibility(View.INVISIBLE);
+		
+		//mImageView.setImageBitmap(null);
+		title.setText(null);
+		restaurant.setText(null);
+		caption.setText(null);
+		
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -189,12 +210,15 @@ public class CameraFragment extends Fragment {
 		title = (EditText) rootView.findViewById(R.id.TitleID);
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
+		subBut = (Button) rootView.findViewById(R.id.submitButton);
 		
 
+		context = getActivity().getApplicationContext();
+		  
 		title.setVisibility(View.INVISIBLE);
 		restaurant.setVisibility(View.INVISIBLE);
 		caption.setVisibility(View.INVISIBLE);
-		
+		subBut.setVisibility(View.INVISIBLE);
 		System.out.println("Check point 1");
 		/**
 		 * Capture image button click event
@@ -220,6 +244,55 @@ public class CameraFragment extends Fragment {
 				dispatchTakePictureIntent(TAKE_PHOTO);
 			}
 		});
+		subBut.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				mImageView = (ImageView) getActivity().findViewById(R.id.imageView1);
+				mImageBitmap = null;
+
+				
+				// TODO
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setCancelable(false);
+				builder.setMessage("Are you sure you want to Upload?")
+				  .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   try {
+	       					compressFile(pathtophoto);
+	       				} catch (Exception e) {
+	       					// TODO Auto-generated catch block
+	       					e.printStackTrace();
+	       				}
+	    				/**	AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+	    					builder2.setCancelable(false);
+	    					builder2.setMessage("Upload Successful")
+	    					  .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	    		                   public void onClick(DialogInterface dialog, int id) {
+	    		                	  
+	    		                   }
+	    		               });
+	    					builder2.show(); */
+	                	 
+	                	   CharSequence text = "File Uploaded Successfully";
+	                	   int duration = Toast.LENGTH_SHORT;
+
+	                	   Toast toast = Toast.makeText(context, text, duration);
+	                	   toast.show();
+	                	   
+	                	  resetFragment();
+	    				}
+	               })
+	               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       // go back
+	                   }
+	               });
+				builder.show();
+				
+				
+			}
+		});
 		System.out.println("Check point 2 big boiiii ");
 		// Checking camera availability
 		if (!isDeviceSupportCamera()) {
@@ -239,10 +312,12 @@ public class CameraFragment extends Fragment {
 			title.setVisibility(View.VISIBLE);
 			restaurant.setVisibility(View.VISIBLE);
 			caption.setVisibility(View.VISIBLE);
+			subBut.setVisibility(View.VISIBLE);
+			mImageView.setVisibility(View.VISIBLE);
 			
 			// Work with this
 			handlePhoto();
-			CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
+		/**	CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
 			// TODO
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setCancelable(false);
@@ -267,7 +342,7 @@ public class CameraFragment extends Fragment {
 					}
 				}
 			});
-			builder.show();
+			builder.show(); */
 		}
 	}
 
@@ -331,9 +406,17 @@ public class CameraFragment extends Fragment {
 				}
 			});
 
+			parseTitle = title.getText().toString();
+			parseRestaurant = restaurant.getText().toString();
+			parseCaption = caption.getText().toString();
+			
 			object.put("Food_photo", file);
+			object.put("Restaurant_Id", parseRestaurant);
+			object.put("Food_Name", parseTitle);
+			object.put("Tags",parseCaption);
 			object.put("Like", 100);
 			object.put("Bookmark", 100);
+			//object.put("Boba", "David");
 			object.saveInBackground();
 			System.out.println("after parsing blue balls");
 		}
