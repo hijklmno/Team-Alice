@@ -41,7 +41,26 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class CameraFragment extends Fragment {
+	/*GPSFragment gps = new GPSFragment(this);
+	double longitude;
+	double latitude;
+	
+	if(gps.canGetLocation())
+	{
+		longitude = gps.getLongitude();
+		latitude = gps.getLatitude();
+		System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
+		System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
 
+	}
+	else
+	{
+		gps.showSettingsAlert();
+		longitude = gps.getLongitude();
+		latitude = gps.getLatitude();
+		System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
+		System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
+	}*/
 	// Final variables used to avoid MAGIC strings.
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int TAKE_PHOTO = 1;
@@ -308,6 +327,10 @@ public class CameraFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PHOTO && resultCode == -1) {
 
+			GPSFragment gps = new GPSFragment(getActivity());
+			
+			if(!gps.canGetLocation())
+				gps.showSettingsAlert();
 			title.setVisibility(View.VISIBLE);
 			restaurant.setVisibility(View.VISIBLE);
 			caption.setVisibility(View.VISIBLE);
@@ -374,6 +397,7 @@ public class CameraFragment extends Fragment {
 
 	/* Method that compresses a file given a path. */
 	private void compressFile(String path) throws Exception{
+		GPSFragment gps = new GPSFragment(getActivity());
 		try {
 			System.out.println("inside the compress method: " + path);
 			Bitmap bitmap;
@@ -413,9 +437,12 @@ public class CameraFragment extends Fragment {
 			object.put("Restaurant_Id", parseRestaurant);
 			object.put("Food_Name", parseTitle);
 			object.put("Tags",parseCaption);
-			object.put("Like", 100);
-			object.put("Bookmark", 100);
+			object.put("Like", 0);
+			object.put("Bookmark", 0);
+			object.put("Longitude", gps.getLongitude());
+			object.put("Latitude", gps.getLatitude());
 			//object.put("Boba", "David");
+			object.put("report_image", false);
 			object.saveInBackground();
 			System.out.println("after parsing blue balls");
 		}

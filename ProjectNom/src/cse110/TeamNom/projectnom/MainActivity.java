@@ -54,27 +54,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		
-		GPSFragment gps = new GPSFragment(this);
-		double longitude;
-		double latitude;
-		
-		if(gps.canGetLocation())
-		{
-			longitude = gps.getLongitude();
-			latitude = gps.getLatitude();
-			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
-			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
-
-		}
-		else
-		{
-			gps.showSettingsAlert();
-			longitude = gps.getLongitude();
-			latitude = gps.getLatitude();
-			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLongitude" + longitude);
-			System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLatitude" + latitude);
-		}
 		// Parse stuff
 		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW", "KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
 
