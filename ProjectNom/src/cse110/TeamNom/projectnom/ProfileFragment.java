@@ -2,6 +2,7 @@ package cse110.TeamNom.projectnom;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,12 +10,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +32,10 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 public class ProfileFragment extends Fragment {
 	private Button buttonLogout;
@@ -98,13 +106,46 @@ public class ProfileFragment extends Fragment {
 		/* make the API call */
 		new Request(
 		    session,
-		    "/me/friends",
+		    "/me",
 		    null,
 		    HttpMethod.GET,
 		    new Request.Callback() {
 		        public void onCompleted(Response response) {
 		            /* handle the result */
-		        	textbox.setText(response.getRawResponse());
+		        	String incomingText = response.getRawResponse();
+		        	textbox.setText(incomingText);
+		        	
+		        	try {
+						JSONObject json = new JSONObject(incomingText);
+						//id working
+						final String id = (String) json.get("id");
+						final String name = (String) json.get("name");
+						
+						//testing to see if is a user already
+						ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+						query.whereEqualTo("facebook_id", id);
+						query.findInBackground(new FindCallback<ParseObject>() {
+							@Override
+							public void done(List<ParseObject> objects, ParseException e) {
+								Log.d("FacebookFriendQuery", "done");
+								textbox.setText(objects.toString());
+								if (objects.isEmpty()) {
+									ParseObject testObject = new ParseObject("FacebookAccounts");
+									testObject.put("facebook_id", id);
+									testObject.put("Name", name);
+									testObject.saveInBackground();
+									Log.d("FacebookFriendQuery", "new user");
+								}
+							}
+						});
+						
+						
+						textbox.setText(name);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        	
 		        }
 		    }
 		).executeAsync();

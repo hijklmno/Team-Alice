@@ -7,10 +7,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import android.annotation.SuppressLint;
@@ -89,9 +98,14 @@ public class CameraFragment extends Fragment {
 	// The current Photo path
 	private String mCurrentPhotoPath;
 	private String pathtophoto;
+	private String pictureString;
+	private String pictureID;
 
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
+	//Facebook ID
+	private String facebook_id;
+	
 	private File getAlbumDir() {
 		File storageDir = null;
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
@@ -273,7 +287,7 @@ public class CameraFragment extends Fragment {
 				// TODO
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setCancelable(false);
-				builder.setMessage("Are you sure you want to Upload?")
+				builder.setMessage("Are you sure you want to upload?")
 				  .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                	   try {
@@ -398,7 +412,7 @@ public class CameraFragment extends Fragment {
 	/* Method that compresses a file given a path. */
 	private void compressFile(String path) throws Exception{
 		GPSFragment gps = new GPSFragment(getActivity());
-		try {
+//		try {
 			System.out.println("inside the compress method: " + path);
 			Bitmap bitmap;
 			bitmap = BitmapFactory.decodeFile(path);
@@ -414,7 +428,7 @@ public class CameraFragment extends Fragment {
 			//uncompressFile(data);
 
 			System.out.println("Before parsing");
-			ParseObject object = new ParseObject("Food_Table_DB");
+			final ParseObject object = new ParseObject("Food_Table_DB");
 			ParseFile file = new ParseFile(data);
 			file.saveInBackground(new SaveCallback() {
 				@Override
@@ -444,13 +458,59 @@ public class CameraFragment extends Fragment {
 			//object.put("Boba", "David");
 			object.put("report_image", false);
 			object.saveInBackground();
+			object.saveInBackground(new SaveCallback() {
+				@Override
+				public void done(ParseException e) {
+					Log.d("asdfdsfasdf", object.getObjectId());
+					pictureID = object.getObjectId();
+					
+					Log.d("asdasd", pictureID);
+					ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+					
+					Log.d("GettingFacebookinfo", "asdf");
+					Session session = Session.getActiveSession();
+					
+					query.whereEqualTo("facebook_id", MainActivity.FACEBOOK_ID);
+					
+					query.findInBackground(new FindCallback<ParseObject>() {
+						@Override
+						public void done(List<ParseObject> objects, ParseException e) {
+							if (objects == null || objects.isEmpty()) {
+								Log.d("GettingFacebookinfo", "no object returned");
+							}
+							else {
+								Log.d("GettingFacebookinfo", objects.get(0).toString());
+								ParseObject facebookAccount = objects.get(0);
+								
+								String pictureString = (String) facebookAccount.get("pictures");
+								
+								if (pictureString == null || pictureString.equals("")) {
+									pictureString = "";
+									pictureString += pictureID;
+								}
+								else {
+									pictureID = "," + pictureID;
+									pictureString += pictureID;
+								}
+								facebookAccount.put("pictures", pictureString);
+								facebookAccount.saveInBackground();
+							}
+						}
+					});
+				}
+			});
 			System.out.println("after parsing blue balls");
-		}
-		catch (Exception e) {
-			Log.v("CameraFragment", "Some error compressFile");
-		}
+			
+			//Pushing picture id to parse FacebookAccounts for easier profile gallery
+			
+//		}
+//		catch (Exception e) {
+//			Log.v("CameraFragment", "Some error compressFile");
+//		}
 		// clear the path string
 		//pathtophoto = null;
+		
+		
 	}
 
 	// this method is for... dont trip 
@@ -486,5 +546,33 @@ public class CameraFragment extends Fragment {
 					getText(R.string.cannot).toString() + " " + btn.getText());
 			btn.setClickable(false);
 		}
+	}
+	
+	private void getFacebookId() {
+		Session session = Session.getActiveSession();
+		if (session.isOpened()) {
+			Log.d("CameraFacebookSession", "true");
+		}
+		/* make the API call */
+		new Request(
+			    session,
+			    "/me",
+			    null,
+			    HttpMethod.GET,
+			    new Request.Callback() {
+			        public void onCompleted(Response response) {
+			        	Log.d("acasdf", "asdf");
+			        	try {
+			        		String incomingText = response.getRawResponse();
+			        		Log.d("CameraFacebookSessionID", incomingText);
+			        		JSONObject json = new JSONObject(incomingText);
+			        		facebook_id = (String) json.get("id");
+			        		
+			        	} catch (JSONException e) {
+							e.printStackTrace();
+//							System.out.println(e.toString());
+						}
+			        }
+			    });
 	}
 }

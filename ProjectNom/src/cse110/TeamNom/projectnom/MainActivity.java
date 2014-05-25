@@ -1,8 +1,18 @@
 package cse110.TeamNom.projectnom;
 
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -32,6 +42,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private ActionBar actionBar;
 	private EditText mSearchTerm;
 	private EditText mSearchLocation;
+	
+	public static String FACEBOOK_ID;
 
 	// Testing comment
 	// Tab titles
@@ -57,6 +69,48 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Parse stuff
 		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW", "KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
 
+		//Check account of parse
+		/* make the API call */
+		new Request(
+		    session,
+		    "/me",
+		    null,
+		    HttpMethod.GET,
+		    new Request.Callback() {
+		        public void onCompleted(Response response) {
+		            /* handle the result */
+		        	String incomingText = response.getRawResponse();
+		        	
+		        	try {
+						JSONObject json = new JSONObject(incomingText);
+						//id working
+						FACEBOOK_ID = (String) json.get("id");
+						final String name = (String) json.get("name");
+						
+						//testing to see if is a user already
+						ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+						query.whereEqualTo("facebook_id", FACEBOOK_ID);
+						query.findInBackground(new FindCallback<ParseObject>() {
+							@Override
+							public void done(List<ParseObject> objects, ParseException e) {
+								Log.d("FacebookFriendQuery", "done");
+								if (objects.isEmpty()) {
+									ParseObject testObject = new ParseObject("FacebookAccounts");
+									testObject.put("facebook_id", FACEBOOK_ID);
+									testObject.put("Name", name);
+									testObject.saveInBackground();
+									Log.d("FacebookFriendQuery", "new user created");
+								}
+							}
+						});
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        }
+		    }
+		).executeAsync();
+		
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
