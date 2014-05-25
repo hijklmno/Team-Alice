@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_camera">Camera Activity</string>
+    
     <!-- GPS STUFF -->
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
@@ -43,4 +44,10 @@
     <string name="token">AeEk2xUY109qZY96Ve6cHVBnzOo3JHLv</string>
     <string name="token_secret">F9uZ1G3pbNG73zXvboZZ9IYPh2c</string>
     <string name="search">Search</string>
+    
+    <!-- News Feed -->
+    <string name="toggleOn">Friends</string>
+    <string name="toggleOff">Popular</string>
+    <string name="feed">News Feed</string>
+    <!-- End Of News Feed -->
 </resources>

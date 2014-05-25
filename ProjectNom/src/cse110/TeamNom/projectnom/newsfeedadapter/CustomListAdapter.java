@@ -65,7 +65,7 @@ holder = (ViewHolder) convertView.getTag();
 
 NewsItem newsItem = (NewsItem) listData.get(position);
 
-holder.headlineView.setText(newsItem.getHeadline());
+//holder.headlineView.setText(newsItem.getHeadline());
 holder.reporterNameView.setText("By, " + newsItem.getReporterName());
 holder.reportedDateView.setText(newsItem.getDate());
 holder.mmm.setTag(newsItem.getReporterName());
@@ -103,6 +103,7 @@ holder.report.setTag(newsItem.getReporterName());
 	Bitmap bmp = BitmapFactory.decodeByteArray(array, 0, array.length);
 	return bmp;
 	}
+	
 	static class ViewHolder {
 		TextView headlineView;
 		TextView reporterNameView;

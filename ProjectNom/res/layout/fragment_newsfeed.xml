@@ -11,14 +11,26 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="News Feed"
+        android:text="@string/feed"
         android:textSize="20dp" />
+    
+    
+    <Switch 
+        android:id="@+id/newsFeedToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/toggleOn"
+        android:textOff="@string/toggleOff"
+        android:checked="true"
+        android:layout_centerHorizontal="true"
+        />
 
     <ListView
         android:id="@+id/custom_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_below="@id/newsFeedToggle"
+        android:layout_height="wrap_content"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_selector_flatcolor" />
-    
+     
 </RelativeLayout>

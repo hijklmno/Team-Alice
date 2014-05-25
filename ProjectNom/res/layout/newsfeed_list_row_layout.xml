@@ -13,9 +13,8 @@
         android:text=""
         android:layout_alignParentTop="true"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:typeface="sans"
-        android:textSize="12sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/date"
@@ -29,7 +28,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:typeface="sans"
-        android:textSize="12sp" />
+        android:textSize="22sp" />
     
     <TextView 
         android:id="@+id/newsRestaurant"
@@ -39,9 +38,8 @@
         android:layout_below="@id/reporter"
         android:text=""
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:typeface="sans"
-        android:textSize="12sp"/>
+        android:textSize="22sp"/>
     
      <ImageView
         android:id="@+id/thumbImage"
@@ -60,6 +58,20 @@
          android:layout_alignParentLeft="true"
          />
     
+      <Button 
+        android:id="@+id/reportpls"
+        android:tag=""
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/captionNews"
+        android:text="Report"
+        android:layout_alignBottom="@id/Mmm"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:drawableEnd="@drawable/ic_action_remove"
+        android:textSize="22sp"/>
+      
     <Button
         android:id="@+id/NOM"
         android:tag=""
@@ -69,6 +81,7 @@
         android:layout_below="@id/captionNews"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/Mmm"
         android:text=""  
         android:drawableStart="@drawable/ic_action_like"/>
 
@@ -80,20 +93,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/captionNews"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/NOM"
+        android:layout_toLeftOf="@id/reportpls"
         android:text="" 
         android:drawableStart="@drawable/ic_action_important"/>
     
-    <Button 
-        android:id="@+id/reportpls"
-        android:tag=""
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/captionNews"
-        android:text="Ban Pls"
-        android:layout_toRightOf="@id/Mmm"
-        android:gravity="right"
-        android:layout_alignParentRight="true"/>
+   
 
 </RelativeLayout>

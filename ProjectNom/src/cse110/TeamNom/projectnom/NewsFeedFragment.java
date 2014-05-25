@@ -21,17 +21,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ToggleButton;
 import android.view.View.OnClickListener;
 
 public class NewsFeedFragment extends Fragment implements OnClickListener{
+	
 private static final int MAXROWS = 2;
-private Button buttonNOM;
+private Switch switchButton;
 @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_newsfeed, container, false);
+        
+       switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
+        
+       switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(isChecked) {
+					//friends
+				}
+				else{
+					// popular
+				}
+			}
+		}); 
+        
 //      Log.w("UD: ", "test");
 //        final Button NOM = (Button) rootView.findViewWithTag(newsItem.getReporterName());
         
