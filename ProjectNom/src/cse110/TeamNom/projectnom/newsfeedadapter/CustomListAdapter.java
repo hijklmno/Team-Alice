@@ -50,12 +50,14 @@ final ViewHolder holder;
 if (convertView == null) {
 convertView = layoutInflater.inflate(R.layout.newsfeed_list_row_layout, null);
 holder = new ViewHolder();
-holder.headlineView = (TextView) convertView.findViewById(R.id.title);
+//holder.headlineView = (TextView) convertView.findViewById(R.id.title);
 holder.reporterNameView = (TextView) convertView.findViewById(R.id.reporter);
 holder.reportedDateView = (TextView) convertView.findViewById(R.id.date);
+holder.reportedCaption = (TextView) convertView.findViewById(R.id.captionNews);
 holder.imageView = (ImageView) convertView.findViewById(R.id.thumbImage);
 holder.mmm = (Button) convertView.findViewById(R.id.Mmm);
 holder.nom = (Button) convertView.findViewById(R.id.NOM);
+holder.report = (Button) convertView.findViewById(R.id.reportpls);
 convertView.setTag(holder);
 } else {
 holder = (ViewHolder) convertView.getTag();
@@ -84,6 +86,8 @@ public void onClick(View v) {
            testObject.saveInBackground();
 		}
 	});
+holder.report.setTag(newsItem.getReporterName());
+//holder.report.setOnClickListener();
 
 // holder.imageView.setImageBitmap(uncompressImage(image));
 
@@ -103,8 +107,10 @@ public void onClick(View v) {
 		TextView headlineView;
 		TextView reporterNameView;
 		TextView reportedDateView;
+		TextView reportedCaption;
 		ImageView imageView;
 		Button nom;
 		Button mmm;
+		Button report;
 	}
 }

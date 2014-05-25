@@ -5,59 +5,72 @@
     android:minHeight="50dp"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/thumbImage"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/list_placeholder" />
-    
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:layout_below="@id/thumbImage"
-        android:text=""
-        android:textColor="@drawable/list_item_text_selector"
-        android:textStyle="bold"
-        android:typeface="sans" />
 
     <TextView
         android:id="@+id/reporter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginTop="5dip"
-        android:layout_toRightOf="@id/title"
-        android:paddingLeft="5dp"
         android:text=""
-        android:textColor="@drawable/list_item_text_selector"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:typeface="sans"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/reporter"
-        android:paddingRight="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/reporter"
+        android:layout_alignParentTop="true"
         android:text=""
-        android:textColor="@drawable/list_item_text_selector"
+        android:gravity="right"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:typeface="sans"
         android:textSize="12sp" />
+    
+    <TextView 
+        android:id="@+id/newsRestaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/reporter"
+        android:text=""
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:textSize="12sp"/>
+    
+     <ImageView
+        android:id="@+id/thumbImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reporter"
+        android:background="@drawable/list_placeholder" />
+    
 
+     <TextView 
+         android:id="@+id/captionNews"
+         android:tag=""
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@id/thumbImage"
+         android:layout_alignParentLeft="true"
+         />
+    
     <Button
         android:id="@+id/NOM"
         android:tag=""
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/captionNews"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="109dp"
-        android:text="NOM"  />
+        android:text=""  
+        android:drawableStart="@drawable/ic_action_like"/>
 
     <Button
         android:id="@+id/Mmm"
@@ -65,10 +78,22 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/NOM"
-        android:layout_alignBottom="@+id/NOM"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/NOM"
-        android:text="Mmm" />
+        android:layout_below="@id/captionNews"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/NOM"
+        android:text="" 
+        android:drawableStart="@drawable/ic_action_important"/>
+    
+    <Button 
+        android:id="@+id/reportpls"
+        android:tag=""
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/captionNews"
+        android:text="Ban Pls"
+        android:layout_toRightOf="@id/Mmm"
+        android:gravity="right"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
