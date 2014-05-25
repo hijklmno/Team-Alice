@@ -42,6 +42,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private ActionBar actionBar;
 	private EditText mSearchTerm;
 	private EditText mSearchLocation;
+	
+	public static String FACEBOOK_ID;
 
 	// Testing comment
 	// Tab titles
@@ -82,19 +84,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		        	try {
 						JSONObject json = new JSONObject(incomingText);
 						//id working
-						final String id = (String) json.get("id");
+						FACEBOOK_ID = (String) json.get("id");
 						final String name = (String) json.get("name");
 						
 						//testing to see if is a user already
 						ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
-						query.whereEqualTo("facebook_id", id);
+						query.whereEqualTo("facebook_id", FACEBOOK_ID);
 						query.findInBackground(new FindCallback<ParseObject>() {
 							@Override
 							public void done(List<ParseObject> objects, ParseException e) {
 								Log.d("FacebookFriendQuery", "done");
 								if (objects.isEmpty()) {
 									ParseObject testObject = new ParseObject("FacebookAccounts");
-									testObject.put("facebook_id", id);
+									testObject.put("facebook_id", FACEBOOK_ID);
 									testObject.put("Name", name);
 									testObject.saveInBackground();
 									Log.d("FacebookFriendQuery", "new user created");
