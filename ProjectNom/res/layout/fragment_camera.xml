@@ -2,73 +2,74 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/camera_frag"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-	android:fillViewport="true"
-	android:scrollbars="none">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
 
-	<RelativeLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <Button
+            android:id="@+id/btnCapturePicture"
+            style="ButtonBarButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/ic_action_photo"
+            android:text="@string/btnIntend" >
+        </Button>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="True"
+            android:layout_below="@id/btnCapturePicture"
+            android:adjustViewBounds="true"
+            android:visibility="visible" />
+        <EditText
+            android:id="@+id/TitleID"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/imageView1"
+            android:hint="@string/titleID"
+            android:lines="1"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:visibility="visible" >
+        </EditText>
+        <EditText
+            android:id="@+id/RestaurantTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="True"
+            android:layout_below="@+id/TitleID"
+            android:hint="@string/restID"
+            android:lines="1"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:visibility="visible" >
+        </EditText>
+        <EditText
+            android:id="@+id/pictureCaption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="True"
+            android:layout_below="@id/RestaurantTitle"
+            android:gravity="top|left"
+            android:hint="@string/cap"
+            android:visibility="visible" />
 
-    <Button
-       android:id="@+id/btnCapturePicture"
-       style="ButtonBarButton"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:gravity="center"
-       android:src="@drawable/ic_action_photo"
-       android:text="@string/btnIntend" >
-    </Button>
-    <EditText
-        android:id="@+id/TitleID"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" 
-        android:hint="@string/titleID" 
-        android:singleLine="true"
-    	android:lines="1"
-    	android:scrollHorizontally="true"
-        android:layout_below="@id/btnCapturePicture"
-        android:layout_alignParentLeft="true">
-    </EditText>
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible" 
-        android:layout_below="@id/TitleID"
-        android:layout_alignParentLeft="True" />
-    <EditText
-        android:id="@+id/RestaurantTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" 
-        android:singleLine="true"
-    	android:lines="1"
-    	android:scrollHorizontally="true"
-        android:hint="@string/restID"
-        android:layout_below="@id/imageView1"
-        android:layout_alignParentLeft="True" >
-     </EditText> 
-     <EditText
-         android:id="@+id/pictureCaption"
-         android:layout_width="fill_parent"
-         android:layout_height="200dp"
-         android:hint="@string/cap"
-         android:gravity="top|left"
-         android:layout_below="@id/RestaurantTitle"
-         android:layout_alignParentLeft="True"
-         android:visibility="visible" />
-     <Button
-         android:id="@+id/submitButton"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:text="@string/submit"
-         android:layout_below="@+id/pictureCaption"
-         android:layout_alignParentLeft="True"
-         android:visibility="visible">
-     </Button>
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="True"
+            android:layout_below="@+id/pictureCaption"
+            android:text="@string/submit"
+            android:visibility="visible" >
+        </Button>
+    </RelativeLayout>
 
-	</RelativeLayout>
 </ScrollView>

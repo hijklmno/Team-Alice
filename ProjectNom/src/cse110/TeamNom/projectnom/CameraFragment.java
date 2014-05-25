@@ -236,12 +236,20 @@ public class CameraFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
-
+		
+		// Take picture button
 		picBtn = (Button) rootView.findViewById(R.id.btnCapturePicture);
-
+		
+		// Title text field
 		title = (EditText) rootView.findViewById(R.id.TitleID);
+		
+		// Restaurant text field
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
+		
+		// Caption text field
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
+		
+		// Submit button
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
 		
 

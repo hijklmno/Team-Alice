@@ -232,7 +232,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020013;
         public static final int com_facebook_loginbutton_silver=0x7f020014;
         public static final int com_facebook_logo=0x7f020015;
-        public static final int com_facebook_picker_default_separator_color=0x7f02003b;
+        public static final int com_facebook_picker_default_separator_color=0x7f02003f;
         public static final int com_facebook_picker_item_background=0x7f020016;
         public static final int com_facebook_picker_list_focused=0x7f020017;
         public static final int com_facebook_picker_list_longpressed=0x7f020018;
@@ -258,30 +258,35 @@ containing a value of this type.
         public static final int com_facebook_top_button=0x7f02002c;
         public static final int com_facebook_usersettingsfragment_background_gradient=0x7f02002d;
         public static final int facebook=0x7f02002e;
-        public static final int ic_action_favorite=0x7f02002f;
-        public static final int ic_action_new=0x7f020030;
-        public static final int ic_action_photo=0x7f020031;
-        public static final int ic_action_refresh=0x7f020032;
-        public static final int ic_action_search=0x7f020033;
-        public static final int ic_launcher=0x7f020034;
-        public static final int icon=0x7f020035;
-        public static final int list_item_text_selector=0x7f020036;
-        public static final int list_placeholder=0x7f020037;
-        public static final int list_selector_flatcolor=0x7f020038;
-        public static final int round_button=0x7f020039;
-        public static final int title_bar_logo=0x7f02003a;
+        public static final int ic_action_error=0x7f02002f;
+        public static final int ic_action_favorite=0x7f020030;
+        public static final int ic_action_important=0x7f020031;
+        public static final int ic_action_like=0x7f020032;
+        public static final int ic_action_new=0x7f020033;
+        public static final int ic_action_photo=0x7f020034;
+        public static final int ic_action_refresh=0x7f020035;
+        public static final int ic_action_remove=0x7f020036;
+        public static final int ic_action_search=0x7f020037;
+        public static final int ic_launcher=0x7f020038;
+        public static final int icon=0x7f020039;
+        public static final int list_item_text_selector=0x7f02003a;
+        public static final int list_placeholder=0x7f02003b;
+        public static final int list_selector_flatcolor=0x7f02003c;
+        public static final int round_button=0x7f02003d;
+        public static final int title_bar_logo=0x7f02003e;
     }
     public static final class id {
-        public static final int Mmm=0x7f040043;
-        public static final int NOM=0x7f040042;
+        public static final int Mmm=0x7f040045;
+        public static final int NOM=0x7f040044;
         public static final int RestaurantTitle=0x7f04002e;
-        public static final int TitleID=0x7f04002c;
-        public static final int action_settings=0x7f040046;
+        public static final int TitleID=0x7f04002d;
+        public static final int action_settings=0x7f040049;
         public static final int btnCapturePicture=0x7f04002b;
-        public static final int button1=0x7f04003c;
-        public static final int buttonLoginLogout=0x7f040045;
-        public static final int buttonLogout=0x7f040034;
+        public static final int button1=0x7f04003d;
+        public static final int buttonLoginLogout=0x7f040048;
+        public static final int buttonLogout=0x7f040035;
         public static final int camera_frag=0x7f04002a;
+        public static final int captionNews=0x7f040043;
         public static final int com_facebook_body_frame=0x7f040022;
         public static final int com_facebook_button_xout=0x7f040024;
         public static final int com_facebook_login_activity_progress_bar=0x7f040012;
@@ -307,20 +312,20 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040029;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040027;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040028;
-        public static final int custom_list=0x7f040033;
-        public static final int date=0x7f040041;
+        public static final int custom_list=0x7f040034;
+        public static final int date=0x7f040040;
         public static final int edit_message=0x7f040031;
-        public static final int facebookDebugBox=0x7f040036;
-        public static final int facebookTest=0x7f040035;
+        public static final int facebookDebugBox=0x7f040037;
+        public static final int facebookTest=0x7f040036;
         public static final int fieldAddressLine=0x7f04000e;
         public static final int fieldCity=0x7f04000a;
         public static final int fieldCountry=0x7f040008;
         public static final int fieldLatitude=0x7f040004;
         public static final int fieldLongitude=0x7f040006;
         public static final int fieldPostalCode=0x7f04000c;
-        public static final int imageView1=0x7f04002d;
-        public static final int imageViewProfile=0x7f040037;
-        public static final int instructionsOrLink=0x7f040044;
+        public static final int imageView1=0x7f04002c;
+        public static final int imageViewProfile=0x7f040038;
+        public static final int instructionsOrLink=0x7f040047;
         public static final int labelAddressLine=0x7f04000d;
         public static final int labelCity=0x7f040009;
         public static final int labelCountry=0x7f040007;
@@ -328,21 +333,23 @@ containing a value of this type.
         public static final int labelLongitude=0x7f040005;
         public static final int labelPostalCode=0x7f04000b;
         public static final int large=0x7f040002;
-        public static final int linearLayout1=0x7f04003b;
+        public static final int linearLayout1=0x7f04003c;
+        public static final int newsFeedToggle=0x7f040033;
+        public static final int newsRestaurant=0x7f040041;
         public static final int normal=0x7f040001;
         public static final int pager=0x7f04000f;
         public static final int picker_subtitle=0x7f04001f;
         public static final int pictureCaption=0x7f04002f;
-        public static final int reporter=0x7f040040;
-        public static final int searchLocation=0x7f04003a;
-        public static final int searchResults=0x7f04003d;
-        public static final int searchTerm=0x7f040038;
+        public static final int reporter=0x7f04003f;
+        public static final int reportpls=0x7f040046;
+        public static final int searchLocation=0x7f04003b;
+        public static final int searchResults=0x7f04003e;
+        public static final int searchTerm=0x7f040039;
         public static final int small=0x7f040000;
         public static final int submitButton=0x7f040030;
         public static final int textView1=0x7f040032;
-        public static final int textView2=0x7f040039;
-        public static final int thumbImage=0x7f04003e;
-        public static final int title=0x7f04003f;
+        public static final int textView2=0x7f04003a;
+        public static final int thumbImage=0x7f040042;
     }
     public static final class layout {
         public static final int activity_gps=0x7f030000;
@@ -424,6 +431,7 @@ containing a value of this type.
         public static final int consumer_secret=0x7f070036;
         public static final int country=0x7f070025;
         public static final int edit_message=0x7f07001b;
+        public static final int feed=0x7f07003c;
         /**  End of GPS stuff 
  fb 
          */
@@ -445,6 +453,10 @@ containing a value of this type.
         public static final int titleID=0x7f070032;
         public static final int title_activity_camera=0x7f07001f;
         public static final int title_activity_main=0x7f07001e;
+        public static final int toggleOff=0x7f07003b;
+        /**  News Feed 
+         */
+        public static final int toggleOn=0x7f07003a;
         public static final int token=0x7f070037;
         public static final int token_secret=0x7f070038;
     }
