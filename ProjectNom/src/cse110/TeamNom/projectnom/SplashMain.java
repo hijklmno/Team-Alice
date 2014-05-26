@@ -25,6 +25,7 @@ import com.facebook.LoggingBehavior;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
+import com.parse.Parse;
 
 /**
  * The SplashMain class stores the implementation of the splash login screen.
@@ -111,6 +112,7 @@ public class SplashMain extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+        buttonLoginLogout.setEnabled(true);
         Bundle passedData = getIntent().getExtras();
         
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -123,6 +125,7 @@ public class SplashMain extends Activity {
     // Called when activity is resumed
     public void onResume() {
     	super.onResume();
+    	buttonLoginLogout.setEnabled(true);
     	Bundle passedData = getIntent().getExtras();
     	
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -136,6 +139,7 @@ public class SplashMain extends Activity {
     @Override
     public void onStop() {
         super.onStop();
+        buttonLoginLogout.setEnabled(true);
         Session.getActiveSession().removeCallback(statusCallback);
     }
 
@@ -194,6 +198,8 @@ public class SplashMain extends Activity {
         } else {
             Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
         }
+        
+        buttonLoginLogout.setEnabled(false);
     }
 
     // Logs out user by closing session
@@ -209,7 +215,6 @@ public class SplashMain extends Activity {
         Intent intent = new Intent(SplashMain.this, MainActivity.class);
         intent.putExtra("FacebookSession", Session.getActiveSession());
         startActivity(intent);
-        
         finish();
     }
 
