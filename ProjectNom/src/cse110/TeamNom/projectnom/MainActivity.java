@@ -1,5 +1,7 @@
 package cse110.TeamNom.projectnom;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -23,10 +25,15 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,6 +61,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		//retrieves the facebook session established in the splash page
 		Intent i = getIntent();
 		Session session = (Session)i.getSerializableExtra("FacebookSession");
+		
+		/* getting the android facebook hashkey */
+		
+	    try {
+	        PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+	        for (Signature signature : info.signatures) {
+	            MessageDigest md;
+
+	            md = MessageDigest.getInstance("SHA");
+	            md.update(signature.toByteArray());
+	            String something = new String(Base64.encode(md.digest(), 0));
+	            Log.d("Hash key", something);
+	        } 
+	    }
+	    catch (NameNotFoundException e1) {
+	        // TODO Auto-generated catch block
+	        Log.e("name not found", e1.toString());
+	    }
+
+	    catch (NoSuchAlgorithmException e) {
+	        // TODO Auto-generated catch block
+	        Log.e("no such an algorithm", e.toString());
+	    }
+	    catch (Exception e){
+	        Log.e("exception", e.toString());
+	    }
+		
+		/* end of the hashkey grabber */
+		
+		
 		
 		//debugging, test if session is logged in
 		if (session != null && session.isOpened()) {

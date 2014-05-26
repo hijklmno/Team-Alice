@@ -21,7 +21,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,7 +52,7 @@ public class CameraFragment extends Fragment {
 	/*GPSFragment gps = new GPSFragment(this);
 	double longitude;
 	double latitude;
-	
+
 	if(gps.canGetLocation())
 	{
 		longitude = gps.getLongitude();
@@ -94,7 +93,7 @@ public class CameraFragment extends Fragment {
 	String parseTitle;
 	String parseRestaurant;
 	String parseCaption;
-	
+
 	// The current Photo path
 	private String mCurrentPhotoPath;
 	private String pathtophoto;
@@ -105,7 +104,7 @@ public class CameraFragment extends Fragment {
 
 	//Facebook ID
 	private String facebook_id;
-	
+
 	private File getAlbumDir() {
 		File storageDir = null;
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
@@ -218,43 +217,22 @@ public class CameraFragment extends Fragment {
 		}
 	};
 
-	private void resetFragment() {
-		title.setVisibility(View.INVISIBLE);
-		restaurant.setVisibility(View.INVISIBLE);
-		caption.setVisibility(View.INVISIBLE);
-		subBut.setVisibility(View.INVISIBLE);
-		mImageView.setVisibility(View.INVISIBLE);
-		
-		//mImageView.setImageBitmap(null);
-		title.setText(null);
-		restaurant.setText(null);
-		caption.setText(null);
-		
-	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
-		
-		// Take picture button
+
 		picBtn = (Button) rootView.findViewById(R.id.btnCapturePicture);
-		
-		// Title text field
+
 		title = (EditText) rootView.findViewById(R.id.TitleID);
-		
-		// Restaurant text field
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
-		
-		// Caption text field
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
-		
-		// Submit button
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
-		
+
 
 		context = getActivity().getApplicationContext();
-		  
+
 		title.setVisibility(View.INVISIBLE);
 		restaurant.setVisibility(View.INVISIBLE);
 		caption.setVisibility(View.INVISIBLE);
@@ -291,46 +269,42 @@ public class CameraFragment extends Fragment {
 				mImageView = (ImageView) getActivity().findViewById(R.id.imageView1);
 				mImageBitmap = null;
 
-				
 				// TODO
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setCancelable(false);
 				builder.setMessage("Are you sure you want to upload?")
-				  .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                	   try {
-	       					compressFile(pathtophoto);
-	       				} catch (Exception e) {
-	       					// TODO Auto-generated catch block
-	       					e.printStackTrace();
-	       				}
-	    				/**	AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						try {
+							compressFile(pathtophoto);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						/**	AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
 	    					builder2.setCancelable(false);
 	    					builder2.setMessage("Upload Successful")
 	    					  .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	    		                   public void onClick(DialogInterface dialog, int id) {
-	    		                	  
+
 	    		                   }
 	    		               });
 	    					builder2.show(); */
-	                	 
-	                	   CharSequence text = "File Uploaded Successfully";
-	                	   int duration = Toast.LENGTH_SHORT;
 
-	                	   Toast toast = Toast.makeText(context, text, duration);
-	                	   toast.show();
-	                	   
-	                	  resetFragment();
-	    				}
-	               })
-	               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                       // go back
-	                   }
-	               });
+						CharSequence text = "File Uploaded Successfully";
+						int duration = Toast.LENGTH_SHORT;
+
+						Toast toast = Toast.makeText(context, text, duration);
+						toast.show();
+						resetFragment();
+					}
+				})
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// go back
+					}
+				});
 				builder.show();
-				
-				
 			}
 		});
 		System.out.println("Check point 2 big boiiii ");
@@ -345,12 +319,25 @@ public class CameraFragment extends Fragment {
 		return rootView;
 	}
 
+
+	private void resetFragment() {
+		title.setVisibility(View.INVISIBLE);
+		restaurant.setVisibility(View.INVISIBLE);
+		caption.setVisibility(View.INVISIBLE);
+		subBut.setVisibility(View.INVISIBLE);
+		mImageView.setVisibility(View.INVISIBLE);
+		mImageView.setImageDrawable(null);
+		title.setText(null);
+		restaurant.setText(null);
+		caption.setText(null);
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PHOTO && resultCode == -1) {
 
 			GPSFragment gps = new GPSFragment(getActivity());
-			
+
 			if(!gps.canGetLocation())
 				gps.showSettingsAlert();
 			title.setVisibility(View.VISIBLE);
@@ -358,10 +345,10 @@ public class CameraFragment extends Fragment {
 			caption.setVisibility(View.VISIBLE);
 			subBut.setVisibility(View.VISIBLE);
 			mImageView.setVisibility(View.VISIBLE);
-			
+
 			// Work with this
 			handlePhoto();
-		/**	CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
+			/**	CharSequence colors[] = new CharSequence[] {"Submit","Cancel"};
 			// TODO
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setCancelable(false);
@@ -420,105 +407,105 @@ public class CameraFragment extends Fragment {
 	/* Method that compresses a file given a path. */
 	private void compressFile(String path) throws Exception{
 		GPSFragment gps = new GPSFragment(getActivity());
-//		try {
-			System.out.println("inside the compress method: " + path);
-			Bitmap bitmap;
-			bitmap = BitmapFactory.decodeFile(path);
-			if(bitmap == null)
-			{
-				System.out.println(path + "cannot be converted to a bitmap!");
-				return;
-			}
-			Bitmap bmpCompressed = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			bmpCompressed.compress(CompressFormat.JPEG, 100, bos);
-			byte[] data = bos.toByteArray();
-			//uncompressFile(data);
+		//		try {
+		System.out.println("inside the compress method: " + path);
+		Bitmap bitmap;
+		bitmap = BitmapFactory.decodeFile(path);
+		if(bitmap == null)
+		{
+			System.out.println(path + "cannot be converted to a bitmap!");
+			return;
+		}
+		Bitmap bmpCompressed = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bmpCompressed.compress(CompressFormat.JPEG, 100, bos);
+		byte[] data = bos.toByteArray();
+		//uncompressFile(data);
 
-			System.out.println("Before parsing");
-			final ParseObject object = new ParseObject("Food_Table_DB");
-			ParseFile file = new ParseFile(data);
-			file.saveInBackground(new SaveCallback() {
-				@Override
-				public void done(ParseException e) {
-					// TODO Auto-generated method stub
-					if (e == null) {
+		System.out.println("Before parsing");
+		final ParseObject object = new ParseObject("Food_Table_DB");
+		ParseFile file = new ParseFile(data);
+		file.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				// TODO Auto-generated method stub
+				if (e == null) {
 
-					}
-					else {
-						System.err.println("ParseException: " + e);
-					}
 				}
-			});
+				else {
+					System.err.println("ParseException: " + e);
+				}
+			}
+		});
 
-			parseTitle = title.getText().toString();
-			parseRestaurant = restaurant.getText().toString();
-			parseCaption = caption.getText().toString();
-			
-			object.put("Food_photo", file);
-			object.put("Restaurant_Id", parseRestaurant);
-			object.put("Food_Name", parseTitle);
-			object.put("Tags",parseCaption);
-			object.put("Like", 0);
-			object.put("Bookmark", 0);
-			object.put("Longitude", gps.getLongitude());
-			object.put("Latitude", gps.getLatitude());
-			//object.put("Boba", "David");
-			object.put("report_image", false);
-			object.saveInBackground();
-			object.saveInBackground(new SaveCallback() {
-				@Override
-				public void done(ParseException e) {
-					Log.d("asdfdsfasdf", object.getObjectId());
-					pictureID = object.getObjectId();
-					
-					Log.d("asdasd", pictureID);
-					ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
-					
-					Log.d("GettingFacebookinfo", "asdf");
-					Session session = Session.getActiveSession();
-					
-					query.whereEqualTo("facebook_id", MainActivity.FACEBOOK_ID);
-					
-					query.findInBackground(new FindCallback<ParseObject>() {
-						@Override
-						public void done(List<ParseObject> objects, ParseException e) {
-							if (objects == null || objects.isEmpty()) {
-								Log.d("GettingFacebookinfo", "no object returned");
+		parseTitle = title.getText().toString();
+		parseRestaurant = restaurant.getText().toString();
+		parseCaption = caption.getText().toString();
+
+		object.put("Food_photo", file);
+		object.put("Restaurant_Id", parseRestaurant);
+		object.put("Food_Name", parseTitle);
+		object.put("Tags",parseCaption);
+		object.put("Like", 0);
+		object.put("Bookmark", 0);
+		object.put("Longitude", gps.getLongitude());
+		object.put("Latitude", gps.getLatitude());
+		//object.put("Boba", "David");
+		object.put("report_image", false);
+		object.saveInBackground();
+		object.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				Log.d("asdfdsfasdf", object.getObjectId());
+				pictureID = object.getObjectId();
+
+				Log.d("asdasd", pictureID);
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+
+				Log.d("GettingFacebookinfo", "asdf");
+				Session session = Session.getActiveSession();
+
+				query.whereEqualTo("facebook_id", MainActivity.FACEBOOK_ID);
+
+				query.findInBackground(new FindCallback<ParseObject>() {
+					@Override
+					public void done(List<ParseObject> objects, ParseException e) {
+						if (objects == null || objects.isEmpty()) {
+							Log.d("GettingFacebookinfo", "no object returned");
+						}
+						else {
+							Log.d("GettingFacebookinfo", objects.get(0).toString());
+							ParseObject facebookAccount = objects.get(0);
+
+							String pictureString = (String) facebookAccount.get("pictures");
+
+							if (pictureString == null || pictureString.equals("")) {
+								pictureString = "";
+								pictureString += pictureID;
 							}
 							else {
-								Log.d("GettingFacebookinfo", objects.get(0).toString());
-								ParseObject facebookAccount = objects.get(0);
-								
-								String pictureString = (String) facebookAccount.get("pictures");
-								
-								if (pictureString == null || pictureString.equals("")) {
-									pictureString = "";
-									pictureString += pictureID;
-								}
-								else {
-									pictureID = "," + pictureID;
-									pictureString += pictureID;
-								}
-								facebookAccount.put("pictures", pictureString);
-								facebookAccount.saveInBackground();
+								pictureID = "," + pictureID;
+								pictureString += pictureID;
 							}
+							facebookAccount.put("pictures", pictureString);
+							facebookAccount.saveInBackground();
 						}
-					});
-				}
-			});
-			System.out.println("after parsing blue balls");
-			
-			//Pushing picture id to parse FacebookAccounts for easier profile gallery
-			
-//		}
-//		catch (Exception e) {
-//			Log.v("CameraFragment", "Some error compressFile");
-//		}
+					}
+				});
+			}
+		});
+		System.out.println("after parsing blue balls");
+
+		//Pushing picture id to parse FacebookAccounts for easier profile gallery
+
+		//		}
+		//		catch (Exception e) {
+		//			Log.v("CameraFragment", "Some error compressFile");
+		//		}
 		// clear the path string
 		//pathtophoto = null;
-		
-		
+
+
 	}
 
 	// this method is for... dont trip 
@@ -555,7 +542,7 @@ public class CameraFragment extends Fragment {
 			btn.setClickable(false);
 		}
 	}
-	
+
 	private void getFacebookId() {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
@@ -563,24 +550,24 @@ public class CameraFragment extends Fragment {
 		}
 		/* make the API call */
 		new Request(
-			    session,
-			    "/me",
-			    null,
-			    HttpMethod.GET,
-			    new Request.Callback() {
-			        public void onCompleted(Response response) {
-			        	Log.d("acasdf", "asdf");
-			        	try {
-			        		String incomingText = response.getRawResponse();
-			        		Log.d("CameraFacebookSessionID", incomingText);
-			        		JSONObject json = new JSONObject(incomingText);
-			        		facebook_id = (String) json.get("id");
-			        		
-			        	} catch (JSONException e) {
+				session,
+				"/me",
+				null,
+				HttpMethod.GET,
+				new Request.Callback() {
+					public void onCompleted(Response response) {
+						Log.d("acasdf", "asdf");
+						try {
+							String incomingText = response.getRawResponse();
+							Log.d("CameraFacebookSessionID", incomingText);
+							JSONObject json = new JSONObject(incomingText);
+							facebook_id = (String) json.get("id");
+
+						} catch (JSONException e) {
 							e.printStackTrace();
-//							System.out.println(e.toString());
+							//							System.out.println(e.toString());
 						}
-			        }
-			    });
+					}
+				});
 	}
 }
