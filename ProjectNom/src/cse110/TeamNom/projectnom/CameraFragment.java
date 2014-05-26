@@ -230,14 +230,12 @@ public class CameraFragment extends Fragment {
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
 
-
 		context = getActivity().getApplicationContext();
 
 		title.setVisibility(View.INVISIBLE);
 		restaurant.setVisibility(View.INVISIBLE);
 		caption.setVisibility(View.INVISIBLE);
 		subBut.setVisibility(View.INVISIBLE);
-		System.out.println("Check point 1");
 		/**
 		 * Capture image button click event
 		 */
@@ -276,38 +274,32 @@ public class CameraFragment extends Fragment {
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						try {
-							compressFile(pathtophoto);
+							String test = restaurant.getText().toString();
+							if(test.matches("")) {
+								Toast toast = Toast.makeText(context, "Please enter restaurant name ", Toast.LENGTH_LONG);
+								toast.show();
+							}
+							else {
+								compressFile(pathtophoto);
+								CharSequence text = "File Uploaded Successfully";
+								int duration = Toast.LENGTH_LONG;
+
+								Toast toast = Toast.makeText(context, text, duration);
+								toast.show();
+								resetFragment();
+							}
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						/**	AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
-	    					builder2.setCancelable(false);
-	    					builder2.setMessage("Upload Successful")
-	    					  .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-	    		                   public void onClick(DialogInterface dialog, int id) {
-
-	    		                   }
-	    		               });
-	    					builder2.show(); */
-
-						CharSequence text = "File Uploaded Successfully";
-						int duration = Toast.LENGTH_SHORT;
-
-						Toast toast = Toast.makeText(context, text, duration);
-						toast.show();
-						resetFragment();
 					}
 				})
 				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						// go back
 					}
 				});
 				builder.show();
 			}
 		});
-		System.out.println("Check point 2 big boiiii ");
 		// Checking camera availability
 		if (!isDeviceSupportCamera()) {
 			Toast.makeText( super.getActivity().getApplicationContext(),
@@ -331,7 +323,7 @@ public class CameraFragment extends Fragment {
 		restaurant.setText(null);
 		caption.setText(null);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PHOTO && resultCode == -1) {
@@ -407,8 +399,6 @@ public class CameraFragment extends Fragment {
 	/* Method that compresses a file given a path. */
 	private void compressFile(String path) throws Exception{
 		GPSFragment gps = new GPSFragment(getActivity());
-		//		try {
-		System.out.println("inside the compress method: " + path);
 		Bitmap bitmap;
 		bitmap = BitmapFactory.decodeFile(path);
 		if(bitmap == null)
@@ -422,7 +412,6 @@ public class CameraFragment extends Fragment {
 		byte[] data = bos.toByteArray();
 		//uncompressFile(data);
 
-		System.out.println("Before parsing");
 		final ParseObject object = new ParseObject("Food_Table_DB");
 		ParseFile file = new ParseFile(data);
 		file.saveInBackground(new SaveCallback() {
@@ -494,7 +483,6 @@ public class CameraFragment extends Fragment {
 				});
 			}
 		});
-		System.out.println("after parsing blue balls");
 
 		//Pushing picture id to parse FacebookAccounts for easier profile gallery
 
@@ -511,7 +499,6 @@ public class CameraFragment extends Fragment {
 	// this method is for... dont trip 
 	private void uncompressFile(byte array[])
 	{
-		System.out.println("heeloeeellelelele");
 		Bitmap bmp = BitmapFactory.decodeByteArray(array, 0, array.length);
 		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(bmp);
@@ -565,7 +552,7 @@ public class CameraFragment extends Fragment {
 
 						} catch (JSONException e) {
 							e.printStackTrace();
-							//							System.out.println(e.toString());
+							//System.out.println(e.toString());
 						}
 					}
 				});
