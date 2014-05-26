@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/reporter"
         android:background="@drawable/list_placeholder" />
-    
+   
+		
 
      <TextView 
          android:id="@+id/captionNews"
@@ -83,7 +84,7 @@
         android:drawableStart="@drawable/ic_action_important"/>
     
     <Button 
-        android:id="@+id/reportpls"
+        android:id="@+id/Report"
         android:tag=""
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -95,5 +96,6 @@
         android:layout_alignParentRight="true"
         android:drawableEnd="@drawable/ic_action_error"
         android:textSize="18sp"/>
+    
 
 </RelativeLayout>
