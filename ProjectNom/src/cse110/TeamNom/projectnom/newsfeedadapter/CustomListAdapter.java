@@ -22,7 +22,6 @@ import cse110.TeamNom.projectnom.R;
 public class CustomListAdapter extends BaseAdapter {
 
 	private ArrayList<NewsItem> listData;
-
 	private LayoutInflater layoutInflater;
 
 	public CustomListAdapter(Context context, ArrayList<NewsItem> listData) {
@@ -30,12 +29,17 @@ public class CustomListAdapter extends BaseAdapter {
 		layoutInflater = LayoutInflater.from(context);
 	}
 
-	// 
+	//Updates news feed results with new results
 	public void updateResults(ArrayList<NewsItem> results) {
 		this.listData.addAll(results);
 		notifyDataSetChanged();
 	}
 
+	public void resetResults(ArrayList<NewsItem> results) {
+		this.listData = results;
+		notifyDataSetChanged();
+	}
+	
 	@Override
 	public int getCount() {
 		return listData.size();
@@ -115,7 +119,8 @@ public class CustomListAdapter extends BaseAdapter {
 				testObject.put("report_image", true);
 				testObject.saveInBackground();
 
-				updateResults(listData);
+//				updateResults(listData);
+				//change that specific pic's report_image to true
 				CharSequence text = "File Reported";
 				int duration = Toast.LENGTH_SHORT;
 

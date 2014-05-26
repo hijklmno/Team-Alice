@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:background="#fa6a6a"
     android:orientation="vertical"
-    android:id="@+id/newsfeedFrag"
-     >
+    android:id="@+id/newsfeedFrag">
+
+
 
     <TextView
         android:id="@+id/textView1"
@@ -15,8 +16,8 @@
         android:gravity="center"
         android:text="@string/feed"
         android:textSize="20dp" />
-    
-    
+
+
     <Switch 
         android:id="@+id/newsFeedToggle"
         android:layout_width="wrap_content"
@@ -26,6 +27,7 @@
         android:checked="true"
         android:layout_centerHorizontal="true"
         />
+
     <Button 
         android:id="@+id/refresh"
         android:layout_width="wrap_content"
@@ -33,15 +35,15 @@
         android:layout_toRightOf="@id/newsFeedToggle"
         android:drawableRight="@drawable/ic_action_refresh"
         />
+    
 
-    
-    
     <Button 
         android:id="@+id/loadMoar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"  
         android:text="Load More"
         android:layout_alignParentBottom="true" />
+    
     <ListView
         android:id="@+id/custom_list"
         android:layout_width="fill_parent"
@@ -50,6 +52,5 @@
         android:dividerHeight="1dp"
         android:layout_above="@id/loadMoar"
         android:listSelector="@drawable/list_selector_flatcolor" />
-     
-    
+
  </RelativeLayout>
