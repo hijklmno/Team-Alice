@@ -395,14 +395,13 @@ containing a value of this type.
         public static final int GPSAlertDialogTitle=0x7f070022;
         public static final int action_settings=0x7f07001d;
         public static final int addressLine=0x7f070028;
-        public static final int album_name=0x7f07002f;
         public static final int app_id=0x7f07002a;
         public static final int app_name=0x7f07001a;
         public static final int btnIntend=0x7f07002c;
         public static final int button_send=0x7f07001c;
-        public static final int cancel=0x7f070034;
+        public static final int cancel=0x7f070033;
         public static final int cannot=0x7f07002e;
-        public static final int cap=0x7f070030;
+        public static final int cap=0x7f07002f;
         public static final int city=0x7f070026;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
@@ -433,11 +432,11 @@ containing a value of this type.
         /**  End of Camera 
  Yelp 
          */
-        public static final int consumer_key=0x7f070035;
-        public static final int consumer_secret=0x7f070036;
+        public static final int consumer_key=0x7f070034;
+        public static final int consumer_secret=0x7f070035;
         public static final int country=0x7f070025;
         public static final int edit_message=0x7f07001b;
-        public static final int feed=0x7f07003c;
+        public static final int feed=0x7f07003b;
         /**  End of GPS stuff 
  fb 
          */
@@ -450,21 +449,21 @@ containing a value of this type.
          */
         public static final int latitude=0x7f070020;
         public static final int longitude=0x7f070021;
-        public static final int ok=0x7f070033;
+        public static final int ok=0x7f070032;
         public static final int postalCode=0x7f070027;
         public static final int restID=0x7f07002d;
-        public static final int search=0x7f070039;
+        public static final int search=0x7f070038;
         public static final int settings=0x7f070024;
-        public static final int submit=0x7f070031;
-        public static final int titleID=0x7f070032;
+        public static final int submit=0x7f070030;
+        public static final int titleID=0x7f070031;
         public static final int title_activity_camera=0x7f07001f;
         public static final int title_activity_main=0x7f07001e;
-        public static final int toggleOff=0x7f07003b;
+        public static final int toggleOff=0x7f07003a;
         /**  News Feed 
          */
-        public static final int toggleOn=0x7f07003a;
-        public static final int token=0x7f070037;
-        public static final int token_secret=0x7f070038;
+        public static final int toggleOn=0x7f070039;
+        public static final int token=0x7f070036;
+        public static final int token_secret=0x7f070037;
     }
     public static final class style {
         /** 

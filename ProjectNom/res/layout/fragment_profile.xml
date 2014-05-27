@@ -36,7 +36,7 @@
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="Log Out"
 		android:layout_alignStart="@+id/horizontal_scrollview"
         android:onClick="onClickLogout" />
     

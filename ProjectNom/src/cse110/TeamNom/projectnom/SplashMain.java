@@ -171,10 +171,7 @@ public class SplashMain extends Activity {
             
             gotoMainAndEnd();
         } else {
-        	
         	// Login button
-            textInstructionsOrLink.setText("Logged out...press dat");
-            buttonLoginLogout.setText("Login nao");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
             });

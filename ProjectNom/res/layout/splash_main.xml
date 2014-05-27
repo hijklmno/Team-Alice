@@ -8,7 +8,7 @@
         android:id="@+id/instructionsOrLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Instructions box"
+        android:text="Please Log In using Facebook"
         android:autoLink="web"
         android:linksClickable="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -17,7 +17,7 @@
         android:id="@+id/buttonLoginLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login button lol" />
+        android:text="Log In" />
 
 </LinearLayout>
 
