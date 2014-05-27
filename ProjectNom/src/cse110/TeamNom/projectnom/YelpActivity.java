@@ -59,6 +59,7 @@ public class YelpActivity {
 	   */
 	  public String search(String term, String location) {
 	    OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
+	    request.addQuerystringParameter("category_filter", "restaurants");
 	    request.addQuerystringParameter("term", term);
 	    request.addQuerystringParameter("location", location);
 	    this.service.signRequest(this.accessToken, request);
