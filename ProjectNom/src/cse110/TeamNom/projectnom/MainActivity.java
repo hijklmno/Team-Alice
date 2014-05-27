@@ -216,55 +216,56 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case android.R.id.home:
-			CharSequence colors[] = new CharSequence[] {"William Huang","Ryan Fu","Tiffany Wang"
+			final CharSequence teamnom[] = new CharSequence[] {"William Huang","Ryan Fu","Tiffany Wang"
 					,"Alice Chen","David Ung","Watson Lim","Trent Stevens","Rex Tong","Raymond Tran",
 					"Jean Park", "Exit"};
 			// TODO
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setCancelable(false);
 			builder.setTitle("Team NOM");
-			builder.setItems(colors, new DialogInterface.OnClickListener() {
+			builder.setItems(teamnom, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					// Add your own life captions or quote
 					switch(which){
 					case 0:
-						Toast toast = Toast.makeText(MainActivity.this, "William is the best", Toast.LENGTH_LONG);
+						Toast toast = Toast.makeText(MainActivity.this,teamnom[which] + "- If there's a will there's a William!", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 1:
-						toast = Toast.makeText(MainActivity.this, "Ryan is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 2:
-						toast = Toast.makeText(MainActivity.this, "Tiffany is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 3:
-						toast = Toast.makeText(MainActivity.this, "Alice is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 4:
-						toast = Toast.makeText(MainActivity.this, "David is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 5:
-						toast = Toast.makeText(MainActivity.this, "Watson is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 6:
-						toast = Toast.makeText(MainActivity.this, "Trent is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 7:
-						toast = Toast.makeText(MainActivity.this, "Rex is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 8:
-						toast = Toast.makeText(MainActivity.this, "Raymond is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 9:
-						toast = Toast.makeText(MainActivity.this, "Jean is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					default:
