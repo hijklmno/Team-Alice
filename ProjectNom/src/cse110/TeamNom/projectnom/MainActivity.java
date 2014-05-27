@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,10 +44,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Build;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements
+		ActionBar.TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -61,14 +64,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//retrieves the facebook session established in the splash page
+		// retrieves the facebook session established in the splash page
 		Intent i = getIntent();
-		Session session = (Session)i.getSerializableExtra("FacebookSession");
+		Session session = (Session) i.getSerializableExtra("FacebookSession");
 
 		/* getting the android facebook hashkey */
 
 		try {
-			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+			PackageInfo info = getPackageManager().getPackageInfo(
+					getPackageName(), PackageManager.GET_SIGNATURES);
 			for (Signature signature : info.signatures) {
 				MessageDigest md;
 
@@ -76,9 +80,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				md.update(signature.toByteArray());
 				String something = new String(Base64.encode(md.digest(), 0));
 				Log.d("Hash key", something);
-			} 
-		}
-		catch (NameNotFoundException e1) {
+			}
+		} catch (NameNotFoundException e1) {
 			// TODO Auto-generated catch block
 			Log.e("name not found", e1.toString());
 		}
@@ -86,20 +89,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			Log.e("no such an algorithm", e.toString());
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			Log.e("exception", e.toString());
 		}
 
 		/* end of the hashkey grabber */
 
-
-
-		//debugging, test if session is logged in
+		// debugging, test if session is logged in
 		if (session != null && session.isOpened()) {
 			Log.d("MainActivityFacebookSession", "Logged in");
-		}
-		else {
+		} else {
 			Log.d("MainActivityFacebookSession", "Logged out");
 		}
 
@@ -107,15 +106,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		setContentView(R.layout.activity_main);
 
 		// Parse stuff
-		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW", "KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
+		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW",
+				"KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
 
-		//Check account of parse
+		// Check account of parse
 		/* make the API call */
-		new Request(
-				session,
-				"/me",
-				null,
-				HttpMethod.GET,
+		new Request(session, "/me", null, HttpMethod.GET,
 				new Request.Callback() {
 					public void onCompleted(Response response) {
 						/* handle the result */
@@ -123,23 +119,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 						try {
 							JSONObject json = new JSONObject(incomingText);
-							//id working
+							// id working
 							FACEBOOK_ID = (String) json.get("id");
 							final String name = (String) json.get("name");
 
-							//testing to see if is a user already
-							ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+							// testing to see if is a user already
+							ParseQuery<ParseObject> query = ParseQuery
+									.getQuery("FacebookAccounts");
 							query.whereEqualTo("facebook_id", FACEBOOK_ID);
 							query.findInBackground(new FindCallback<ParseObject>() {
 								@Override
-								public void done(List<ParseObject> objects, ParseException e) {
+								public void done(List<ParseObject> objects,
+										ParseException e) {
 									Log.d("FacebookFriendQuery", "done");
 									if (objects.isEmpty()) {
-										ParseObject testObject = new ParseObject("FacebookAccounts");
-										testObject.put("facebook_id", FACEBOOK_ID);
+										ParseObject testObject = new ParseObject(
+												"FacebookAccounts");
+										testObject.put("facebook_id",
+												FACEBOOK_ID);
 										testObject.put("Name", name);
 										testObject.saveInBackground();
-										Log.d("FacebookFriendQuery", "new user created");
+										Log.d("FacebookFriendQuery",
+												"new user created");
 									}
 								}
 							});
@@ -148,8 +149,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 							e.printStackTrace();
 						}
 					}
-				}
-				).executeAsync();
+				}).executeAsync();
 
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -157,12 +157,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
+//		 viewPager.setOffscreenPageLimit(4);
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);        
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Adding Tabs
 		for (String tab_name : tabs) {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
+					.setTag("stringName")
 					.setTabListener(this));
 		}
 
@@ -179,11 +181,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels) {
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
+			public void onPageScrollStateChanged(int position) {
 			}
 		});
 	}
@@ -201,24 +204,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	}   
+		
+	}
 
 	public void search(View v) {
-		mSearchTerm = (EditText)findViewById(R.id.searchTerm);
-		mSearchLocation = (EditText)findViewById(R.id.searchLocation);
+		mSearchTerm = (EditText) findViewById(R.id.searchTerm);
+		mSearchLocation = (EditText) findViewById(R.id.searchLocation);
 		String term = mSearchTerm.getText().toString();
 		String location = mSearchLocation.getText().toString();
 		Intent intent = new Intent(this, YelpSearchListActivity.class);
-		intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).build());
+		intent.setData(new Uri.Builder().appendQueryParameter("term", term)
+				.appendQueryParameter("location", location).build());
 		startActivity(intent);
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case android.R.id.home:
-			final CharSequence teamnom[] = new CharSequence[] {"William Huang","Ryan Fu","Tiffany Wang"
-					,"Alice Chen","David Ung","Watson Lim","Trent Stevens","Rex Tong","Raymond Tran",
-					"Jean Park", "Exit"};
+			final CharSequence teamnom[] = new CharSequence[] {
+					"William Huang", "Ryan Fu", "Tiffany Wang", "Alice Chen",
+					"David Ung", "Watson Lim", "Trent Stevens", "Rex Tong",
+					"Raymond Tran", "Jean Park", "Exit" };
 			// TODO
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setCancelable(false);
@@ -227,45 +234,68 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// Add your own life captions or quote
-					switch(which){
+					switch (which) {
 					case 0:
-						Toast toast = Toast.makeText(MainActivity.this,teamnom[which] + "- If there's a will there's a William!", Toast.LENGTH_LONG);
+						Toast toast = Toast
+								.makeText(
+										MainActivity.this,
+										teamnom[which]
+												+ "- If there's a will there's a William!",
+										Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 1:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 2:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 3:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 4:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 5:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 6:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 7:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 8:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					case 9:
-						toast = Toast.makeText(MainActivity.this,teamnom[which] + " is the best", Toast.LENGTH_LONG);
+						toast = Toast.makeText(MainActivity.this,
+								teamnom[which] + " is the best",
+								Toast.LENGTH_LONG);
 						toast.show();
 						break;
 					default:

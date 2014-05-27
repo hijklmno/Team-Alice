@@ -31,12 +31,13 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 	// Initialization
 	private static int MAXROWS = 2;
 	private static int OFFSETCOUNT = 0;
+	private static boolean INITIALLOAD = true;
 	
 	private Button refreshAlice;
 	private Button loadMore;
 	private Switch switchButton;
 	private ViewPager yourViewPager;
-	private CustomListAdapter CLAdpater;
+	private CustomListAdapter cLAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,8 +53,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		switchButton
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						// TODO Auto-generated method stub
 						if (isChecked) {
 							// friends
@@ -93,7 +93,10 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		// container, false);
 		// buttonNOM = (Button) newView.findViewById(R.id.NOM);
 
-		getNewsFeedData(rootView);
+		if (INITIALLOAD) {
+			getNewsFeedData(rootView);
+		}
+		
 		refreshAlice.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -106,7 +109,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 			public void onClick(View v) {
 				OFFSETCOUNT += MAXROWS;
 				ArrayList<NewsItem> newResults = getListData();
-				CLAdpater.updateResults(newResults);
+				cLAdapter.updateResults(newResults);
 			}
 		});
 
@@ -136,12 +139,20 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		yourViewPager.setOnPageChangeListener(mPageChangeListener);
 		return rootView;
 	}
-
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		INITIALLOAD = false;
+		ListView lv1 = (ListView) getView().findViewById(R.id.custom_list);
+		lv1.setAdapter(cLAdapter);
+	}
+	
 	private void getNewsFeedData(View rootView) {
 		ArrayList<NewsItem> image_details = getListData();
 		final ListView lv1 = (ListView) rootView.findViewById(R.id.custom_list);
-		CLAdpater = new CustomListAdapter(getActivity(), image_details);
-		lv1.setAdapter(CLAdpater);
+		cLAdapter = new CustomListAdapter(getActivity(), image_details);
+		lv1.setAdapter(cLAdapter);
 		lv1.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -223,7 +234,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		.show();
 		OFFSETCOUNT = 0;
 		ArrayList<NewsItem> image_details = getListData();
-		CLAdpater.resetResults(image_details);
+		cLAdapter.resetResults(image_details);
 		
 //		Fragment newsFeed = new NewsFeedFragment();
 //		android.support.v4.app.FragmentManager fm = getActivity()
