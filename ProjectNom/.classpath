@@ -7,5 +7,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/commons-codec-1.4.jar"/>
 	<classpathentry kind="lib" path="libs/scribe.jar"/>
+	<classpathentry kind="lib" path="/library/bin/library.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
