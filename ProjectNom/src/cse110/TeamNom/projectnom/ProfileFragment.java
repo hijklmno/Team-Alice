@@ -39,6 +39,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 public class ProfileFragment extends Fragment {
+	//check if first load
+	private static boolean INITIALLOAD = true;
+	
 	private Button buttonLogout;
 	private Button buttonFacebook;
 	private TextView textbox;
@@ -71,7 +74,7 @@ public class ProfileFragment extends Fragment {
         	public void onClick(View view) { 
         		onClickFacebookDebug();
         		onClickFacebookPicUpdate();
-         		onClickLoadMyPictures();
+//         		onClickLoadMyPictures();
         	}
         });
         
@@ -79,7 +82,11 @@ public class ProfileFragment extends Fragment {
         horizontalOuterLayout = (LinearLayout) rootView.findViewById(R.id.horizontal_outer_layout);
         
         horizontalScrollview.setHorizontalScrollBarEnabled(false);
-//        onClickLoadMyPictures();
+        
+        if (INITIALLOAD) {
+        	onClickLoadMyPictures();
+        }
+        
         return rootView;
     }
 	
@@ -90,7 +97,7 @@ public class ProfileFragment extends Fragment {
 	
 	public void onResume() {
 		super.onResume();
-//		onClickLoadMyPictures();
+		INITIALLOAD = false;
 	}
 	
 	//called when pressing the logout button
@@ -142,7 +149,6 @@ public class ProfileFragment extends Fragment {
 								}
 							}
 						});
-						
 						
 						textbox.setText(name);
 					} catch (JSONException e) {
@@ -203,8 +209,7 @@ public class ProfileFragment extends Fragment {
 					}
 
 					for (int i = 0; i < pictureIDs.length; i++) {
-						ParseQuery<ParseObject> query = ParseQuery
-								.getQuery("Food_Table_DB");
+						ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 						try {
 							// search by id, return list of stuff
 							query.get(pictureIDs[i]);

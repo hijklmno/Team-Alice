@@ -33,15 +33,15 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		case 1:
 			// Profile fragment activity
 //			return new ProfileFragment();
-			return ProfileFragment;
+			return SearchFragment;
 		case 2:
 			// Search fragment activity
 //			return new SearchFragment();
-			return SearchFragment;
+			return NewsFeedFragment;
 		case 3:
 			// NewsFeed fragment activity
 //			return new NewsFeedFragment();
-			return NewsFeedFragment;
+			return ProfileFragment;
 		}
 		return null;
 	}
