@@ -181,6 +181,12 @@ public class ProfileFragment extends Fragment {
 		});
 
 		thread.start(); 
+		try {
+			thread.join();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//get list of pictures from parse
