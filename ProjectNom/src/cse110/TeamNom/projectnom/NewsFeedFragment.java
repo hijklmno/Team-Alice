@@ -28,25 +28,29 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleLis
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import cse110.TeamNom.projectnom.newsfeedadapter.CustomListAdapter;
 import cse110.TeamNom.projectnom.newsfeedadapter.NewsItem;
 
-public class NewsFeedFragment extends Fragment implements OnClickListener {
+public class NewsFeedFragment extends Fragment {
 
 	// Initialization
 	private static int MAXROWS = 4;
-	private static int OFFSETCOUNT = 0;
 	private static boolean INITIALLOAD = true;
+	private static String arr[];
+	private static int user_count = 0;
+	private static int pict_count = 0;
+	private static boolean listEndFlag = false;
 	
 	private Button refreshAlice;
 	private Button loadMore;
 	private Switch switchButton;
 	private ViewPager yourViewPager;
 	private CustomListAdapter cLAdapter;
-
+	
 	private PullToRefreshListView mPullRefreshListView;
 	
 	@Override
@@ -64,7 +68,6 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						// TODO Auto-generated method stub
 						if (isChecked) {
 							// friends
 						}
@@ -124,14 +127,12 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
 				Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
 				.show();
 			}
 
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
 				Toast.makeText(getActivity(), "scrolled", Toast.LENGTH_LONG)
 				.show();
 			}
@@ -152,12 +153,11 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		INITIALLOAD = false;
-		PullToRefreshListView lv1 = (PullToRefreshListView) getView().findViewById(R.id.custom_list);
+		PullToRefreshListView mPullRefreshListView = (PullToRefreshListView) getView().findViewById(R.id.custom_list);
 		mPullRefreshListView.setAdapter(cLAdapter);
 	}
 	
 	private void getMoreData() {
-		OFFSETCOUNT += MAXROWS;
 		ArrayList<NewsItem> newResults = getListData();
 		cLAdapter.updateResults(newResults);
 	}
@@ -193,7 +193,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				if (cLAdapter.getCount() == MAXROWS + OFFSETCOUNT) {
+				if (!listEndFlag) {
 					Toast.makeText(getActivity(), "Loading more...", 2)
 					.show();
 					getMoreData();
@@ -201,6 +201,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 				else {
 					Toast.makeText(getActivity(), "No More Data", 2)
 					.show();
+					getMoreData();
 				}
 			}
 		});
@@ -208,40 +209,66 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 
 	private ArrayList<NewsItem> getListData() {
 		ArrayList<NewsItem> results = new ArrayList<NewsItem>();
-		// Log.w("asdf", "asd");
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("watson");
-		query.setLimit(MAXROWS);
-		query.setSkip(OFFSETCOUNT);
-		query.orderByAscending("updatedAt");
+		boolean flag = false;
+		ParseObject pObj;
+		ParseFile pf;
+		// ALL THE USERS
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
+		// ALL THE FOOD
+		ParseQuery<ParseObject> food = ParseQuery.getQuery("Food_Table_DB");
+		// ALWAYS GET 2 USERS
+		//query.setLimit(MAXROWS);
+		// Get next 2 USERS
+		query.orderByDescending("updatedAt");
 		List<ParseObject> news;
 		try {
+			// News get populated
 			news = query.find();
-			for (int i = 0; i < news.size(); i++) {
-				NewsItem newsData = new NewsItem();
-				newsData.setHeadline(news.get(i).getString("headline"));
-				newsData.setReporterName(news.get(i).getString("reporter"));
-				newsData.setDate(news.get(i).getString("date"));
-				newsData.setUrl(news.get(i).getString("url"));
+			for (; user_count < news.size(); user_count++) {
+				// Create the picture list
+				System.out.println("IN LOOP: " + user_count);
+				if(news.get(user_count).getString("pictures") != null)
+					  arr = news.get(user_count).getString("pictures").split(",");
+				else
+					  continue;
+				for(; pict_count < arr.length; pict_count++)
+				{
+					//System.out.println("ARR_LENGTH: " + arr[pict_count]);
+					NewsItem newsData = new NewsItem();
+					newsData.setName(news.get(user_count).getString("Name"));
+					pObj = food.get(arr[arr.length - 1 - pict_count]);
+					newsData.setId(arr[arr.length - 1 - pict_count]);
+					pf = pObj.getParseFile("Food_photo");
+					newsData.setFile(pf.getData());
+					results.add(newsData);
+					if(pict_count%MAXROWS == 0 && pict_count != 0)
+					{
+						flag = true;
+						pict_count++;
+						break;
+					}
+				}
+				if(flag)
+				{
+					break;
+				}
+				if(pict_count == arr.length)
+					pict_count = 0;
 
-				/*
-				 * 
-				 * if(
-				 * 
-				 * Boolean.parseBoolean(news.get(i).getString("report_image")
-				 * 
-				 * )==true)
-				 */
-
-				if (news.get(i).getBoolean("report_image")) {
+				if(news.get(user_count).getBoolean("report_image")) {
 					System.out.println("hi ray");
 				}
 				// results.add(newsData);
 				else {
-					results.add(newsData);
+					//results.add(newsData);
 					System.out.println("hi al");
 				}
 				// Log.w("populateData", news.get(i).getString("headline"));
 			}
+			
+			//after going through all the friends, set listEndFlag as true
+			//for setOnLastItemVisibleListener() to catch
+			listEndFlag = true;
 
 		} catch (ParseException e) {
 			Log.d("newsfeed", "Error: " + e.getMessage());
@@ -249,30 +276,30 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		return results;
 	}
 
-	public void onClick(View v) {
-		ParseObject testObject = new ParseObject("watson");
-		switch (v.getId()) {
-		case R.id.NOM:
-			testObject.put("NOM", 1);
-			testObject.saveInBackground();
-			break;
-
-		case R.id.Mmm:
-			testObject.put("Mmm", 1);
-			testObject.saveInBackground();
-			break;
-
-		case R.id.Report:
-			testObject.put("report_image", true);
-			testObject.saveInBackground();
-			break;
-		}
-	}
+//	public void onClick(View v) {
+//		ParseObject testObject = new ParseObject("watson");
+//		switch (v.getId()) {
+//		case R.id.NOM:
+//			testObject.put("NOM", 1);
+//			testObject.saveInBackground();
+//			break;
+//
+//		case R.id.Mmm:
+//			testObject.put("Mmm", 1);
+//			testObject.saveInBackground();
+//			break;
+//
+//		case R.id.Report:
+//			testObject.put("report_image", true);
+//			testObject.saveInBackground();
+//			break;
+//		}
+//	}
 
 	public void refresh() {
+		listEndFlag = false;
 		Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
 		.show();
-		OFFSETCOUNT = 0;
 		ArrayList<NewsItem> image_details = getListData();
 		cLAdapter.resetResults(image_details);
 		
@@ -287,7 +314,6 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 
 		@Override
 		protected String[] doInBackground(Void... params) {
-			// TODO Auto-generated method stub
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -299,11 +325,7 @@ public class NewsFeedFragment extends Fragment implements OnClickListener {
 		
 		@Override
 		protected void onPostExecute(String[] result) {
-			Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
-			.show();
-			OFFSETCOUNT = 0;
-			ArrayList<NewsItem> image_details = getListData();
-			cLAdapter.resetResults(image_details);
+			refresh();
 			mPullRefreshListView.onRefreshComplete();
 			
 			super.onPostExecute(result);

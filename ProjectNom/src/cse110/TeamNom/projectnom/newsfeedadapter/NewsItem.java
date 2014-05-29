@@ -7,6 +7,11 @@ public class NewsItem {
 	private String date;
 	private String url;
 	private boolean report_image;
+	private byte[] bytes;
+	private String name;
+	private String ID;
+	public boolean book_mark = false;
+	public boolean like = false;
 	
 	public String getUrl() {
 		return url;
@@ -53,6 +58,38 @@ public class NewsItem {
 
 	public boolean getReport() {
 		return report_image;
+	}
+	
+	
+	/* David's Stuff */
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setFile(byte[] my_bytes)
+	{
+		this.bytes = my_bytes;
+	}
+	
+	public byte[] getFile()
+	{
+		return bytes;
+	}
+	
+	public void setId(String pID)
+	{
+		ID = pID;
+	}
+	
+	public String getID() {
+		return this.ID;
 	}
 
 }

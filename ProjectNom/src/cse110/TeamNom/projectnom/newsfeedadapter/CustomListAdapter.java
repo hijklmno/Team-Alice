@@ -15,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import cse110.TeamNom.projectnom.R;
 
@@ -23,6 +26,8 @@ public class CustomListAdapter extends BaseAdapter {
 
 	private ArrayList<NewsItem> listData;
 	private LayoutInflater layoutInflater;
+	private boolean flag_bookmark = false;
+	private boolean flag_like = false;
 
 	public CustomListAdapter(Context context, ArrayList<NewsItem> listData) {
 		this.listData = listData;
@@ -86,27 +91,72 @@ public class CustomListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		NewsItem newsItem = (NewsItem) listData.get(position);
+		final NewsItem newsItem = (NewsItem) listData.get(position);
 
 		// holder.headlineView.setText(newsItem.getHeadline());
-		holder.reporterNameView.setText("By, " + newsItem.getReporterName());
+		holder.reporterNameView.setText("By, " + newsItem.getName());
 		holder.reportedDateView.setText(newsItem.getDate());
-		holder.mmm.setTag(newsItem.getReporterName());
+		holder.mmm.setTag(newsItem.getName());
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
+			/*Transfer this to food table*/
 			@Override
 			public void onClick(View v) {
-				ParseObject testObject = new ParseObject("watson");
+				System.out.println("newsItemID: " + newsItem.getID());
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+				query.getInBackground(newsItem.getID(), new GetCallback<ParseObject>() {
+				@Override
+				public void done(ParseObject object, ParseException e) {
+					if(newsItem.book_mark == false)
+					{
+						newsItem.book_mark = true;
+					// TODO Auto-generated method stub
+				    if (e == null) {
+					      // object will be your game score
+				    	int number = object.getInt("Bookmark") + 2;
+				    	object.put("Bookmark", number);
+				    	object.saveInBackground();
+					    } else {
+					    	System.err.println("ERROR: " + e);
+					    }
+					
+				}
+				}
+				});
+				/////////////////////////////////////////////////
+				/*ParseObject testObject = new ParseObject("watson");
 				testObject.put("MmmString", holder.mmm.getTag());
-				testObject.saveInBackground();
+				testObject.saveInBackground();*/
 			}
 		});
-		holder.nom.setTag(newsItem.getReporterName());
+		holder.nom.setTag(newsItem.getName());
 		holder.nom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ParseObject testObject = new ParseObject("watson");
+				//System.out.println("newsItemID: " + newsItem.getID());
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+				query.getInBackground(newsItem.getID(), new GetCallback<ParseObject>() {
+				@Override
+				public void done(ParseObject object, ParseException e) {
+					if(newsItem.like == false)
+					{
+						newsItem.like = true;
+					// TODO Auto-generated method stub
+				    if (e == null) {
+					      // object will be your game score
+				    	int number = object.getInt("Like");
+				    	object.put("Like", ++number);
+				    	object.saveInBackground();
+					    } else {
+					    	System.err.println("ERROR: " + e);
+					    }
+					
+				}
+				}
+				});
+				/////////////////////////////////////////////////
+				/*ParseObject testObject = new ParseObject("watson");
 				testObject.put("NomString", holder.nom.getTag());
-				testObject.saveInBackground();
+				testObject.saveInBackground();*/
 			}
 		});
 
@@ -130,7 +180,7 @@ public class CustomListAdapter extends BaseAdapter {
 			}
 		});
 
-		// holder.imageView.setImageBitmap(uncompressImage(image));
+		 holder.imageView.setImageBitmap(uncompressImage(newsItem.getFile()));
 
 		// if (holder.imageView != null) {
 		// new ImageDownloaderTask(holder.imageView).execute(newsItem.getUrl());
