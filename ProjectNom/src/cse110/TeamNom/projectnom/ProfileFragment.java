@@ -201,6 +201,11 @@ public class ProfileFragment extends Fragment {
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
 					String list = (String) objects.get(0).get("pictures");
+					//if no pictures, return.
+					if (list == null) {
+						return;
+					}
+					
 					String[] pictureIDs = list.split(",");
 
 					// debug
