@@ -28,7 +28,11 @@ public class AppFacebookAccess {
 	public static String[] loadMyFriends() {
 		allFriends = new ArrayList<String>();
 
-		/* make the API call */
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					/* make the API call */
 		new Request(session, "/me/friends", null, HttpMethod.GET,
 				new Request.Callback() {
 					public void onCompleted(Response response) {
@@ -50,7 +54,19 @@ public class AppFacebookAccess {
 							e.printStackTrace();
 						}
 					}
-				}).executeAsync();
+				}).executeAndWait();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		thread.start();
+		try {
+			thread.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return dumpfriendsIDBuffer();
 	}
@@ -67,6 +83,7 @@ public class AppFacebookAccess {
 		allFriends.clear();
 		return friendsStrArr;
 	}
+	
 	public static void getNameAndID() {
 		new Request(session, "/me", null, HttpMethod.GET,
 				new Request.Callback() {
