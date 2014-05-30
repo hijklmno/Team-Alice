@@ -81,7 +81,6 @@ public class MainActivity extends FragmentActivity implements
 
 		//Facebook stuff
 		AppFacebookAccess.setActiveSession();
-		
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -92,6 +91,7 @@ public class MainActivity extends FragmentActivity implements
 
 					AppFacebookAccess.getNameAndID();
 					System.out.println("outside nameandid");
+					AppFacebookAccess.loadMyFriends();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

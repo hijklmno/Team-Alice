@@ -116,11 +116,14 @@ public class ProfileFragment extends Fragment {
 	private void onClickFacebookDebug() {
 //		Session session = Session.getActiveSession();
 //		textbox.setText(AppFacebookAccess.getMyFriends().toString());
-		String[] arr = AppFacebookAccess.getMyFriends();
+		
+		String[] arr = AppFacebookAccess.loadMyFriends();
 		Log.d("arrlength", Integer.toString(arr.length));
 		for (int i = 0; i < arr.length; i++) {
 			System.out.println(arr[i]);
 		}
+		
+
 //		/* make the API call */
 //		new Request(session, "/me", null, HttpMethod.GET,
 //				new Request.Callback() {

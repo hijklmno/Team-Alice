@@ -18,56 +18,59 @@ public class AppFacebookAccess {
 	private static String FB_ID;
 	private static String FB_Name;
 	private static Session session;
-	private static String[] friendsStrArr;
-
+	private static ArrayList<String> allFriends;
+	
 	public static void setActiveSession() {
 		session = Session.getActiveSession();
 	}
 
 	// TODO: return list of my facebook friends
-	public static String[] getMyFriends() {
-		final ArrayList<String> allFriends = new ArrayList<String>();
+	public static String[] loadMyFriends() {
+		allFriends = new ArrayList<String>();
 
 		/* make the API call */
 		new Request(session, "/me/friends", null, HttpMethod.GET,
 				new Request.Callback() {
 					public void onCompleted(Response response) {
-
 						try {
 							String incomingText = response.getRawResponse();
 							Log.d("incomingText", incomingText);
 							JSONObject json = new JSONObject(incomingText);
-							JSONObject friendsList = json
-									.getJSONObject("friends");
-							JSONArray dataList = friendsList
-									.getJSONArray("data");
-							Log.d("dataListSIze",
-									Integer.toString(dataList.length()));
+//							JSONObject friendsList = json.getJSONObject("friends");
+							JSONArray dataList = json.getJSONArray("data");
+							Log.d("dataListSIze", Integer.toString(dataList.length()));
 							for (int i = 0; i < dataList.length(); i++) {
-								JSONObject friendObject = dataList
-										.getJSONObject(i);
-								allFriends.add(friendObject.getString("id"));
+								String friend_name = ((JSONObject) dataList.get(i)).getString("name");
+								String friend_id = ((JSONObject) dataList.get(i)).getString("id");
+								System.out.println(friend_name + ":" + friend_id);
+//								allFriends.add(friend_id);
+								friendsIDBuffer(friend_id);
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 					}
-				});
-
-		String[] newArr = new String[allFriends.size()];
-		friendsStrArr = (String[]) allFriends.toArray(newArr);
-		return friendsStrArr;
+				}).executeAsync();
+		
+		return dumpfriendsIDBuffer();
 	}
 
+	private static void friendsIDBuffer(String friend_id) {
+		allFriends.add(friend_id);
+		System.out.println("Added: " + friend_id + ", allFriends size: " + Integer.toString(allFriends.size()));
+	}
+	
+	private static String[] dumpfriendsIDBuffer() {
+		System.out.println("allFriends size: " + allFriends.size());
+		String[] newArr = new String[allFriends.size()];
+		String[] friendsStrArr = (String[]) allFriends.toArray(newArr);
+		allFriends.clear();
+		return friendsStrArr;
+	}
 	public static void getNameAndID() {
-		System.out.println("getting name and id");
-		if (session == Session.getActiveSession()) {
-			System.out.println("same current session");
-		}
 		new Request(session, "/me", null, HttpMethod.GET,
 				new Request.Callback() {
 					public void onCompleted(Response response) {
-						/* handle the result */
 						String incomingText = response.getRawResponse();
 
 						try {
