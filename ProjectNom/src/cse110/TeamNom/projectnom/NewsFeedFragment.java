@@ -45,8 +45,6 @@ public class NewsFeedFragment extends Fragment {
 	private static int pict_count = 0;
 	private static boolean listEndFlag = false;
 	
-	private Button refreshAlice;
-	private Button loadMore;
 	private Switch switchButton;
 	private ViewPager yourViewPager;
 	private CustomListAdapter cLAdapter;
@@ -61,9 +59,6 @@ public class NewsFeedFragment extends Fragment {
 		false);
 
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
-//		refreshAlice = (Button) rootView.findViewById(R.id.refresh);
-//		loadMore = (Button) rootView.findViewById(R.id.loadMoar);
-
 		switchButton
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					@Override
@@ -77,52 +72,9 @@ public class NewsFeedFragment extends Fragment {
 					}
 				});
 
-		// Log.w("UD: ", "test");
-		// final Button NOM = (Button)
-		// rootView.findViewWithTag(newsItem.getReporterName());
-		// if (NOM == null) {
-		// Log.d("NULLLELD", "FSDFSDF");
-		// }
-		// sadf
-		// final Button Mmm = (Button) rootView.findViewById(R.id.Mmm);
-		// Mmm.setText("asdf");
-		// NOM.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v)
-		// {
-		// Log.d("NewsFeed", "WorkingNOM");
-		// }
-		// });
-		// Mmm.setOnClickListener(new OnClckListener() {
-		//
-		// @Override
-		// public void onClick(View v)
-		// {
-		// Log.d("NewsFeed", "WorkingMmm");
-		// }
-		// });
-		// // Log.w("UD: ", "after");
-		// View newView = inflater.inflate(R.layout.newsfeed_list_row_layout,
-		// container, false);
-		// buttonNOM = (Button) newView.findViewById(R.id.NOM);
-
 		if (INITIALLOAD) {
 			getNewsFeedData(rootView);
 		}
-		
-//		refreshAlice.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				refresh();
-//			}
-//		});
-//
-//		loadMore.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				getMoreData();
-//			}
-//		});
 
 		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
 			@Override
@@ -186,22 +138,20 @@ public class NewsFeedFragment extends Fragment {
 
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				new GetDataTask().execute();
+				new RenewDataTask().execute();
 			}
 		});
 		
 		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				if (!listEndFlag) {
-					Toast.makeText(getActivity(), "Loading more...", 2)
-					.show();
-					getMoreData();
+				if (listEndFlag == false) {
+//					getMoreData();
+					new GetMoreDataTask().execute();
 				}
 				else {
 					Toast.makeText(getActivity(), "No More Data", 2)
 					.show();
-					getMoreData();
 				}
 			}
 		});
@@ -276,46 +226,22 @@ public class NewsFeedFragment extends Fragment {
 		return results;
 	}
 
-//	public void onClick(View v) {
-//		ParseObject testObject = new ParseObject("watson");
-//		switch (v.getId()) {
-//		case R.id.NOM:
-//			testObject.put("NOM", 1);
-//			testObject.saveInBackground();
-//			break;
-//
-//		case R.id.Mmm:
-//			testObject.put("Mmm", 1);
-//			testObject.saveInBackground();
-//			break;
-//
-//		case R.id.Report:
-//			testObject.put("report_image", true);
-//			testObject.saveInBackground();
-//			break;
-//		}
-//	}
-
 	public void refresh() {
 		listEndFlag = false;
+		user_count = 0;
+		pict_count = 0;
 		Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
 		.show();
 		ArrayList<NewsItem> image_details = getListData();
 		cLAdapter.resetResults(image_details);
-		
-//		Fragment newsFeed = new NewsFeedFragment();
-//		android.support.v4.app.FragmentManager fm = getActivity()
-//		.getSupportFragmentManager();
-//		fm.beginTransaction().add(R.id.newsfeedFrag, newsFeed).commit();
-		
 	}
 	
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	private class RenewDataTask extends AsyncTask<Void, Void, String[]> {
 
 		@Override
 		protected String[] doInBackground(Void... params) {
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -331,4 +257,27 @@ public class NewsFeedFragment extends Fragment {
 			super.onPostExecute(result);
 		}
 	}
+	
+	private class GetMoreDataTask extends AsyncTask<Void, Void, String[]> {
+
+		@Override
+		protected String[] doInBackground(Void... params) {
+//			try {
+//				Thread.sleep(3000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+			getMoreData();
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(String[] result) {
+			Toast.makeText(getActivity(), "Loading more...", 2)
+			.show();
+			super.onPostExecute(result);
+		}
+	}
+
 }

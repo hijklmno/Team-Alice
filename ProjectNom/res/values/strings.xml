@@ -7,7 +7,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_camera">Camera Activity</string>
     
-    <!-- GPS STUFF -->
+    <!-- GPS -->
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="GPSAlertDialogTitle">GPS is setting</string>
@@ -17,14 +17,13 @@
     <string name="city">City : </string>
     <string name="postalCode">Postal Code : </string>
     <string name="addressLine">Address Line : </string>
-    <!-- End of GPS stuff -->
+    <!-- End of GPS -->
     
     <!-- fb -->
 	<string name="get_started">To get started, log in using Facebook</string>
     <string name="app_id">642123995834625</string>
     <!-- end fb -->
      
-    
     <!-- Camera -->
     <string name="hello">Helle there!</string>
     <string name="btnIntend">Take Picture</string>
@@ -35,18 +34,24 @@
     <string name="titleID">Title of Picture</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    
     <!-- End of Camera -->
+    
     <!-- Yelp -->
     <string name="consumer_key">Im-ivNkUIQuZjuUntxY7Dg</string>
     <string name="consumer_secret">RhbZgFL70d_IQSYIWcaf1DYwwzQ</string>
     <string name="token">AeEk2xUY109qZY96Ve6cHVBnzOo3JHLv</string>
     <string name="token_secret">F9uZ1G3pbNG73zXvboZZ9IYPh2c</string>
     <string name="search">Search</string>
+    <!-- End of Yelp -->
     
     <!-- News Feed -->
     <string name="toggleOn">Friends</string>
     <string name="toggleOff">Popular</string>
     <string name="feed">News Feed</string>
     <!-- End Of News Feed -->
+    
+    <!-- Parse -->
+    <string name="ParseAppID">k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW</string>
+    <string name="ParseClientKey">KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC</string>
+    <!-- End of Parse -->
 </resources>

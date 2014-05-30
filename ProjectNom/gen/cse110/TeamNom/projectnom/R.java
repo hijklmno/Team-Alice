@@ -560,6 +560,11 @@ containing a value of this type.
     public static final class string {
         public static final int GPSAlertDialogMessage=0x7f070029;
         public static final int GPSAlertDialogTitle=0x7f070028;
+        /**  End Of News Feed 
+ Parse 
+         */
+        public static final int ParseAppID=0x7f070042;
+        public static final int ParseClientKey=0x7f070043;
         public static final int action_settings=0x7f070023;
         public static final int addressLine=0x7f07002e;
         public static final int app_id=0x7f070030;
@@ -604,7 +609,7 @@ containing a value of this type.
         public static final int country=0x7f07002b;
         public static final int edit_message=0x7f070021;
         public static final int feed=0x7f070041;
-        /**  End of GPS stuff 
+        /**  End of GPS 
  fb 
          */
         public static final int get_started=0x7f07002f;
@@ -612,7 +617,7 @@ containing a value of this type.
  Camera 
          */
         public static final int hello=0x7f070031;
-        /**  GPS STUFF 
+        /**  GPS 
          */
         public static final int latitude=0x7f070026;
         public static final int longitude=0x7f070027;
@@ -635,7 +640,8 @@ containing a value of this type.
         public static final int title_activity_camera=0x7f070025;
         public static final int title_activity_main=0x7f070024;
         public static final int toggleOff=0x7f070040;
-        /**  News Feed 
+        /**  End of Yelp 
+ News Feed 
          */
         public static final int toggleOn=0x7f07003f;
         public static final int token=0x7f07003c;

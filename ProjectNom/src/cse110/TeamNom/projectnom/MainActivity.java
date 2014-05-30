@@ -1,5 +1,6 @@
 package cse110.TeamNom.projectnom;
 
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -25,12 +26,14 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -56,8 +59,6 @@ public class MainActivity extends FragmentActivity implements
 	private EditText mSearchTerm;
 	private EditText mSearchLocation;
 
-	public static String FACEBOOK_ID;
-
 	// Testing comment
 	// Tab titles
 	private String[] tabs = { "Camera", "Search", "News Feed", "Profile" };
@@ -67,33 +68,6 @@ public class MainActivity extends FragmentActivity implements
 		// retrieves the facebook session established in the splash page
 		Intent i = getIntent();
 		Session session = (Session) i.getSerializableExtra("FacebookSession");
-
-		/* getting the android facebook hashkey */
-
-		try {
-			PackageInfo info = getPackageManager().getPackageInfo(
-					getPackageName(), PackageManager.GET_SIGNATURES);
-			for (Signature signature : info.signatures) {
-				MessageDigest md;
-
-				md = MessageDigest.getInstance("SHA");
-				md.update(signature.toByteArray());
-				String something = new String(Base64.encode(md.digest(), 0));
-				Log.d("Hash key", something);
-			}
-		} catch (NameNotFoundException e1) {
-			// TODO Auto-generated catch block
-			Log.e("name not found", e1.toString());
-		}
-
-		catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			Log.e("no such an algorithm", e.toString());
-		} catch (Exception e) {
-			Log.e("exception", e.toString());
-		}
-
-		/* end of the hashkey grabber */
 
 		// debugging, test if session is logged in
 		if (session != null && session.isOpened()) {
@@ -105,51 +79,36 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//Facebook stuff
+		AppFacebookAccess.setActiveSession();
+		
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Intent i = getIntent();
+					
+					Session session = (Session) i.getSerializableExtra("FacebookSession");
+
+					AppFacebookAccess.getNameAndID();
+					System.out.println("outside nameandid");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		thread.start();
+		try {
+			thread.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// Parse stuff
-		Parse.initialize(this, "k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW",
-				"KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC");
-
-		// Check account of parse
-		/* make the API call */
-		new Request(session, "/me", null, HttpMethod.GET,
-				new Request.Callback() {
-					public void onCompleted(Response response) {
-						/* handle the result */
-						String incomingText = response.getRawResponse();
-
-						try {
-							JSONObject json = new JSONObject(incomingText);
-							// id working
-							FACEBOOK_ID = (String) json.get("id");
-							final String name = (String) json.get("name");
-
-							// testing to see if is a user already
-							ParseQuery<ParseObject> query = ParseQuery
-									.getQuery("FacebookAccounts");
-							query.whereEqualTo("facebook_id", FACEBOOK_ID);
-							query.findInBackground(new FindCallback<ParseObject>() {
-								@Override
-								public void done(List<ParseObject> objects,
-										ParseException e) {
-									Log.d("FacebookFriendQuery", "done");
-									if (objects.isEmpty()) {
-										ParseObject testObject = new ParseObject(
-												"FacebookAccounts");
-										testObject.put("facebook_id",
-												FACEBOOK_ID);
-										testObject.put("Name", name);
-										testObject.saveInBackground();
-										Log.d("FacebookFriendQuery",
-												"new user created");
-									}
-								}
-							});
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}).executeAsync();
+		Context context = this.getApplicationContext();
+		AppParseAccess.initialize(this, context.getString(R.string.ParseAppID), context.getString(R.string.ParseClientKey));
+		AppParseAccess.loadOrAddNewUser(AppFacebookAccess.getFacebookId(), AppFacebookAccess.getFacebookName());
 
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -157,15 +116,14 @@ public class MainActivity extends FragmentActivity implements
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-//		 viewPager.setOffscreenPageLimit(4);
+		// viewPager.setOffscreenPageLimit(4);
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Adding Tabs
 		for (String tab_name : tabs) {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
-					.setTag("stringName")
-					.setTabListener(this));
+					.setTag("stringName").setTabListener(this));
 		}
 
 		/**
@@ -204,7 +162,7 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		
+
 	}
 
 	public void search(View v) {
