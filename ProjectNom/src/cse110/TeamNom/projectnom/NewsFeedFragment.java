@@ -28,13 +28,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import cse110.TeamNom.projectnom.newsfeedadapter.CustomListAdapter;
-import cse110.TeamNom.projectnom.newsfeedadapter.NewsItem;
 
 public class NewsFeedFragment extends Fragment {
 
@@ -42,9 +37,6 @@ public class NewsFeedFragment extends Fragment {
 	private static int MAXROWS = 4;
 	private static int OFFSET = 0;
 	private static boolean INITIALLOAD = true;
-	private static String arr[];
-	private static int user_count = 0;
-	private static int pict_count = 0;
 	private static boolean listEndFlag = false;
 	
 	private Switch switchButton;
@@ -112,14 +104,16 @@ public class NewsFeedFragment extends Fragment {
 	}
 	
 	private void getMoreData() {
-		ArrayList<NewsItem> newResults = getListData();
-		cLAdapter.updateResults(newResults);
+		ArrayList<PictureDBObject> newResults = getListData();
+		if (newResults != null) {
+			cLAdapter.updateResults(newResults);
+		}
 	}
 	
 	private void getNewsFeedData(View rootView) {
 		friends_list = AppFacebookAccess.loadMyFriends();
 		
-		ArrayList<NewsItem> image_details = getListData();
+		ArrayList<PictureDBObject> image_details = getListData();
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
 		cLAdapter = new CustomListAdapter(getActivity(), image_details);
 		mPullRefreshListView.setAdapter(cLAdapter);
@@ -151,52 +145,41 @@ public class NewsFeedFragment extends Fragment {
 			public void onLastItemVisible() {
 				if (listEndFlag == false) {
 //					new GetMoreDataTask().execute();
+					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
 					getMoreData();
 				}
 				else {
-					Toast.makeText(getActivity(), "No More Data", 2)
-					.show();
+					Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_LONG).show();
 				}
 			}
 		});
 	}
 
-	private ArrayList<NewsItem> getListData() {
-		ArrayList<NewsItem> results = new ArrayList<NewsItem>();
-		
+	private ArrayList<PictureDBObject> getListData() {
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(friends_list, MAXROWS, OFFSET);
 		
-		Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
-		for (int i = 0; i < pictureArray.size(); i++) {
-			Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
-			
-			String name = pictureArray.get(i).getCaption();
-			byte[] img = pictureArray.get(i).getPicture();
-			Date created = pictureArray.get(i).getCreatedDate();
-			
-			NewsItem newsData = new NewsItem();
-			
-			newsData.setName(name);
-			newsData.setDate(created.toString());
-			newsData.setFile(img);
-			
-			results.add(newsData);
-		}
+		if (pictureArray != null) {
+			Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
+			for (int i = 0; i < pictureArray.size(); i++) {
+				Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
+			}
 		
-		OFFSET += MAXROWS;
-		return results;
+			OFFSET += MAXROWS;
+		}
+		else {
+			listEndFlag = true;
+		}
+
+		return pictureArray;
 	}
 
 	public void refresh() {
 		listEndFlag = false;
-		user_count = 0;
-		pict_count = 0;
-		
 		OFFSET = 0;
 		friends_list = AppFacebookAccess.loadMyFriends();
 		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();
-		ArrayList<NewsItem> image_details = getListData();
+		ArrayList<PictureDBObject> image_details = getListData();
 		cLAdapter.resetResults(image_details);
 	}
 	

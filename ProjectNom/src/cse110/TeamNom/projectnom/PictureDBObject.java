@@ -8,11 +8,13 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 public class PictureDBObject {
+	String image_id;
 	byte[] Food_photo;
 	int Like;
 	int Bookmark;
 	boolean report_image;
 	String FACEBOOK_ID;
+	String FACEBOOK_NAME;
 	String Food_name;
 	String Restaurant_Id;
 	double Latitude;
@@ -31,6 +33,12 @@ public class PictureDBObject {
 			e.printStackTrace();
 		}
 		
+		//Store image id
+		setImageID(parse.getObjectId());
+		
+		//Store facebook name
+		setFacebookName(parse.getString("FACEBOOK_NAME"));
+		
 		//Store facebook id
 		setFacebookID(parse.getString("FACEBOOK_ID"));
 		
@@ -44,7 +52,7 @@ public class PictureDBObject {
 		setImageReportStatus(parse.getBoolean("report_image"));
 		
 		//Store food name
-		setCaption(parse.getString("Restaurant_id"));
+		setRestID(parse.getString("Restaurant_Id"));
 		
 		//Store latitude
 		setLatitude(parse.getDouble("Latitude"));
@@ -57,6 +65,22 @@ public class PictureDBObject {
 		
 		//Store updated at date
 		setUpdatedDate(parse.getUpdatedAt());
+	}
+	
+	public void setFacebookName(String name) {
+		FACEBOOK_NAME = name;
+	}
+	
+	public String getFacebookName() {
+		return FACEBOOK_NAME;
+	}
+	
+	public void setImageID(String id) {
+		image_id = id;
+	}
+	
+	public String getImageID() {
+		return image_id;
 	}
 	
 	public void setFacebookID(String id) {
@@ -107,11 +131,11 @@ public class PictureDBObject {
 		return report_image;
 	}
 
-	public void setCaption(String caption) {
+	public void setRestID(String caption) {
 		Food_name = caption;
 	}
 
-	public String getCaption() {
+	public String getRestID() {
 		return Food_name;
 	}
 	

@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/reporter"
+        android:id="@+id/NewsFeedCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -17,11 +17,11 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/NewsFeedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/reporter"
+        android:layout_toRightOf="@id/NewsFeedCaption"
         android:layout_alignParentTop="true"
         android:text=""
         android:gravity="right"
@@ -31,64 +31,64 @@
         android:textSize="18sp" />
 
     <TextView 
-        android:id="@+id/newsRestaurant"
+        android:id="@+id/NewsFeedsubCaption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/reporter"
+        android:layout_below="@id/NewsFeedCaption"
         android:text=""
         android:textColor="@color/black"
         android:typeface="sans"
         android:textSize="18sp" />
 
      <ImageView
-        android:id="@+id/thumbImage"
+        android:id="@+id/NewsFeedThumbImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reporter"
+        android:layout_below="@id/NewsFeedCaption"
         android:background="@drawable/list_placeholder" />
 
      <TextView 
-         android:id="@+id/captionNews"
+         android:id="@+id/NewsFeedName"
          android:tag=""
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_below="@id/thumbImage"
+         android:layout_below="@id/NewsFeedThumbImage"
          android:layout_alignParentLeft="true" />
 
     <Button
-        android:id="@+id/NOM"
+        android:id="@+id/NewsFeedNOM"
         android:tag=""
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/captionNews"
+        android:layout_below="@id/NewsFeedName"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text=""
         android:drawableStart="@drawable/ic_action_like" />
 
     <Button
-        android:id="@+id/Mmm"
+        android:id="@+id/NewsFeedMmm"
         android:tag=""
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/captionNews"
+        android:layout_below="@id/NewsFeedName"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/NOM"
+        android:layout_toRightOf="@id/NewsFeedNOM"
         android:text=""
         android:drawableStart="@drawable/ic_action_important" />
 
     <Button 
-        android:id="@+id/Report"
+        android:id="@+id/NewsFeedReport"
         android:tag=""
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/captionNews"
+        android:layout_below="@id/NewsFeedName"
         android:text=""
-        android:layout_alignBottom="@id/Mmm"
+        android:layout_alignBottom="@id/NewsFeedMmm"
         android:gravity="right"
         android:layout_alignParentRight="true"
         android:drawableEnd="@drawable/ic_action_error"

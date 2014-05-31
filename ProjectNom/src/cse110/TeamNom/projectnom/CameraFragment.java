@@ -391,6 +391,7 @@ public class CameraFragment extends Fragment {
 		object.put("Food_photo", file);
 		object.put("Restaurant_Id", parseRestaurant);
 		object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
+		object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
 		object.put("Tags", parseCaption);
 		object.put("Like", 0);
 		object.put("Bookmark", 0);

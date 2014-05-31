@@ -303,4 +303,18 @@ public class AppParseAccess {
 		
 		return customList;
 	}
+
+	//TODO
+	public static void incrementNomCount(String imageID) {
+		System.out.println(imageID + " nom + 1!!");
+	}
+	
+	public static void incrementMmmCount(String imageID) {
+		System.out.println(imageID + " mmm + 1!!");
+	}
+
+	public static void setFlag(String imageID) {
+		System.out.println(imageID + " flagged!");
+		
+	}
 }
