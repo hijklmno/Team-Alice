@@ -1,6 +1,7 @@
 package cse110.TeamNom.projectnom;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.FragmentManager;
@@ -39,6 +40,7 @@ public class NewsFeedFragment extends Fragment {
 
 	// Initialization
 	private static int MAXROWS = 4;
+	private static int OFFSET = 0;
 	private static boolean INITIALLOAD = true;
 	private static String arr[];
 	private static int user_count = 0;
@@ -50,7 +52,7 @@ public class NewsFeedFragment extends Fragment {
 	private CustomListAdapter cLAdapter;
 	
 	private PullToRefreshListView mPullRefreshListView;
-	
+	private String[] friends_list = new String[MAXROWS];
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	Bundle savedInstanceState) {
@@ -115,6 +117,8 @@ public class NewsFeedFragment extends Fragment {
 	}
 	
 	private void getNewsFeedData(View rootView) {
+		friends_list = AppFacebookAccess.loadMyFriends();
+		
 		ArrayList<NewsItem> image_details = getListData();
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
 		cLAdapter = new CustomListAdapter(getActivity(), image_details);
@@ -146,8 +150,8 @@ public class NewsFeedFragment extends Fragment {
 			@Override
 			public void onLastItemVisible() {
 				if (listEndFlag == false) {
-//					getMoreData();
-					new GetMoreDataTask().execute();
+//					new GetMoreDataTask().execute();
+					getMoreData();
 				}
 				else {
 					Toast.makeText(getActivity(), "No More Data", 2)
@@ -159,70 +163,27 @@ public class NewsFeedFragment extends Fragment {
 
 	private ArrayList<NewsItem> getListData() {
 		ArrayList<NewsItem> results = new ArrayList<NewsItem>();
-		boolean flag = false;
-		ParseObject pObj;
-		ParseFile pf;
-		// ALL THE USERS
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
-		// ALL THE FOOD
-		ParseQuery<ParseObject> food = ParseQuery.getQuery("Food_Table_DB");
-		// ALWAYS GET 2 USERS
-		//query.setLimit(MAXROWS);
-		// Get next 2 USERS
-		query.orderByDescending("updatedAt");
-		List<ParseObject> news;
-		try {
-			// News get populated
-			news = query.find();
-			for (; user_count < news.size(); user_count++) {
-				// Create the picture list
-				System.out.println("IN LOOP: " + user_count);
-				if(news.get(user_count).getString("pictures") != null)
-					  arr = news.get(user_count).getString("pictures").split(",");
-				else
-					  continue;
-				for(; pict_count < arr.length; pict_count++)
-				{
-					//System.out.println("ARR_LENGTH: " + arr[pict_count]);
-					NewsItem newsData = new NewsItem();
-					newsData.setName(news.get(user_count).getString("Name"));
-					pObj = food.get(arr[arr.length - 1 - pict_count]);
-					newsData.setId(arr[arr.length - 1 - pict_count]);
-					pf = pObj.getParseFile("Food_photo");
-					newsData.setFile(pf.getData());
-					results.add(newsData);
-					if(pict_count%MAXROWS == 0 && pict_count != 0)
-					{
-						flag = true;
-						pict_count++;
-						break;
-					}
-				}
-				if(flag)
-				{
-					break;
-				}
-				if(pict_count == arr.length)
-					pict_count = 0;
-
-				if(news.get(user_count).getBoolean("report_image")) {
-					System.out.println("hi ray");
-				}
-				// results.add(newsData);
-				else {
-					//results.add(newsData);
-					System.out.println("hi al");
-				}
-				// Log.w("populateData", news.get(i).getString("headline"));
-			}
+		
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(friends_list, MAXROWS, OFFSET);
+		
+		Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
+		for (int i = 0; i < pictureArray.size(); i++) {
+			Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
 			
-			//after going through all the friends, set listEndFlag as true
-			//for setOnLastItemVisibleListener() to catch
-			listEndFlag = true;
-
-		} catch (ParseException e) {
-			Log.d("newsfeed", "Error: " + e.getMessage());
+			String name = pictureArray.get(i).getCaption();
+			byte[] img = pictureArray.get(i).getPicture();
+			Date created = pictureArray.get(i).getCreatedDate();
+			
+			NewsItem newsData = new NewsItem();
+			
+			newsData.setName(name);
+			newsData.setDate(created.toString());
+			newsData.setFile(img);
+			
+			results.add(newsData);
 		}
+		
+		OFFSET += MAXROWS;
 		return results;
 	}
 
@@ -230,7 +191,10 @@ public class NewsFeedFragment extends Fragment {
 		listEndFlag = false;
 		user_count = 0;
 		pict_count = 0;
-		Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
+		
+		OFFSET = 0;
+		friends_list = AppFacebookAccess.loadMyFriends();
+		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();
 		ArrayList<NewsItem> image_details = getListData();
 		cLAdapter.resetResults(image_details);
@@ -240,12 +204,6 @@ public class NewsFeedFragment extends Fragment {
 
 		@Override
 		protected String[] doInBackground(Void... params) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
 			return null;
 		}
 		
@@ -258,26 +216,5 @@ public class NewsFeedFragment extends Fragment {
 		}
 	}
 	
-	private class GetMoreDataTask extends AsyncTask<Void, Void, String[]> {
-
-		@Override
-		protected String[] doInBackground(Void... params) {
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-			getMoreData();
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(String[] result) {
-			Toast.makeText(getActivity(), "Loading more...", 2)
-			.show();
-			super.onPostExecute(result);
-		}
-	}
 
 }

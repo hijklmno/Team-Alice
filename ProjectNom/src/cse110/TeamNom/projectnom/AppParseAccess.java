@@ -1,9 +1,19 @@
 package cse110.TeamNom.projectnom;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import android.content.Context;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -22,9 +32,27 @@ public class AppParseAccess {
 	 * initialize() initializes the Parse access using NOM's application ID and
 	 * client key.
 	 */
-	public static void initialize(Context context, String applicationId,
-			String clientKey) {
-		Parse.initialize(context, applicationId, clientKey);
+	public static void initialize(final Context context, final String applicationId,
+			final String clientKey) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					/* make the API call */
+					Parse.initialize(context, applicationId, clientKey);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		thread.start();
+		try {
+			thread.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/*
@@ -245,5 +273,34 @@ public class AppParseAccess {
 		}
 
 		return null;
+	}
+	
+	/* 
+	 * Get a list of pictures given a list of friends
+	 */
+	public static ArrayList<PictureDBObject> getFriendsPictureWithLimits(String[] picture_ids, int count, int offset) {
+		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		query.whereContainedIn("FACEBOOK_ID", Arrays.asList(picture_ids));
+		query.orderByDescending("updatedAt");
+		query.setLimit(count);
+		query.setSkip(offset);
+		
+		try {
+			List<ParseObject> objects = query.find();
+
+			if (objects.isEmpty()) {
+				return null;
+			} else {
+				for (int i = 0; i < objects.size(); i++) {
+					customList.add(new PictureDBObject(objects.get(i)));
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return customList;
 	}
 }

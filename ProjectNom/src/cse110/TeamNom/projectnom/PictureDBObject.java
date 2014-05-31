@@ -12,6 +12,7 @@ public class PictureDBObject {
 	int Like;
 	int Bookmark;
 	boolean report_image;
+	String FACEBOOK_ID;
 	String Food_name;
 	String Restaurant_Id;
 	double Latitude;
@@ -29,6 +30,9 @@ public class PictureDBObject {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+		//Store facebook id
+		setFacebookID(parse.getString("FACEBOOK_ID"));
 		
 		//Store like
 		setLikeCount(parse.getInt("Like"));
@@ -49,10 +53,18 @@ public class PictureDBObject {
 		setLongitude(parse.getDouble("Longitude"));
 		
 		//Store created at date
-		setCreatedDate(parse.getDate("CreatedAt"));
+		setCreatedDate(parse.getCreatedAt());
 		
 		//Store updated at date
-		setUpdatedDate(parse.getDate("updatedAt"));
+		setUpdatedDate(parse.getUpdatedAt());
+	}
+	
+	public void setFacebookID(String id) {
+		FACEBOOK_ID = id;
+	}
+	
+	public String getFacebookID() {
+		return FACEBOOK_ID;
 	}
 	
 	public void setPicture(byte[] picture) {

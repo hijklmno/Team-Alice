@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.facebook.HttpMethod;
@@ -85,21 +86,37 @@ public class AppFacebookAccess {
 	}
 	
 	public static void getNameAndID() {
-		new Request(session, "/me", null, HttpMethod.GET,
-				new Request.Callback() {
-					public void onCompleted(Response response) {
-						String incomingText = response.getRawResponse();
-
-						try {
-							JSONObject json = new JSONObject(incomingText);
-							// id working
-							FB_ID = (String) json.get("id");
-							FB_Name = (String) json.get("name");
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-				}).executeAndWait();
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					new Request(session, "/me", null, HttpMethod.GET,
+							new Request.Callback() {
+								public void onCompleted(Response response) {
+									String incomingText = response.getRawResponse();
+									
+									try {
+										JSONObject json = new JSONObject(incomingText);
+										// id working
+										FB_ID = (String) json.get("id");
+										FB_Name = (String) json.get("name");
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
+							}).executeAndWait();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		thread.start();
+		try {
+			thread.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static String getFacebookId() {

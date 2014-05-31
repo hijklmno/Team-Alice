@@ -81,29 +81,8 @@ public class MainActivity extends FragmentActivity implements
 
 		//Facebook stuff
 		AppFacebookAccess.setActiveSession();
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Intent i = getIntent();
-					
-					Session session = (Session) i.getSerializableExtra("FacebookSession");
-
-					AppFacebookAccess.getNameAndID();
-					System.out.println("outside nameandid");
-					AppFacebookAccess.loadMyFriends();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		AppFacebookAccess.getNameAndID();
 		
-		thread.start();
-		try {
-			thread.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		// Parse stuff
 		Context context = this.getApplicationContext();
