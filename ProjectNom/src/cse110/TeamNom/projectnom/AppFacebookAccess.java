@@ -20,10 +20,10 @@ import com.facebook.Session;
  */
 public class AppFacebookAccess {
 
-	private static String FB_ID;
-	private static String FB_Name;
-	private static Session session;
-	private static ArrayList<String> allFriends;
+	private static String FB_ID;					// The Facebook ID of current user
+	private static String FB_Name;					// The full name of current user
+	private static Session session;					// The current active Facebook session
+	private static ArrayList<String> allFriends;	// ArrayList of friend's FB IDs
 	
 	/*
 	 * setActiveSession() stores the current active Facebook session.
