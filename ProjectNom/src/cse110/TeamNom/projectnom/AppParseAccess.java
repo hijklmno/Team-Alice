@@ -334,24 +334,24 @@ public class AppParseAccess {
 	 * Parse user.
 	 */
 	public static void bookmarkImage(String imageID) {
-		// ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
-		//
-		// try {
-		// ParseObject photoObject = query.get(imageID);
-		//
-		// if (photoObject != null) {
-		// photoObject.increment(key);
-		// }
-		// } catch (ParseException e) {
-		// e.printStackTrace();
-		// }
+		 ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		
+		 try {
+		 ParseObject photoObject = query.get(imageID);
+		
+		 if (photoObject != null) {
+		 photoObject.increment("Bookmark");
+		 }
+		 } catch (ParseException e) {
+		 e.printStackTrace();
+		 }
 
 		// Get the current user's ParseObject
 		ParseObject currentUser = AppParseAccess.getCurrentUser(AppFacebookAccess.getFacebookId());
 
 		// Add the objectID to the user's pictures string
 		if (currentUser != null) {
-			String pictureString = (String) currentUser.get("bookmarks");
+			String pictureString = (String) currentUser.get("Bookmark");
 
 			if (pictureString == null || pictureString.equals("")) {
 				pictureString = "";
