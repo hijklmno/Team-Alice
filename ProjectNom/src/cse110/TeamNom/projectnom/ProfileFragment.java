@@ -203,28 +203,30 @@ public class ProfileFragment extends Fragment {
 	@SuppressLint("NewApi")
 	private void onClickLoadMyPictures() {
 		
-		String[] pictureIDs = AppParseAccess
-				.getMyPictureIds(AppFacebookAccess.getFacebookId());
+		String[] pictureIDs = AppParseAccess.getMyPictureIds(AppFacebookAccess.getFacebookId());
+		
+		if (pictureIDs == null) {
+			return;
+		}
 		
 		for (int i = 0; i < pictureIDs.length; i++) {
-			PictureDBObject object = AppParseAccess
-					.getSpecificPicture(pictureIDs[i]);
-			byte[] data = object.getPicture();
-
-			final Button photoGalleryButton = new Button(getActivity());
-			Drawable image = null;
-			image = new BitmapDrawable(getResources(),
-					BitmapFactory.decodeByteArray(data, 0, data.length));
-			photoGalleryButton.setBackground(image);
-			photoGalleryButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					// TODO: add a intent popup
-					System.out.println("df");
-				}
-			});
-
-			horizontalOuterLayout.addView(photoGalleryButton);
+			PictureDBObject object = AppParseAccess.getSpecificPicture(pictureIDs[i]);
+			if (object != null) {
+				byte[] data = object.getPicture();
+	
+				final Button photoGalleryButton = new Button(getActivity());
+				Drawable image = null;
+				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+				photoGalleryButton.setBackground(image);
+				photoGalleryButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						System.out.println("df");
+					}
+				});
+	
+				horizontalOuterLayout.addView(photoGalleryButton);
+			}
 		}
 	}
 }

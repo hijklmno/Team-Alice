@@ -144,7 +144,6 @@ public class NewsFeedFragment extends Fragment {
 			@Override
 			public void onLastItemVisible() {
 				if (listEndFlag == false) {
-//					new GetMoreDataTask().execute();
 					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
 					getMoreData();
 				}

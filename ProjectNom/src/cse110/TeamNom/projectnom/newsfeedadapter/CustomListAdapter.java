@@ -32,6 +32,7 @@ public class CustomListAdapter extends BaseAdapter {
 	private boolean flag_like = false;
 	
 	public CustomListAdapter(Context context, ArrayList<PictureDBObject> listData) {
+		listData = new ArrayList<PictureDBObject>();
 		this.listData = listData;
 		layoutInflater = LayoutInflater.from(context);
 	}
