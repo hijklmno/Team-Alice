@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +12,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
 import cse110.TeamNom.projectnom.AppParseAccess;
 import cse110.TeamNom.projectnom.PictureDBObject;
 import cse110.TeamNom.projectnom.R;
 
 public class CustomListAdapter extends BaseAdapter {
 	
-	private ArrayList<PictureDBObject> listData;
+	private ArrayList<PictureDBObject> listData = new ArrayList<PictureDBObject>();
 	private LayoutInflater layoutInflater;
-	private boolean flag_bookmark = false;
-	private boolean flag_like = false;
 	
 	public CustomListAdapter(Context context, ArrayList<PictureDBObject> listData) {
-		listData = new ArrayList<PictureDBObject>();
 		this.listData = listData;
 		layoutInflater = LayoutInflater.from(context);
 	}
