@@ -4,16 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
-import android.util.Log;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -315,14 +307,29 @@ public class AppParseAccess {
 	 * incrementNomCount() increments the Nom number of the object with imageID
 	 * in the Food_Table_DB by 1.
 	 */
-	public static void incrementNomCount(String imageID) {
+	public static void incrementNomCount(String FB_ID, String imageID) {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		String userID = currentUser.getObjectId();
 
 		try {
 			ParseObject photoObject = query.get(imageID);
 
 			if (photoObject != null) {
 				photoObject.increment("Like");
+				
+				String nomString = photoObject.getString("Like_id");
+				
+				if (nomString == null || nomString.equals("")) {
+					nomString = "";
+					nomString += userID;
+				} else {
+					imageID = "," + userID;
+					nomString += userID;
+				}
+				
+				photoObject.put("Like_id", nomString);
+				photoObject.saveInBackground();
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -333,22 +340,35 @@ public class AppParseAccess {
 	 * bookmarkImage() adds the imageID to the bookmarks string of the current
 	 * Parse user.
 	 */
-	public static void bookmarkImage(String imageID) {
+	public static void bookmarkImage(String FB_ID, String imageID) {
 		 ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		 ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		 String userID = currentUser.getObjectId();
 		
 		 try {
-		 ParseObject photoObject = query.get(imageID);
+			 ParseObject photoObject = query.get(imageID);
 		
-		 if (photoObject != null) {
-		 photoObject.increment("Bookmark");
-		 }
+			 if (photoObject != null) {
+				 photoObject.increment("Bookmark");
+			 
+				 String bookmarkString = photoObject.getString("Bookmark_id");
+				
+				 if (bookmarkString == null || bookmarkString.equals("")) {
+					 bookmarkString = "";
+					 bookmarkString += userID;
+				 } else {
+					 imageID = "," + userID;
+					 bookmarkString += userID;
+				 }
+				
+				 photoObject.put("Bookmark_id", bookmarkString);
+				 photoObject.saveInBackground();
+			 }
 		 } catch (ParseException e) {
-		 e.printStackTrace();
+			 e.printStackTrace();
 		 }
 
-		// Get the current user's ParseObject
-		ParseObject currentUser = AppParseAccess.getCurrentUser(AppFacebookAccess.getFacebookId());
-
+		
 		// Add the objectID to the user's pictures string
 		if (currentUser != null) {
 			String pictureString = (String) currentUser.get("Bookmark");
@@ -378,9 +398,61 @@ public class AppParseAccess {
 
 			if (photoObject != null) {
 				photoObject.put("report_image", true);
+				
+				photoObject.saveInBackground();
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean isLiked(String FB_ID, String imageID) {
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		String userID = currentUser.getObjectId();
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		
+		try {
+			ParseObject photoObject = query.get(imageID);
+			
+			if (photoObject != null) {
+				String nomString = photoObject.getString("Like_id");
+				
+				if(nomString != null) {
+					String[] nomList = nomString.split(",");
+					
+					return Arrays.asList(nomList).contains(userID);
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public static boolean isBookmarked(String FB_ID, String imageID) {
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		String userID = currentUser.getObjectId();
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		
+		try {
+			ParseObject photoObject = query.get(imageID);
+			
+			if (photoObject != null) {
+				String bookmarkString = photoObject.getString("Bookmark_id");
+				
+				if(bookmarkString != null) {
+					String[] bookmarkList = bookmarkString.split(",");
+				
+					return Arrays.asList(bookmarkList).contains(userID);
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 }
