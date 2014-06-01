@@ -20,6 +20,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import cse110.TeamNom.projectnom.AppFacebookAccess;
 import cse110.TeamNom.projectnom.AppParseAccess;
 import cse110.TeamNom.projectnom.PictureDBObject;
 import cse110.TeamNom.projectnom.R;
@@ -94,14 +95,18 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AppParseAccess.bookmarkImage(pictureObj.getImageID());
+				if(!AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+					AppParseAccess.bookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());		
+				}
 			}
 		});
 		holder.nom.setTag(pictureObj.getImageID());
 		holder.nom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AppParseAccess.incrementNomCount(pictureObj.getImageID());
+				if(!AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+					AppParseAccess.incrementNomCount(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
+				}
 			}
 		});
 		holder.Report.setTag(pictureObj.getImageID());

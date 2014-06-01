@@ -2,7 +2,6 @@ package cse110.TeamNom.projectnom;
 
 import java.util.Date;
 
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -11,7 +10,9 @@ public class PictureDBObject {
 	String image_id;
 	byte[] Food_photo;
 	int Like;
+	String[] Like_id;
 	int Bookmark;
+	String[] Bookmark_id;
 	boolean report_image;
 	String FACEBOOK_ID;
 	String FACEBOOK_NAME;
@@ -45,8 +46,14 @@ public class PictureDBObject {
 		//Store like
 		setLikeCount(parse.getInt("Like"));
 
+		//Store list of ids which liked the picture
+		setLikeIDs(parse.getString("Like_id"));
+		
 		//Store bookmarks
 		setBookmarkCount(parse.getInt("Bookmark"));
+		
+		//Store list of ids which bookmarked the picture
+		setBookmarkIDs(parse.getString("Bookmark_id"));
 		
 		//Store image reported status
 		setImageReportStatus(parse.getBoolean("report_image"));
@@ -107,6 +114,26 @@ public class PictureDBObject {
 		return Like;
 	}
 
+	public void setLikeIDs(String ids) {
+		if (ids != null) {
+			Like_id = ids.split(",");
+		}
+	}
+	
+	public String[] getLikeIDs() {
+		return Like_id;
+	}
+	
+	public void setBookmarkIDs(String ids) {
+		if (ids != null) {
+			Bookmark_id = ids.split(",");
+		}
+	}
+	
+	public String[] getBookmarkIDs() {
+		return Bookmark_id;
+	}
+	
 	public void setBookmarkCount(int count) {
 		Bookmark = count;
 	}
