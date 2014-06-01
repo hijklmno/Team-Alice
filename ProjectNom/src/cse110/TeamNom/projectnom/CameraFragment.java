@@ -80,6 +80,7 @@ public class CameraFragment extends Fragment {
 	private String capTmp;
 	private Drawable imageTmp;
 	private String pathTmp;
+	private boolean wasVisible = false;
 	private boolean isRestart;
 	
 	
@@ -285,9 +286,14 @@ public class CameraFragment extends Fragment {
 		if(isRestart) {
 			restaurant.setText(restTmp);
 			caption.setText(capTmp);
-			//mImageView.setImageDrawable(imageTmp);
+			mImageView.setImageDrawable(imageTmp);
 			mImageView.setImageBitmap(mImageBitmap);
+			if(!wasVisible) {
+				setFragmentVisibility(1);
+			}
+			else {
 			setFragmentVisibility(0);
+			}
 			mCurrentPhotoPath = pathTmp;
 		}
 		else {
@@ -361,7 +367,10 @@ public class CameraFragment extends Fragment {
 		pathTmp = pathtophoto;
 		restTmp = restaurant.getText().toString();
 		capTmp = caption.getText().toString();
-	//	imageTmp = mImageView.getDrawable();
+		imageTmp = mImageView.getDrawable();
+		if(restaurant.getVisibility() == View.VISIBLE ) {
+			wasVisible = true;
+		}
 	}
 	public void onRestart() {
 		restaurant.setText(restTmp);

@@ -29,11 +29,8 @@ public class CustomListAdapter extends BaseAdapter {
 	
 	private ArrayList<PictureDBObject> listData;
 	private LayoutInflater layoutInflater;
-	private boolean flag_bookmark = false;
-	private boolean flag_like = false;
 	
 	public CustomListAdapter(Context context, ArrayList<PictureDBObject> listData) {
-		listData = new ArrayList<PictureDBObject>();
 		this.listData = listData;
 		layoutInflater = LayoutInflater.from(context);
 	}
@@ -131,7 +128,6 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView nameTextView;
 		TextView dateTextView;
 		ImageView imageView;
-		ImageView errorOverlay;
 		Button nom;
 		Button mmm;
 		Button Report;

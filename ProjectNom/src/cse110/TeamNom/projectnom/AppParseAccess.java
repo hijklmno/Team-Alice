@@ -398,7 +398,6 @@ public class AppParseAccess {
 
 			if (photoObject != null) {
 				photoObject.put("report_image", true);
-				
 				photoObject.saveInBackground();
 			}
 		} catch (ParseException e) {
