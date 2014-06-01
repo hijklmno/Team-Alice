@@ -17,6 +17,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,10 +27,10 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class CameraFragment extends Fragment {
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 
 	// Misc variables
-	private Button picBtn;
+	private ImageButton picBtn;
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
 	private EditText restaurant;
@@ -70,27 +71,33 @@ public class CameraFragment extends Fragment {
 	private String pathtophoto;
 	private String pictureID;
 
-	//
+	//Uri
 	private Uri contentUri;
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
-	// ---------------------------Camera Gallery
-	// Methods-------------------------------------------
-
+	//restart/pause strings
+	private String restTmp;
+	private String capTmp;
+	private Drawable imageTmp;
+	private String pathTmp;
+	private boolean isRestart;
+	
+	
+//---------------------------Camera Gallery Methods-------------------------------------------
+	
 	/**
-	 * Method that returns the photo gallery on the phone. Used to save
-	 * photofile onto the phone. Used by: createImageFile
-	 * 
+	 * Method that returns the photo gallery on the phone. Used to save photofile onto the
+	 * phone.
+	 * Used by: createImageFile  
 	 * @return strageDir - album where picture is stored
 	 */
 	private File getAlbumDir() {
 		File storageDir = null;
-		if (Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState())) {
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(ALBUM_NAME);
 			if (storageDir != null) {
 				if (!storageDir.mkdirs()) {
-					if (!storageDir.exists()) {
+					if (!storageDir.exists()){
 						Log.d("CameraSample", "failed to create directory");
 						return null;
 					}
@@ -98,8 +105,7 @@ public class CameraFragment extends Fragment {
 			}
 
 		} else {
-			Log.v(getString(R.string.app_name),
-					"External storage is not mounted READ/WRITE.");
+			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
 		}
 
 		return storageDir;
@@ -107,27 +113,24 @@ public class CameraFragment extends Fragment {
 
 	/**
 	 * Method used to create the file with the image with date and jpeg format
-	 * Calls: getAlbumDir Used by: setUpPhotoFile
-	 * 
+	 * Calls: getAlbumDir
+	 * Used by: setUpPhotoFile
 	 * @return imageF - image file with jpeg, timestamp, and album location
 	 * @throws IOException
 	 */
-	@SuppressLint("SimpleDateFormat")
-	private File createImageFile() throws IOException {
+	@SuppressLint("SimpleDateFormat") private File createImageFile() throws IOException {
 		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				.format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
 		File albumF = getAlbumDir();
-		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX,
-				albumF);
+		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
 		return imageF;
 	}
 
 	/**
-	 * sets up file path to photo Calls: createImageFile Used by:
-	 * dispatchTakePictureIntent
-	 * 
+	 * sets up file path to photo 
+	 * Calls: createImageFile
+	 * Used by: dispatchTakePictureIntent
 	 * @return returns image file
 	 * @throws IOException
 	 */
@@ -159,7 +162,7 @@ public class CameraFragment extends Fragment {
 		/* Figure out which way needs to be reduced less */
 		int scaleFactor = 1;
 		if ((targetW > 0) || (targetH > 0)) {
-			scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+			scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 		}
 
 		/* Set bitmap options to scale the image decode target */
@@ -169,6 +172,7 @@ public class CameraFragment extends Fragment {
 
 		/* Decode the JPEG file into a Bitmap */
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		mImageBitmap = bitmap;
 
 		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(bitmap);
@@ -177,20 +181,22 @@ public class CameraFragment extends Fragment {
 
 	/**
 	 * Uses intent to add the set up picture with photo path into the phone's
-	 * photo gallery Used by: handlePhoto
+	 * photo gallery
+	 * Used by: handlePhoto
 	 */
 	private void galleryAddPic() {
-		Intent mediaScanIntent = new Intent(
-				"android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+		Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
 		File f = new File(mCurrentPhotoPath);
 		contentUri = Uri.fromFile(f);
 		mediaScanIntent.setData(contentUri);
 		getActivity().sendBroadcast(mediaScanIntent);
 	}
 
+
 	/**
 	 * sets path to the photo and saves the photo into the phone's gallery
-	 * calls: setPic and galleryAddPic Used by: onActivityResult
+	 * calls: setPic and galleryAddPic
+	 * Used by: onActivityResult 
 	 */
 	private void handlePhoto() {
 		if (mCurrentPhotoPath != null) {
@@ -200,27 +206,23 @@ public class CameraFragment extends Fragment {
 			mCurrentPhotoPath = null;
 		}
 	}
-
-	// ------------------------Camera Access
-	// Methods-------------------------------------------
-
+	
+//------------------------Camera Access Methods-------------------------------------------
+	
 	/**
-	 * dispatches intent to the android camera in order to access it Calls:
-	 * setUpPhotoFile Used by: onCreateView when take photo button is clicked
-	 * 
-	 * @param actionCode
-	 *            what action user specified when taking picture (cancel, check,
-	 *            undo)
+	 * dispatches intent to the android camera in order to access it
+	 * Calls: setUpPhotoFile
+	 * Used by: onCreateView when take photo button is clicked
+	 * @param actionCode what action user specified when taking picture (cancel, check, undo)
 	 */
 	private void dispatchTakePictureIntent(int actionCode) {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		if (actionCode == TAKE_PHOTO) {
+		if(actionCode == TAKE_PHOTO){
 			File f = null;
 			try {
 				f = setUpPhotoFile();
 				mCurrentPhotoPath = f.getAbsolutePath();
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-						Uri.fromFile(f));
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 			} catch (IOException e) {
 				e.printStackTrace();
 				f = null;
@@ -230,16 +232,18 @@ public class CameraFragment extends Fragment {
 		startActivityForResult(takePictureIntent, actionCode);
 	}
 
-	Button.OnClickListener mTakePicOnClickListener = new Button.OnClickListener() {
+	Button.OnClickListener mTakePicOnClickListener =
+			new Button.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			dispatchTakePictureIntent(TAKE_PHOTO);
 		}
 	};
 
+
 	/**
-	 * method is called after photo is taken by user in android camera and sets
-	 * gps calls setFragmentVisibility(), handlePhoto()
+	 * method is called after photo is taken by user in android camera and sets gps 
+	 * calls setFragmentVisibility(), handlePhoto() 
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -247,44 +251,52 @@ public class CameraFragment extends Fragment {
 
 			GPSFragment gps = new GPSFragment(getActivity());
 
-			if (!gps.canGetLocation())
+			if(!gps.canGetLocation())
 				gps.showSettingsAlert();
-
+			
 			setFragmentVisibility(0);
 
 			handlePhoto();
 		}
 	}
-
-	// -------------------------UI
-	// Methods------------------------------------------
+	
+	//-------------------------UI Methods------------------------------------------
 
 	/**
-	 * Method sets up the whole UI when fragment is created Calls:
-	 * setFragmentVisibility, mTakePicOnClickListener, isDeviceSupportCamera,
-	 * onClickPicture, onCLickSubmit Used By: android system
+	 * Method sets up the whole UI when fragment is created
+	 * Calls: setFragmentVisibility, mTakePicOnClickListener, isDeviceSupportCamera,
+	 * onClickPicture, onCLickSubmit
+	 * Used By: android system 
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_camera, container,
-				false);
+		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
-		picBtn = (Button) rootView.findViewById(R.id.btnCapturePicture);
+		picBtn = (ImageButton) rootView.findViewById(R.id.btnCapturePicture);
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
 		mImageView = (ImageView) rootView.findViewById(R.id.imageView1);
-
+		
 		context = getActivity().getApplicationContext();
 
-		setFragmentVisibility(1);
-
+		if(isRestart) {
+			restaurant.setText(restTmp);
+			caption.setText(capTmp);
+			//mImageView.setImageDrawable(imageTmp);
+			mImageView.setImageBitmap(mImageBitmap);
+			setFragmentVisibility(0);
+			mCurrentPhotoPath = pathTmp;
+		}
+		else {
+			setFragmentVisibility(1);
+		}
 		mImageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				PicturePopUp ppp = new PicturePopUp(contentUri, context);
+				PicturePopUp ppp = new PicturePopUp(contentUri, context);
 			}
 		});
 		/**
@@ -293,9 +305,7 @@ public class CameraFragment extends Fragment {
 		picBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				onClickPicture();
-
 			}
 		});
 		subBut.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +316,7 @@ public class CameraFragment extends Fragment {
 		});
 		// Checking camera availability
 		if (!isDeviceSupportCamera()) {
-			Toast.makeText(super.getActivity().getApplicationContext(),
+			Toast.makeText( super.getActivity().getApplicationContext(),
 					"Sorry! Your device doesn't support camera",
 					Toast.LENGTH_LONG).show();
 			// will close the app if the device does't have camera
@@ -316,8 +326,8 @@ public class CameraFragment extends Fragment {
 	}
 
 	/**
-	 * Resets visibility on the fragment making it so the fragment looks brand
-	 * new Calls: setFragmentVisibility
+	 * Resets visibility on the fragment making it so the fragment looks brand new
+	 * Calls: setFragmentVisibility
 	 */
 	private void resetFragment() {
 		setFragmentVisibility(1);
@@ -325,51 +335,67 @@ public class CameraFragment extends Fragment {
 		mImageView.setImageDrawable(null);
 		restaurant.setText(null);
 		caption.setText(null);
+		isRestart=false;
 	}
-
 	// Some lifecycle callbacks so that the image can survive orientation change
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putParcelable(BITMAP_STORAGE_KEY, mImageBitmap);
-		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY,
-				(mImageBitmap != null));
 		super.onSaveInstanceState(outState);
+		outState.putParcelable(BITMAP_STORAGE_KEY, mImageBitmap);
+		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY, (mImageBitmap != null) );
 	}
-
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		mImageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
 		mImageView.setImageBitmap(mImageBitmap);
-		mImageView
-				.setVisibility(savedInstanceState
-						.getBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY) ? ImageView.VISIBLE
-						: ImageView.INVISIBLE);
+		setFragmentVisibility(0);
 	}
-
-	// ------------------------------Parse
-	// Methods---------------------------------------------
-
+	public void onPause() {
+		super.onPause();
+		restTmp = restaurant.getText().toString();
+		capTmp = caption.getText().toString();
+	}
+	public void onStop() {
+		isRestart = true;
+		super.onStop();
+		pathTmp = pathtophoto;
+		restTmp = restaurant.getText().toString();
+		capTmp = caption.getText().toString();
+	//	imageTmp = mImageView.getDrawable();
+	}
+	public void onRestart() {
+		restaurant.setText(restTmp);
+		caption.setText(capTmp);
+		mImageView.setImageDrawable(imageTmp);
+		mImageView.setImageBitmap(mImageBitmap);
+		setFragmentVisibility(0);
+	}
+	public void onResume() {
+		super.onResume();
+	}
+	
+	//------------------------------Parse Methods---------------------------------------------
+	
 	/**
-	 * Method that compresses a file given a path. Compresses file for parse
+	 * Method that compresses a file given a path. Compresses file for parse 
 	 * Called by onCreateView after submit popup button is clickeed
-	 * 
 	 * @param path
 	 * @throws Exception
 	 */
-	private void compressFile(String path) throws Exception {
+	private void compressFile(String path) throws Exception{
 		GPSFragment gps = new GPSFragment(getActivity());
 		Bitmap bitmap;
 		bitmap = BitmapFactory.decodeFile(path);
-		if (bitmap == null) {
+		if(bitmap == null)
+		{
 			System.out.println(path + "cannot be converted to a bitmap!");
 			return;
 		}
-		Bitmap bmpCompressed = Bitmap
-				.createScaledBitmap(bitmap, 400, 400, true);
+		Bitmap bmpCompressed = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		bmpCompressed.compress(CompressFormat.JPEG, 100, bos);
 		byte[] data = bos.toByteArray();
-		// uncompressFile(data);
+		//uncompressFile(data);
 
 		final ParseObject object = new ParseObject("Food_Table_DB");
 		ParseFile file = new ParseFile(data);
@@ -378,13 +404,14 @@ public class CameraFragment extends Fragment {
 			public void done(ParseException e) {
 				if (e == null) {
 
-				} else {
+				}
+				else {
 					System.err.println("ParseException: " + e);
 				}
 			}
 		});
 
-		// parseTitle = title.getText().toString();
+		//parseTitle = title.getText().toString();
 		parseRestaurant = restaurant.getText().toString();
 		parseCaption = caption.getText().toString();
 
@@ -392,14 +419,14 @@ public class CameraFragment extends Fragment {
 		object.put("Restaurant_Id", parseRestaurant);
 		object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
 		object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
-		object.put("Tags", parseCaption);
+		object.put("Tags",parseCaption);
 		object.put("Like", 0);
 		object.put("Bookmark", 0);
 		object.put("Longitude", gps.getLongitude());
 		object.put("Latitude", gps.getLatitude());
 		object.put("report_image", false);
 		object.saveInBackground();
-
+		
 		object.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
@@ -407,8 +434,7 @@ public class CameraFragment extends Fragment {
 				pictureID = object.getObjectId();
 
 				Log.d("asdasd", pictureID);
-				ParseQuery<ParseObject> query = ParseQuery
-						.getQuery("FacebookAccounts");
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
 
 				Log.d("GettingFacebookinfo", "asdf");
 				Session session = Session.getActiveSession();
@@ -420,19 +446,18 @@ public class CameraFragment extends Fragment {
 					public void done(List<ParseObject> objects, ParseException e) {
 						if (objects == null || objects.isEmpty()) {
 							Log.d("GettingFacebookinfo", "no object returned");
-						} else {
-							Log.d("GettingFacebookinfo", objects.get(0)
-									.toString());
+						}
+						else {
+							Log.d("GettingFacebookinfo", objects.get(0).toString());
 							ParseObject facebookAccount = objects.get(0);
 
-							String pictureString = (String) facebookAccount
-									.get("pictures");
+							String pictureString = (String) facebookAccount.get("pictures");
 
-							if (pictureString == null
-									|| pictureString.equals("")) {
+							if (pictureString == null || pictureString.equals("")) {
 								pictureString = "";
 								pictureString += pictureID;
-							} else {
+							}
+							else {
 								pictureID = "," + pictureID;
 								pictureString += pictureID;
 							}
@@ -444,22 +469,21 @@ public class CameraFragment extends Fragment {
 			}
 		});
 
+
 	}
+	
+	//----------------------------Facebook-----------------------------------------------
 
-	// ----------------------------Facebook-----------------------------------------------
-
-	// --------------------------------Helper
-	// Methods----------------------------------------
-
+	//--------------------------------Helper Methods----------------------------------------
+	
 	/**
-	 * Pretty straightforward, checks if device has camera functions or not Used
-	 * by: onCreateView
-	 * 
+	 * Pretty straightforward, checks if device has camera functions or not
+	 * Used by: onCreateView
 	 * @return bool whether phone has camera or not
 	 */
 	private boolean isDeviceSupportCamera() {
-		if (super.getActivity().getApplicationContext().getPackageManager()
-				.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+		if (super.getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_CAMERA)) {
 			// this device has a camera
 			return true;
 		} else {
@@ -469,28 +493,27 @@ public class CameraFragment extends Fragment {
 	}
 
 	/**
-	 * sets onclicklistener for button
-	 * 
+	 * sets onclicklistener for button 
 	 * @param btn
 	 * @param onClickListener
 	 * @param intentName
 	 */
-	private void setBtnListenerOrDisable(Button btn,
-			Button.OnClickListener onClickListener, String intentName) {
-		if (isIntentAvailable(super.getActivity().getApplicationContext(),
-				intentName)) {
+	private void setBtnListenerOrDisable(
+			ImageButton btn,
+			Button.OnClickListener onClickListener,
+			String intentName
+			) {
+		if (isIntentAvailable(super.getActivity().getApplicationContext(), intentName)) {
 			btn.setOnClickListener(onClickListener);
 		} else {
-			btn.setText(getText(R.string.cannot).toString() + " "
-					+ btn.getText());
+			//btn.setText(getText(R.string.cannot).toString() + " " + btn.getText());
 			btn.setClickable(false);
 		}
 	}
 
 	/**
-	 * method checks if intent is available for fragment Used by:
-	 * setBtnListenerOrDisable
-	 * 
+	 * method checks if intent is available for fragment
+	 * Used by: setBtnListenerOrDisable
 	 * @param context
 	 * @param action
 	 * @return returns true if list.size > 0
@@ -498,17 +521,17 @@ public class CameraFragment extends Fragment {
 	public static boolean isIntentAvailable(Context context, String action) {
 		final PackageManager packageManager = context.getPackageManager();
 		final Intent intent = new Intent(action);
-		List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
-				PackageManager.MATCH_DEFAULT_ONLY);
+		List<ResolveInfo> list =
+				packageManager.queryIntentActivities(intent,
+						PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
 	}
-
+	
 	/**
-	 * sets the buttons, texts, images visibility to visible or invisible 1 =
-	 * invisible, 0 = visible Used by:
-	 * 
-	 * @param i
-	 *            - int to check for invisible or visible
+	 * sets the buttons, texts, images visibility to visible or invisible
+	 * 1 = invisible, 0 = visible
+	 * Used by:
+	 * @param i - int to check for invisible or visible
 	 */
 	private void setFragmentVisibility(int i) {
 		if (i == 1) {
@@ -523,17 +546,21 @@ public class CameraFragment extends Fragment {
 			mImageView.setVisibility(View.VISIBLE);
 		}
 	}
-
+	
 	/**
-	 * handles onClick for take picture button Calls: dispatchTakePictureIntent
+	 * handles onClick for take picture button
+	 * Calls: dispatchTakePictureIntent
 	 * Used by: onCreateView
 	 */
 	private void onClickPicture() {
 		mImageView = (ImageView) getActivity().findViewById(R.id.imageView1);
 		mImageBitmap = null;
 
-		setBtnListenerOrDisable(picBtn, mTakePicOnClickListener,
-				MediaStore.ACTION_IMAGE_CAPTURE);
+		setBtnListenerOrDisable(
+				picBtn,
+				mTakePicOnClickListener,
+				MediaStore.ACTION_IMAGE_CAPTURE
+				);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 			mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
@@ -542,10 +569,12 @@ public class CameraFragment extends Fragment {
 		}
 		dispatchTakePictureIntent(TAKE_PHOTO);
 	}
-
+	
 	/**
-	 * method that reads the onclick of the submit button submits the photo to
-	 * parse after prompting user Calls:compressFile Used By: onCreateView
+	 * method that reads the onclick of the submit button
+	 * submits the photo to parse after prompting user
+	 * Calls:compressFile
+	 * Used By: onCreateView
 	 */
 	private void onClickSubmit() {
 
@@ -555,38 +584,30 @@ public class CameraFragment extends Fragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setCancelable(false);
 		builder.setMessage("Are you sure you want to upload?")
-				.setPositiveButton(R.string.ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								try {
-									String test = restaurant.getText()
-											.toString();
-									if (test.matches("")) {
-										Toast toast = Toast
-												.makeText(
-														context,
-														"Please enter restaurant name ",
-														Toast.LENGTH_LONG);
-										toast.show();
-									} else {
-										compressFile(pathtophoto);
-
-										Toast toast = Toast.makeText(context,
-												"File Uploaded Successfully",
-												Toast.LENGTH_LONG);
-										toast.show();
-										resetFragment();
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						})
-				.setNegativeButton(R.string.cancel,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-							}
-						});
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				try {
+					String test = restaurant.getText().toString();
+					if(test.matches("")) {
+						Toast toast = Toast.makeText(context, "Please enter restaurant name ", Toast.LENGTH_LONG);
+						toast.show();
+					}
+					else {
+						compressFile(pathtophoto);
+						
+						Toast toast = Toast.makeText(context,  "File Uploaded Successfully", Toast.LENGTH_LONG);
+						toast.show();
+						resetFragment();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		})
+		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+			}
+		});
 		builder.show();
 	}
 }

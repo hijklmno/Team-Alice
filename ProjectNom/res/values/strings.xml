@@ -34,6 +34,8 @@
     <string name="titleID">Title of Picture</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="ccd">Button that starts the camera</string>
+    <string name="pcd">Your Picture</string>
     <!-- End of Camera -->
     
     <!-- Yelp -->

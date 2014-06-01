@@ -4,14 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-     
-    <TextView android:layout_width="fill_parent"
+
+    <ImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Profile"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
-     
+        android:visibility="visible" 
+        android:layout_alignParentLeft="True"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" />
+    <TextView
+        android:id="@+id/profileUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageViewProfile"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="10dp" 
+        android:paddingTop="10dp"/>    
  	<!--  <fragment android:name="com.facebook.widget.UserSettingsFragment"
           android:id="@+id/userSettingsFragment"
           android:layout_width="match_parent"
@@ -28,7 +38,8 @@
         	    android:id="@+id/horizontal_outer_layout"
         	    android:layout_height="fill_parent"
         	    android:layout_width="wrap_content"
-        	    android:orientation="horizontal">
+        	    android:orientation="horizontal"
+        	    android:paddingLeft="5dp">
         	</LinearLayout>
     </HorizontalScrollView>
 
@@ -37,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log Out"
-		android:layout_alignStart="@+id/horizontal_scrollview"
-        android:onClick="onClickLogout" />
+        android:onClick="onClickLogout" 
+        android:layout_alignParentBottom="true"/>
     
     <!-- Facebook test stuff --> 
     <Button 
@@ -54,12 +65,6 @@
         android:text="Facebook goes here"
         android:layout_marginTop="88dp"
         android:textSize="20dp" />
-    <ImageView
-        android:id="@+id/imageViewProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible" 
-        android:layout_below="@id/TitleID"
-        android:layout_alignParentLeft="True" />
+
     
 </RelativeLayout>

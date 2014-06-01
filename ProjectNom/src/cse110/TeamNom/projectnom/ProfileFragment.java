@@ -2,8 +2,10 @@ package cse110.TeamNom.projectnom;
 
 import java.net.URL;
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -45,6 +48,7 @@ public class ProfileFragment extends Fragment {
 	private Button buttonFacebook;
 	private TextView textbox;
 	private static Bitmap profileBitmap;
+	private TextView profileUser;
 
 	private ProfilePictureView profilePictureView;
 
@@ -61,6 +65,10 @@ public class ProfileFragment extends Fragment {
 		// facebook debug textbox
 		textbox = (TextView) rootView.findViewById(R.id.facebookDebugBox);
 
+		profileUser = (TextView) rootView.findViewById(R.id.profileUser);
+		
+		profileUser.setText( AppFacebookAccess.getFacebookName());
+		
 		// start configuration for the logout button
 		buttonLogout = (Button) rootView.findViewById(R.id.buttonLogout);
 		buttonLogout.setOnClickListener(new OnClickListener() {
