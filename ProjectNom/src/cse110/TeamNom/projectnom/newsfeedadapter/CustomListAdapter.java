@@ -94,7 +94,7 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AppParseAccess.incrementMmmCount(pictureObj.getImageID());
+				AppParseAccess.bookmarkImage(pictureObj.getImageID());
 			}
 		});
 		holder.nom.setTag(pictureObj.getImageID());

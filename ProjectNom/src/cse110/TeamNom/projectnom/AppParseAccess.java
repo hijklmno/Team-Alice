@@ -32,13 +32,14 @@ public class AppParseAccess {
 	 * initialize() initializes the Parse access using NOM's application ID and
 	 * client key.
 	 */
-	public static void initialize(final Context context, final String applicationId,
-			final String clientKey) {
+	public static void initialize(final Context context,
+			final String applicationId, final String clientKey) {
+		// Run new thread so that Parse calls finish before main thread
+		// continues
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					/* make the API call */
 					Parse.initialize(context, applicationId, clientKey);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +53,7 @@ public class AppParseAccess {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/*
@@ -60,13 +61,14 @@ public class AppParseAccess {
 	 * FacebookAccounts table of the NOM Parse database.
 	 */
 	public static boolean isExistingUser(String FB_ID) {
-		// testing to see if is a user already
+		// Testing to see if is a user already by checking for FB_ID
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
 		query.whereEqualTo("facebook_id", FB_ID);
 
 		try {
 			List<ParseObject> objects = query.find();
 
+			// Empty objects mean that there was no match
 			if (objects.isEmpty()) {
 				return false;
 			}
@@ -79,7 +81,8 @@ public class AppParseAccess {
 
 	/*
 	 * addNewUser() adds a new user to the FacebookAccounts table of the NOM
-	 * Parse database, if there isn't already an account on the FacebookAccounts.
+	 * Parse database, if there isn't already an account on the
+	 * FacebookAccounts.
 	 */
 	public static void loadOrAddNewUser(String FB_ID, String fullName) {
 		if (!AppParseAccess.isExistingUser(FB_ID)) {
@@ -148,6 +151,7 @@ public class AppParseAccess {
 			}
 		});
 
+		// Store the necessary info in Parse
 		object.put("Food_photo", file);
 		object.put("Restaurant_Id", resName);
 		object.put("Food_Name", caption);
@@ -159,16 +163,18 @@ public class AppParseAccess {
 		object.put("roundLatitude", (double) Math.round(latitude * 10) / 10);
 		object.put("report_image", false);
 
+		// When saving to Parse must also update user's picture string
 		object.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 
+				// Get the objectID of the picture
 				String pictureID = object.getObjectId();
 
-				ParseQuery<ParseObject> query = ParseQuery
-						.getQuery("FacebookAccounts");
+				// Get the current user's ParseObject
 				ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 
+				// Add the objectID to the user's pictures string
 				if (currentUser != null) {
 					String pictureString = (String) currentUser.get("pictures");
 
@@ -274,19 +280,20 @@ public class AppParseAccess {
 
 		return null;
 	}
-	
-	/* 
+
+	/*
 	 * Get a list of pictures given a list of friends
 	 */
-	public static ArrayList<PictureDBObject> getFriendsPictureWithLimits(String[] picture_ids, int count, int offset) {
+	public static ArrayList<PictureDBObject> getFriendsPictureWithLimits(
+			String[] picture_ids, int count, int offset) {
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
-		
+
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.whereContainedIn("FACEBOOK_ID", Arrays.asList(picture_ids));
 		query.orderByDescending("updatedAt");
 		query.setLimit(count);
 		query.setSkip(offset);
-		
+
 		try {
 			List<ParseObject> objects = query.find();
 
@@ -300,21 +307,80 @@ public class AppParseAccess {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return customList;
 	}
 
-	//TODO
+	/*
+	 * incrementNomCount() increments the Nom number of the object with imageID
+	 * in the Food_Table_DB by 1.
+	 */
 	public static void incrementNomCount(String imageID) {
-		System.out.println(imageID + " nom + 1!!");
-	}
-	
-	public static void incrementMmmCount(String imageID) {
-		System.out.println(imageID + " mmm + 1!!");
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+
+		try {
+			ParseObject photoObject = query.get(imageID);
+
+			if (photoObject != null) {
+				photoObject.increment("Like");
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/*
+	 * bookmarkImage() adds the imageID to the bookmarks string of the current
+	 * Parse user.
+	 */
+	public static void bookmarkImage(String imageID) {
+		 ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		
+		 try {
+		 ParseObject photoObject = query.get(imageID);
+		
+		 if (photoObject != null) {
+		 photoObject.increment("Bookmark");
+		 }
+		 } catch (ParseException e) {
+		 e.printStackTrace();
+		 }
+
+		// Get the current user's ParseObject
+		ParseObject currentUser = AppParseAccess.getCurrentUser(AppFacebookAccess.getFacebookId());
+
+		// Add the objectID to the user's pictures string
+		if (currentUser != null) {
+			String pictureString = (String) currentUser.get("Bookmark");
+
+			if (pictureString == null || pictureString.equals("")) {
+				pictureString = "";
+				pictureString += imageID;
+			} else {
+				imageID = "," + imageID;
+				pictureString += imageID;
+			}
+			currentUser.put("bookmarks", pictureString);
+			currentUser.saveInBackground();
+		}
+	}
+
+	/*
+	 * setFlag() sets the flag of the object with imageID.
+	 */
 	public static void setFlag(String imageID) {
 		System.out.println(imageID + " flagged!");
-		
+
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+
+		try {
+			ParseObject photoObject = query.get(imageID);
+
+			if (photoObject != null) {
+				photoObject.put("report_image", true);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }
