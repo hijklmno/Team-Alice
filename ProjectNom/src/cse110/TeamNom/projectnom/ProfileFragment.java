@@ -178,34 +178,10 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void onClickFacebookPicUpdate() {
-		getFacebookProfilePicture();
+		profileBitmap = AppFacebookAccess.getFacebookProfilePicture();
 		ImageView profPic = (ImageView) getView().findViewById(
 				R.id.imageViewProfile);
 		profPic.setImageBitmap(profileBitmap);
-	}
-
-	private void getFacebookProfilePicture() {
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					System.out.println(AppFacebookAccess.getFacebookId());
-					URL imageURL = new URL("https://graph.facebook.com/"
-							+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
-					profileBitmap = BitmapFactory.decodeStream(imageURL
-							.openConnection().getInputStream());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		thread.start();
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	// get list of pictures from parse

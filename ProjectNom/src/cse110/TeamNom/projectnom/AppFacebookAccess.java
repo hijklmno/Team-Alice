@@ -1,13 +1,14 @@
 package cse110.TeamNom.projectnom;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -24,6 +25,7 @@ public class AppFacebookAccess {
 	private static String FB_Name;					// The full name of current user
 	private static Session session;					// The current active Facebook session
 	private static ArrayList<String> allFriends;	// ArrayList of friend's FB IDs
+	private static Bitmap profileBitmap;
 	
 	/*
 	 * setActiveSession() stores the current active Facebook session.
@@ -153,5 +155,32 @@ public class AppFacebookAccess {
 	 */
 	public static String getFacebookName() {
 		return FB_Name;
+	}
+	
+	public static Bitmap getFacebookProfilePicture() {
+		
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					System.out.println(AppFacebookAccess.getFacebookId());
+					URL imageURL = new URL("https://graph.facebook.com/"
+							+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
+					profileBitmap = BitmapFactory.decodeStream(imageURL
+							.openConnection().getInputStream());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return profileBitmap;
 	}
 }
