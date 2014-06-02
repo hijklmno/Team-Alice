@@ -502,7 +502,12 @@ public class AppParseAccess {
 							String[] likeList = likeString.split(",");
 						
 							// Removes userID from likeList
-							Arrays.asList(likeList).remove(userID);
+							List<String> list = Arrays.asList(likeList);
+							
+							list.remove(userID);
+							
+							photoObject.put("Like_id", list.toArray());
+							photoObject.saveInBackground();
 						}
 					}
 				} catch (ParseException e) {
@@ -531,7 +536,12 @@ public class AppParseAccess {
 									String[] bookmarkList = bookmarkString.split(",");
 								
 									// Removes userID from likeList
-									Arrays.asList(bookmarkList).remove(userID);
+									List<String> list = Arrays.asList(bookmarkList);
+									
+									list.remove(userID);
+									
+									photoObject.put("Like_id", list.toArray());
+									photoObject.saveInBackground();
 								}
 							}
 						} catch (ParseException e) {
