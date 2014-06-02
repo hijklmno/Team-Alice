@@ -24,6 +24,12 @@ public class PictureDBObject {
 	Date updatedAt;
 	
 	public PictureDBObject(ParseObject parse) {
+		Like = 0;
+		Bookmark = 0;
+		report_image = false;
+		Latitude = 0;
+		Longitude = 0;
+		
 		//Store picture
 		ParseFile pf;
 		pf = (ParseFile) parse.get("Food_photo");
@@ -74,14 +80,17 @@ public class PictureDBObject {
 		setUpdatedDate(parse.getUpdatedAt());
 	}
 	
+	// Mutator method to set the facebook name for later retrieval
 	public void setFacebookName(String name) {
 		FACEBOOK_NAME = name;
 	}
 	
+	// Accessor method to return the facebook name 
 	public String getFacebookName() {
 		return FACEBOOK_NAME;
 	}
 	
+	// Mutator method to set the image id for later retrieval
 	public void setImageID(String id) {
 		image_id = id;
 	}

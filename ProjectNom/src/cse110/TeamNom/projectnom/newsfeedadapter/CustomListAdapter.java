@@ -88,6 +88,7 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.dateTextView.setText(pictureObj.getUpdatedDate().toString());
 		holder.imageView.setImageBitmap(uncompressImage(pictureObj.getPicture()));
 		holder.nameTextView.setText("By: " + pictureObj.getFacebookName());
+		//Define the Mmm button settings
 		holder.mmm.setTag(pictureObj.getImageID());
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -97,6 +98,9 @@ public class CustomListAdapter extends BaseAdapter {
 				}
 			}
 		});
+		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
+		
+		//Define the Nom button settings
 		holder.nom.setTag(pictureObj.getImageID());
 		holder.nom.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -106,6 +110,9 @@ public class CustomListAdapter extends BaseAdapter {
 				}
 			}
 		});
+		holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
+		
+		//Define the report button settings
 		holder.Report.setTag(pictureObj.getImageID());
 		holder.Report.setOnClickListener(new View.OnClickListener() {
 			@Override
