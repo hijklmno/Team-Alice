@@ -36,10 +36,11 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="Your Pictures"
-	    android:layout_below="@id/imageViewProfile" />
+	    android:layout_below="@id/imageViewProfile" 
+	    android:paddingTop="10dp"/>
    <HorizontalScrollView 
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/horizontal_scrollview" 
         android:fadingEdge="none"
         android:paddingTop="10dp"
@@ -48,10 +49,9 @@
         	    android:id="@+id/horizontal_outer_layout"
         	    android:layout_height="fill_parent"
         	    android:layout_width="wrap_content"
-        	    android:orientation="horizontal"
-        	    android:paddingLeft="5dp"
-        	    android:paddingRight="5dp">
+        	    android:orientation="horizontal">
         	</LinearLayout>
+        	
     </HorizontalScrollView>
 
    	<TextView
@@ -59,10 +59,11 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="Your Bookmarks"
+	    android:paddingTop="10dp"
 	    android:layout_below="@id/horizontal_scrollview" />
     <HorizontalScrollView 
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/horizontal_scrollview2" 
         android:fadingEdge="none" 
         android:paddingTop="10dp"
@@ -71,8 +72,7 @@
         	    android:id="@+id/horizontal_outer_layout2"
         	    android:layout_height="fill_parent"
         	    android:layout_width="wrap_content"
-        	    android:orientation="horizontal"
-        	    android:paddingLeft="5dp">
+        	    android:orientation="horizontal">
         	</LinearLayout>
     </HorizontalScrollView>
     
