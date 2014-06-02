@@ -163,7 +163,7 @@ public class PictureDBObject {
 		report_image = status;
 	}
 	
-	public boolean getImageReportStatus() {
+	public boolean isReported() {
 		return report_image;
 	}
 

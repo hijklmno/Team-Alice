@@ -90,31 +90,53 @@ public class CustomListAdapter extends BaseAdapter {
 		
 		holder.captionTextView.setText("Restaurant_id: " + pictureObj.getRestID());
 		holder.dateTextView.setText(pictureObj.getUpdatedDate().toString());
-		holder.imageView.setImageBitmap(uncompressImage(pictureObj.getPicture()));
+		if (pictureObj.isReported()) {
+			holder.imageView.setImageResource(R.drawable.ic_action_error);
+		} else {
+			holder.imageView.setImageBitmap(uncompressImage(pictureObj.getPicture()));
+		}
 		holder.nameTextView.setText("By: " + pictureObj.getFacebookName());
 		//Define the Mmm button settings
 		holder.mmm.setTag(pictureObj.getImageID());
+		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
 					AppParseAccess.bookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());		
+					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() + 1);
+					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
+					holder.mmm.refreshDrawableState();
+				} else {
+					AppParseAccess.unbookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
+					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() - 1);
+					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
+					holder.mmm.refreshDrawableState();
 				}
 			}
 		});
-		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
+		
 		
 		//Define the Nom button settings
 		holder.nom.setTag(pictureObj.getImageID());
+		holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
 		holder.nom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
 					AppParseAccess.incrementNomCount(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
+					pictureObj.setLikeCount(pictureObj.getLikeCount() + 1);
+					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
+					holder.nom.refreshDrawableState();
+				} else {
+					AppParseAccess.unlikeImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
+					pictureObj.setLikeCount(pictureObj.getLikeCount() - 1);
+					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
+					holder.nom.refreshDrawableState();
 				}
 			}
 		});
-		holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
+		
 		
 		//Define the report button settings
 		holder.Report.setTag(pictureObj.getImageID());
@@ -122,6 +144,8 @@ public class CustomListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				AppParseAccess.setFlag(pictureObj.getImageID());
+				holder.imageView.setImageResource(R.drawable.ic_action_error);
+				holder.imageView.refreshDrawableState();
 			}
 		});
 		

@@ -427,19 +427,23 @@ containing a value of this type.
         public static final int title_bar_logo=0x7f020044;
     }
     public static final class id {
-        public static final int Mmm=0x7f050054;
-        public static final int NOM=0x7f050053;
-        public static final int Report=0x7f050055;
-        public static final int RestaurantTitle=0x7f05003a;
-        public static final int TitleID=0x7f050039;
-        public static final int action_settings=0x7f05005d;
+        public static final int NewsFeedCaption=0x7f050054;
+        public static final int NewsFeedDate=0x7f050055;
+        public static final int NewsFeedMmm=0x7f050056;
+        public static final int NewsFeedNOM=0x7f050058;
+        public static final int NewsFeedName=0x7f050052;
+        public static final int NewsFeedReport=0x7f050059;
+        public static final int NewsFeedThumbImage=0x7f050053;
+        public static final int NewsFeedsubCaption=0x7f050057;
+        public static final int RestaurantTitle=0x7f05003b;
+        public static final int action_settings=0x7f050061;
+        public static final int bookmarksText=0x7f050047;
         public static final int both=0x7f050003;
-        public static final int btnCapturePicture=0x7f050037;
-        public static final int button1=0x7f05004c;
-        public static final int buttonLoginLogout=0x7f05005c;
-        public static final int buttonLogout=0x7f050043;
+        public static final int btnCapturePicture=0x7f050039;
+        public static final int button1=0x7f050050;
+        public static final int buttonLoginLogout=0x7f050060;
+        public static final int buttonLogout=0x7f05004a;
         public static final int camera_frag=0x7f050036;
-        public static final int captionNews=0x7f050052;
         public static final int com_facebook_body_frame=0x7f05002e;
         public static final int com_facebook_button_xout=0x7f050030;
         public static final int com_facebook_login_activity_progress_bar=0x7f05001e;
@@ -465,26 +469,26 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f050035;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f050033;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f050034;
-        public static final int custom_list=0x7f050040;
-        public static final int date=0x7f05004f;
+        public static final int custom_list=0x7f050041;
         public static final int disabled=0x7f050000;
-        public static final int edit_message=0x7f05003d;
-        public static final int facebookDebugBox=0x7f050045;
-        public static final int facebookTest=0x7f050044;
+        public static final int edit_message=0x7f05003e;
         public static final int fieldAddressLine=0x7f05001a;
         public static final int fieldCity=0x7f050016;
         public static final int fieldCountry=0x7f050014;
         public static final int fieldLatitude=0x7f050010;
         public static final int fieldLongitude=0x7f050012;
         public static final int fieldPostalCode=0x7f050018;
-        public static final int fl_inner=0x7f050056;
+        public static final int fl_inner=0x7f05005a;
         public static final int flip=0x7f050008;
         public static final int gridview=0x7f050009;
-        public static final int horizontal_outer_layout=0x7f050042;
-        public static final int horizontal_scrollview=0x7f050041;
-        public static final int imageView1=0x7f050038;
-        public static final int imageViewProfile=0x7f050046;
-        public static final int instructionsOrLink=0x7f05005b;
+        public static final int horizontal_outer_layout=0x7f050046;
+        public static final int horizontal_outer_layout2=0x7f050049;
+        public static final int horizontal_scrollview=0x7f050045;
+        public static final int horizontal_scrollview2=0x7f050048;
+        public static final int imageView1=0x7f05003a;
+        public static final int imageViewProfile=0x7f050042;
+        public static final int initialButton=0x7f050038;
+        public static final int instructionsOrLink=0x7f05005f;
         public static final int labelAddressLine=0x7f050019;
         public static final int labelCity=0x7f050015;
         public static final int labelCountry=0x7f050013;
@@ -492,34 +496,34 @@ containing a value of this type.
         public static final int labelLongitude=0x7f050011;
         public static final int labelPostalCode=0x7f050017;
         public static final int large=0x7f05000e;
-        public static final int linearLayout1=0x7f05004b;
+        public static final int linearLayout1=0x7f05004f;
         public static final int manualOnly=0x7f050004;
-        public static final int newsFeedToggle=0x7f05003f;
-        public static final int newsRestaurant=0x7f050050;
-        public static final int newsfeedFrag=0x7f05003e;
+        public static final int newsFeedToggle=0x7f050040;
+        public static final int newsfeedFrag=0x7f05003f;
         public static final int normal=0x7f05000d;
         public static final int pager=0x7f05001b;
         public static final int picker_subtitle=0x7f05002b;
-        public static final int pictureCaption=0x7f05003b;
+        public static final int pictureCaption=0x7f05003c;
+        public static final int picturesText=0x7f050044;
+        public static final int profileUser=0x7f050043;
         public static final int pullDownFromTop=0x7f050005;
         public static final int pullFromEnd=0x7f050002;
         public static final int pullFromStart=0x7f050001;
         public static final int pullUpFromBottom=0x7f050006;
-        public static final int pull_to_refresh_image=0x7f050057;
-        public static final int pull_to_refresh_progress=0x7f050058;
-        public static final int pull_to_refresh_sub_text=0x7f05005a;
-        public static final int pull_to_refresh_text=0x7f050059;
-        public static final int reporter=0x7f05004e;
+        public static final int pull_to_refresh_image=0x7f05005b;
+        public static final int pull_to_refresh_progress=0x7f05005c;
+        public static final int pull_to_refresh_sub_text=0x7f05005e;
+        public static final int pull_to_refresh_text=0x7f05005d;
+        public static final int redirect=0x7f050037;
         public static final int rotate=0x7f050007;
         public static final int scrollview=0x7f05000b;
-        public static final int searchLocation=0x7f05004a;
-        public static final int searchResults=0x7f05004d;
-        public static final int searchTerm=0x7f050048;
+        public static final int searchLocation=0x7f05004e;
+        public static final int searchResults=0x7f050051;
+        public static final int searchTerm=0x7f05004c;
         public static final int small=0x7f05000c;
-        public static final int submitButton=0x7f05003c;
-        public static final int textView1=0x7f050047;
-        public static final int textView2=0x7f050049;
-        public static final int thumbImage=0x7f050051;
+        public static final int submitButton=0x7f05003d;
+        public static final int textView1=0x7f05004b;
+        public static final int textView2=0x7f05004d;
         public static final int webview=0x7f05000a;
     }
     public static final class layout {
@@ -563,8 +567,8 @@ containing a value of this type.
         /**  End Of News Feed 
  Parse 
          */
-        public static final int ParseAppID=0x7f070042;
-        public static final int ParseClientKey=0x7f070043;
+        public static final int ParseAppID=0x7f070044;
+        public static final int ParseClientKey=0x7f070045;
         public static final int action_settings=0x7f070023;
         public static final int addressLine=0x7f07002e;
         public static final int app_id=0x7f070030;
@@ -574,6 +578,7 @@ containing a value of this type.
         public static final int cancel=0x7f070039;
         public static final int cannot=0x7f070034;
         public static final int cap=0x7f070035;
+        public static final int ccd=0x7f07003a;
         public static final int city=0x7f07002c;
         public static final int com_facebook_choose_friends=0x7f070015;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070006;
@@ -604,11 +609,11 @@ containing a value of this type.
         /**  End of Camera 
  Yelp 
          */
-        public static final int consumer_key=0x7f07003a;
-        public static final int consumer_secret=0x7f07003b;
+        public static final int consumer_key=0x7f07003c;
+        public static final int consumer_secret=0x7f07003d;
         public static final int country=0x7f07002b;
         public static final int edit_message=0x7f070021;
-        public static final int feed=0x7f070041;
+        public static final int feed=0x7f070043;
         /**  End of GPS 
  fb 
          */
@@ -622,6 +627,7 @@ containing a value of this type.
         public static final int latitude=0x7f070026;
         public static final int longitude=0x7f070027;
         public static final int ok=0x7f070038;
+        public static final int pcd=0x7f07003b;
         public static final int postalCode=0x7f07002d;
         /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
@@ -633,19 +639,19 @@ containing a value of this type.
         public static final int pull_to_refresh_refreshing_label=0x7f070002;
         public static final int pull_to_refresh_release_label=0x7f070001;
         public static final int restID=0x7f070033;
-        public static final int search=0x7f07003e;
+        public static final int search=0x7f070040;
         public static final int settings=0x7f07002a;
         public static final int submit=0x7f070036;
         public static final int titleID=0x7f070037;
         public static final int title_activity_camera=0x7f070025;
         public static final int title_activity_main=0x7f070024;
-        public static final int toggleOff=0x7f070040;
+        public static final int toggleOff=0x7f070042;
         /**  End of Yelp 
  News Feed 
          */
-        public static final int toggleOn=0x7f07003f;
-        public static final int token=0x7f07003c;
-        public static final int token_secret=0x7f07003d;
+        public static final int toggleOn=0x7f070041;
+        public static final int token=0x7f07003e;
+        public static final int token_secret=0x7f07003f;
     }
     public static final class style {
         /** 

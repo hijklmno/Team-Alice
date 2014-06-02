@@ -42,7 +42,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/NewsFeedMmm"
-        android:textColor="#BABABA"
+        android:textColor="#000000"
         android:textSize="12sp" />
 
     <TextView 
@@ -55,10 +55,6 @@
         android:textColor="@color/black"
         android:typeface="sans"
         android:textSize="18sp" />
-
-
-
-
 
     <Button
         android:id="@+id/NewsFeedNOM"
