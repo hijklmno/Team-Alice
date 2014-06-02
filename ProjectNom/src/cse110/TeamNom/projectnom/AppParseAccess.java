@@ -107,6 +107,41 @@ public class AppParseAccess {
 	}
 
 	/*
+	 * getMyBookmarkIds() returns a string array by splitting the string from the
+	 * pictures column of the FacebookAccounts table in the NOM Parse database.
+	 */
+	public static String[] getMyBookmarkIds(String FB_ID) {
+		// Gets current user ParseObject
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+
+		if (currentUser != null) {
+			
+			String bookmarkString = getBookmarkString(currentUser);
+			String[] bookmarkList = bookmarkString.split(",");
+
+			return bookmarkList;
+		}
+
+		return null;
+	}
+	
+	/*
+	 * getBookmarkString() returns the string from the pictures column of the
+	 * FacebookAccounts table of the parseUser in the NOM Parse database.
+	 * 
+	 * Note: The string should be split with "," to obtain each photo ID.
+	 */
+	private static String getBookmarkString(ParseObject parseUser) {
+		if (parseUser != null) {
+			String list = (String) parseUser.get("bookmarks");
+
+			return list;
+		}
+
+		return null;
+	}
+
+	/*
 	 * getSpecificPicture() returns a PictureDBObject by querying through the
 	 * Food_Table_DB table through the objectId column.
 	 */
@@ -219,7 +254,7 @@ public class AppParseAccess {
 	 * 
 	 * Note: The string should be split with "," to obtain each photo ID.
 	 */
-	public static String getPictureString(ParseObject parseUser) {
+	private static String getPictureString(ParseObject parseUser) {
 		if (parseUser != null) {
 			String list = (String) parseUser.get("pictures");
 

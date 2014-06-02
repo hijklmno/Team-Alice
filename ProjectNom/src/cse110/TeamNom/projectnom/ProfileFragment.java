@@ -236,5 +236,31 @@ public class ProfileFragment extends Fragment {
 				horizontalOuterLayout.addView(photoGalleryButton);
 			}
 		}
+		
+//		String[] bookmarkIDs = AppParseAccess.getMyBookmarkIds(AppFacebookAccess.getFacebookId());
+//		
+//		if (bookmarkIDs == null) {
+//			return;
+//		}
+//		
+//		for (int i = 0; i < bookmarkIDs.length; i++) {
+//			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
+//			if (object != null) {
+//				byte[] data = object.getPicture();
+//	
+//				final Button photoGalleryButton = new Button(getActivity());
+//				Drawable image = null;
+//				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+//				photoGalleryButton.setBackground(image);
+//				photoGalleryButton.setOnClickListener(new OnClickListener() {
+//					@Override
+//					public void onClick(View view) {
+//						System.out.println("df");
+//					}
+//				});
+//	
+//				horizontalOuterLayout.addView(photoGalleryButton);
+//			}
+//		}
 	}
 }
