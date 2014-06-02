@@ -369,8 +369,8 @@ public class AppParseAccess {
 					nomString = "";
 					nomString += userID;
 				} else {
-					imageID = "," + userID;
-					nomString += imageID;
+					String addString = "," + userID;
+					nomString += addString;
 				}
 				
 				photoObject.put("Like_id", nomString);
@@ -402,8 +402,8 @@ public class AppParseAccess {
 					 bookmarkString = "";
 					 bookmarkString += userID;
 				 } else {
-					 imageID = "," + userID;
-					 bookmarkString += imageID;
+					 String addString = "," + userID;
+					 bookmarkString += addString;
 				 }
 				
 				 photoObject.put("Bookmark_id", bookmarkString);
@@ -422,8 +422,8 @@ public class AppParseAccess {
 				pictureString = "";
 				pictureString += imageID;
 			} else {
-				imageID = "," + imageID;
-				pictureString += imageID;
+				String addString = "," + imageID;
+				pictureString += addString;
 			}
 			currentUser.put("bookmarks", pictureString);
 			currentUser.saveInBackground();
