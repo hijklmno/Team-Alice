@@ -32,9 +32,10 @@
 <!-- Gallery horizontal slide view -->
    <HorizontalScrollView 
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:id="@+id/horizontal_scrollview" 
         android:fadingEdge="none"
+        android:paddingTop="10dp"
         android:layout_below="@id/imageViewProfile" >
         	<LinearLayout 
         	    android:id="@+id/horizontal_outer_layout"
@@ -47,10 +48,10 @@
 
     <HorizontalScrollView 
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:id="@+id/horizontal_scrollview2" 
         android:fadingEdge="none" 
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:layout_below="@id/horizontal_scrollview">
         	<LinearLayout 
         	    android:id="@+id/horizontal_outer_layout2"

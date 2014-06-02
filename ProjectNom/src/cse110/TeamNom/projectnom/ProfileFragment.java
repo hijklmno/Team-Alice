@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
 		
 		if (INITIALLOAD) {
 			onClickLoadMyPictures();
-			//onClickLoadM();
+			onClickLoadM();
 		}
 
 		return rootView;
