@@ -325,7 +325,7 @@ public class AppParseAccess {
 					nomString += userID;
 				} else {
 					imageID = "," + userID;
-					nomString += userID;
+					nomString += imageID;
 				}
 				
 				photoObject.put("Like_id", nomString);
@@ -358,7 +358,7 @@ public class AppParseAccess {
 					 bookmarkString += userID;
 				 } else {
 					 imageID = "," + userID;
-					 bookmarkString += userID;
+					 bookmarkString += imageID;
 				 }
 				
 				 photoObject.put("Bookmark_id", bookmarkString);
@@ -405,21 +405,31 @@ public class AppParseAccess {
 		}
 	}
 	
+	/*
+	 * isLiked() checks if the ParseObject with FB_ID has already liked the
+	 * ParseObject that corresponds with imageID.
+	 */
 	public static boolean isLiked(String FB_ID, String imageID) {
+		// Get current user's objectID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 		String userID = currentUser.getObjectId();
 		
+		// Query through Food_Table_DB
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		
 		try {
+			// Get the ParseObject thats objectID is imageID
 			ParseObject photoObject = query.get(imageID);
 			
 			if (photoObject != null) {
+				// Get the string of IDs in Like_id
 				String nomString = photoObject.getString("Like_id");
 				
 				if(nomString != null) {
+					// Split the string by delimiting with ","
 					String[] nomList = nomString.split(",");
 					
+					// Return whether nomList has an element matching userID
 					return Arrays.asList(nomList).contains(userID);
 				}
 			}
@@ -430,21 +440,31 @@ public class AppParseAccess {
 		return false;
 	}
 	
+	/*
+	 * isBookmarked() checks if the ParseObject with FB_ID has already liked the
+	 * ParseObject that corresponds with imageID.
+	 */
 	public static boolean isBookmarked(String FB_ID, String imageID) {
+		// Get the current user's objectID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 		String userID = currentUser.getObjectId();
 		
+		// Query through Food_Table_DB
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		
 		try {
+			// Get the ParseObject that's objectID matches imageID
 			ParseObject photoObject = query.get(imageID);
 			
 			if (photoObject != null) {
+				// Get the string of user objectIDs from Bookmark_id
 				String bookmarkString = photoObject.getString("Bookmark_id");
 				
 				if(bookmarkString != null) {
+					// Split the string by delimiting with ","
 					String[] bookmarkList = bookmarkString.split(",");
 				
+					// Return whether the array contains an element that matches userID
 					return Arrays.asList(bookmarkList).contains(userID);
 				}
 			}
