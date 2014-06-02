@@ -6,7 +6,6 @@
     android:fillViewport="true"
     android:scrollbars="none" 
     android:src="@drawable/ic_launcher"
-    android:tag="cameraFrag"
     >
 
     <RelativeLayout
