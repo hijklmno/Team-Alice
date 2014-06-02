@@ -53,6 +53,8 @@ public class ProfileFragment extends Fragment {
 	private ProfilePictureView profilePictureView;
 
 	// Gallery variables
+	private HorizontalScrollView mScrollView;
+	private LinearLayout mOuterLayout;
 	private HorizontalScrollView horizontalScrollview;
 	private LinearLayout horizontalOuterLayout;
 
@@ -93,8 +95,14 @@ public class ProfileFragment extends Fragment {
 
 		horizontalScrollview.setHorizontalScrollBarEnabled(false);
 
+		mScrollView = (HorizontalScrollView) rootView
+				.findViewById(R.id.horizontal_scrollview2);
+		mOuterLayout = (LinearLayout) rootView
+				.findViewById(R.id.horizontal_outer_layout2);
+		
 		if (INITIALLOAD) {
 			onClickLoadMyPictures();
+			//onClickLoadM();
 		}
 
 		return rootView;
@@ -236,31 +244,36 @@ public class ProfileFragment extends Fragment {
 				horizontalOuterLayout.addView(photoGalleryButton);
 			}
 		}
+	}
+	
+	
+	@SuppressLint("NewApi")
+	private void onClickLoadM() {
+		// bookmarks gallery
+		String[] bookmarkIDs = AppParseAccess.getMyBookmarkIds(AppFacebookAccess.getFacebookId());
 		
-//		String[] bookmarkIDs = AppParseAccess.getMyBookmarkIds(AppFacebookAccess.getFacebookId());
-//		
-//		if (bookmarkIDs == null) {
-//			return;
-//		}
-//		
-//		for (int i = 0; i < bookmarkIDs.length; i++) {
-//			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
-//			if (object != null) {
-//				byte[] data = object.getPicture();
-//	
-//				final Button photoGalleryButton = new Button(getActivity());
-//				Drawable image = null;
-//				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
-//				photoGalleryButton.setBackground(image);
-//				photoGalleryButton.setOnClickListener(new OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						System.out.println("df");
-//					}
-//				});
-//	
-//				horizontalOuterLayout.addView(photoGalleryButton);
-//			}
-//		}
+		if (bookmarkIDs == null) {
+			return;
+		}
+		
+		for (int i = 0; i < bookmarkIDs.length; i++) {
+			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
+			if (object != null) {
+				byte[] data = object.getPicture();
+	
+				final Button photoGalleryButton = new Button(getActivity());
+				Drawable image = null;
+				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+				photoGalleryButton.setBackground(image);
+				photoGalleryButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						System.out.println("df");
+					}
+				});
+	
+				mOuterLayout.addView(photoGalleryButton);
+			}
+		}
 	}
 }

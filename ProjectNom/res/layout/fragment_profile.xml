@@ -21,7 +21,8 @@
         android:layout_toRightOf="@id/imageViewProfile"
         android:layout_alignParentRight="true"
         android:paddingLeft="10dp" 
-        android:paddingTop="10dp"/>    
+        android:paddingTop="10dp"
+        android:textSize="20sp"/>    
  	<!--  <fragment android:name="com.facebook.widget.UserSettingsFragment"
           android:id="@+id/userSettingsFragment"
           android:layout_width="match_parent"
@@ -33,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/horizontal_scrollview" 
-        android:fadingEdge="none" >
+        android:fadingEdge="none"
+        android:layout_below="@id/imageViewProfile" >
         	<LinearLayout 
         	    android:id="@+id/horizontal_outer_layout"
         	    android:layout_height="fill_parent"
@@ -43,6 +45,22 @@
         	</LinearLayout>
     </HorizontalScrollView>
 
+    <HorizontalScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/horizontal_scrollview2" 
+        android:fadingEdge="none" 
+        android:paddingTop="20dp"
+        android:layout_below="@id/horizontal_scrollview">
+        	<LinearLayout 
+        	    android:id="@+id/horizontal_outer_layout2"
+        	    android:layout_height="fill_parent"
+        	    android:layout_width="wrap_content"
+        	    android:orientation="horizontal"
+        	    android:paddingLeft="5dp">
+        	</LinearLayout>
+    </HorizontalScrollView>
+    
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
