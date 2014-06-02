@@ -26,12 +26,12 @@ public class AppParseAccess {
 	 */
 	public static void initialize(final Context context,
 			final String applicationId, final String clientKey) {
-		// Run new thread so that Parse calls finish before main thread
-		// continues
+		// Run new thread so that Parse calls finish before main thread continues
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
+					// Initialize Parse
 					Parse.initialize(context, applicationId, clientKey);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,6 +78,7 @@ public class AppParseAccess {
 	 */
 	public static void loadOrAddNewUser(String FB_ID, String fullName) {
 		if (!AppParseAccess.isExistingUser(FB_ID)) {
+			// Adds new Parse user and get the necessary info from Facebook
 			ParseObject newUser = new ParseObject("FacebookAccounts");
 			newUser.put("facebook_id", FB_ID);
 			newUser.put("Name", fullName);
@@ -90,9 +91,11 @@ public class AppParseAccess {
 	 * pictures column of the FacebookAccounts table in the NOM Parse database.
 	 */
 	public static String[] getMyPictureIds(String FB_ID) {
+		// Gets current user ParseObject
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 
 		if (currentUser != null) {
+			
 			String pictureString = getPictureString(currentUser);
 			String[] pictureList = pictureString.split(",");
 
@@ -170,13 +173,16 @@ public class AppParseAccess {
 				if (currentUser != null) {
 					String pictureString = (String) currentUser.get("pictures");
 
+					// Null or empty means no comma is added
 					if (pictureString == null || pictureString.equals("")) {
 						pictureString = "";
 						pictureString += pictureID;
 					} else {
+						// else add a comma with the pictureID
 						pictureID = "," + pictureID;
 						pictureString += pictureID;
 					}
+					// Save the pictureString to the current user
 					currentUser.put("pictures", pictureString);
 					currentUser.saveInBackground();
 				}
@@ -473,5 +479,63 @@ public class AppParseAccess {
 		}
 		
 		return false;
+	}
+	
+	public static void unlikeImage(String FB_ID, String imageID) {
+		// Get the current user's objectID
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		String userID = currentUser.getObjectId();
+		
+		// Query through Food_Table_DB
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+				
+				try {
+					// Get the ParseObject that's objectID matches imageID
+					ParseObject photoObject = query.get(imageID);
+					
+					if (photoObject != null) {
+						// Get the string of user objectIDs from Like_id
+						String likeString = photoObject.getString("Like_id");
+						
+						if(likeString != null) {
+							// Split the string by delimiting with ","
+							String[] likeList = likeString.split(",");
+						
+							// Removes userID from likeList
+							Arrays.asList(likeList).remove(userID);
+						}
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+	}
+	
+	public static void unbookmarkImage(String FB_ID, String imageID) {
+		// Get the current user's objectID
+				ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+				String userID = currentUser.getObjectId();
+				
+				// Query through Food_Table_DB
+						ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+						
+						try {
+							// Get the ParseObject that's objectID matches imageID
+							ParseObject photoObject = query.get(imageID);
+							
+							if (photoObject != null) {
+								// Get the string of user objectIDs from Like_id
+								String bookmarkString = photoObject.getString("Bookmark_id");
+								
+								if(bookmarkString != null) {
+									// Split the string by delimiting with ","
+									String[] bookmarkList = bookmarkString.split(",");
+								
+									// Removes userID from likeList
+									Arrays.asList(bookmarkList).remove(userID);
+								}
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 	}
 }
