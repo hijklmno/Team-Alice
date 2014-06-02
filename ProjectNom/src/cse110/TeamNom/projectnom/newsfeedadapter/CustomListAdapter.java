@@ -88,14 +88,14 @@ public class CustomListAdapter extends BaseAdapter {
 		
 		final PictureDBObject pictureObj = (PictureDBObject) listData.get(position);
 		
-		holder.captionTextView.setText("Restaurant_id: " + pictureObj.getRestID());
+		holder.captionTextView.setText(pictureObj.getRestID());
 		holder.dateTextView.setText(pictureObj.getUpdatedDate().toString());
 		if (pictureObj.isReported()) {
 			holder.imageView.setImageResource(R.drawable.ic_action_error);
 		} else {
 			holder.imageView.setImageBitmap(uncompressImage(pictureObj.getPicture()));
 		}
-		holder.nameTextView.setText("By: " + pictureObj.getFacebookName());
+		holder.nameTextView.setText(pictureObj.getFacebookName());
 		//Define the Mmm button settings
 		holder.mmm.setTag(pictureObj.getImageID());
 		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
