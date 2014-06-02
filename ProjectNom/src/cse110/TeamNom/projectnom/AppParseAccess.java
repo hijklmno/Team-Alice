@@ -520,6 +520,7 @@ public class AppParseAccess {
 							}
 							
 							photoObject.put("Like_id", newString);
+							photoObject.increment("Like", -1);
 							photoObject.saveInBackground();
 						}
 					}
@@ -566,6 +567,7 @@ public class AppParseAccess {
 									}
 									
 									photoObject.put("Bookmark_id", newString);
+									photoObject.increment("Bookmark", -1);
 									photoObject.saveInBackground();
 								}
 							}
