@@ -2,6 +2,7 @@ package cse110.TeamNom.projectnom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -500,13 +501,25 @@ public class AppParseAccess {
 						if(likeString != null) {
 							// Split the string by delimiting with ","
 							String[] likeList = likeString.split(",");
+							String newString = "";
 						
 							// Removes userID from likeList
-							List<String> list = Arrays.asList(likeList);
+							List<String> list = new LinkedList<String>(Arrays.asList(likeList));
 							
 							list.remove(userID);
 							
-							photoObject.put("Like_id", list.toArray());
+							for(int i = 0; i < list.size(); i++) {
+								
+								if (newString == null || newString.equals("")) {
+									newString = "";
+									newString += list.get(i);
+								} else {
+									String addString = "," + list.get(i);
+									newString += addString;
+								}
+							}
+							
+							photoObject.put("Like_id", newString);
 							photoObject.saveInBackground();
 						}
 					}
@@ -534,13 +547,25 @@ public class AppParseAccess {
 								if(bookmarkString != null) {
 									// Split the string by delimiting with ","
 									String[] bookmarkList = bookmarkString.split(",");
+									String newString = "";
 								
 									// Removes userID from likeList
-									List<String> list = Arrays.asList(bookmarkList);
+									List<String> list = new LinkedList<String>(Arrays.asList(bookmarkList));
 									
 									list.remove(userID);
 									
-									photoObject.put("Like_id", list.toArray());
+									for(int i = 0; i < list.size(); i++) {
+										
+										if (newString == null || newString.equals("")) {
+											newString = "";
+											newString += list.get(i);
+										} else {
+											String addString = "," + list.get(i);
+											newString += addString;
+										}
+									}
+									
+									photoObject.put("Bookmark_id", newString);
 									photoObject.saveInBackground();
 								}
 							}
