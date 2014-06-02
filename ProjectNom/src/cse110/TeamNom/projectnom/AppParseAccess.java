@@ -83,6 +83,9 @@ public class AppParseAccess {
 			ParseObject newUser = new ParseObject("FacebookAccounts");
 			newUser.put("facebook_id", FB_ID);
 			newUser.put("Name", fullName);
+			newUser.put("pictures", "");
+			newUser.put("bookmarks", "");
+			newUser.put("friends", "");
 			newUser.saveInBackground();
 		}
 	}
@@ -411,9 +414,9 @@ public class AppParseAccess {
 		 }
 
 		
-		// Add the objectID to the user's pictures string
+		// Add the objectID to the user's bookmarks string
 		if (currentUser != null) {
-			String pictureString = (String) currentUser.get("Bookmark");
+			String pictureString = (String) currentUser.get("bookmarks");
 
 			if (pictureString == null || pictureString.equals("")) {
 				pictureString = "";
