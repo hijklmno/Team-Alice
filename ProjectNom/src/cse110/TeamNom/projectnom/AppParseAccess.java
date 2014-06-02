@@ -99,11 +99,11 @@ public class AppParseAccess {
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 
 		if (currentUser != null) {
-			
 			String pictureString = getPictureString(currentUser);
-			String[] pictureList = pictureString.split(",");
-
-			return pictureList;
+			if (pictureString != null) {
+				String[] pictureList = pictureString.split(",");
+				return pictureList;
+			}
 		}
 
 		return null;
