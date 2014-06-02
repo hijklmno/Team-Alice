@@ -30,29 +30,43 @@
           -->
 
 <!-- Gallery horizontal slide view -->
+
+	<TextView
+	    android:id="@+id/picturesText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Your Pictures"
+	    android:layout_below="@id/imageViewProfile" />
    <HorizontalScrollView 
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:id="@+id/horizontal_scrollview" 
         android:fadingEdge="none"
         android:paddingTop="10dp"
-        android:layout_below="@id/imageViewProfile" >
+        android:layout_below="@id/picturesText" >
         	<LinearLayout 
         	    android:id="@+id/horizontal_outer_layout"
         	    android:layout_height="fill_parent"
         	    android:layout_width="wrap_content"
         	    android:orientation="horizontal"
-        	    android:paddingLeft="5dp">
+        	    android:paddingLeft="5dp"
+        	    android:paddingRight="5dp">
         	</LinearLayout>
     </HorizontalScrollView>
 
+   	<TextView
+	    android:id="@+id/bookmarksText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Your Bookmarks"
+	    android:layout_below="@id/horizontal_scrollview" />
     <HorizontalScrollView 
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:id="@+id/horizontal_scrollview2" 
         android:fadingEdge="none" 
         android:paddingTop="10dp"
-        android:layout_below="@id/horizontal_scrollview">
+        android:layout_below="@id/bookmarksText">
         	<LinearLayout 
         	    android:id="@+id/horizontal_outer_layout2"
         	    android:layout_height="fill_parent"
@@ -68,22 +82,8 @@
         android:layout_height="wrap_content"
         android:text="Log Out"
         android:onClick="onClickLogout" 
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/horizontal_scrollview2"/>
     
-    <!-- Facebook test stuff --> 
-    <Button 
-        android:id="@+id/facebookTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit to Facebook"
-        android:layout_marginTop="44dp" />
-    <TextView 
-        android:id="@+id/facebookDebugBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Facebook goes here"
-        android:layout_marginTop="88dp"
-        android:textSize="20dp" />
-
-    
+   
 </RelativeLayout>

@@ -44,9 +44,9 @@ public class ProfileFragment extends Fragment {
 	// check if first load
 	private static boolean INITIALLOAD = true;
 
+	private TextView picturesText;
+	private TextView bookmarksText;
 	private Button buttonLogout;
-	private Button buttonFacebook;
-	private TextView textbox;
 	private static Bitmap profileBitmap;
 	private TextView profileUser;
 
@@ -64,11 +64,9 @@ public class ProfileFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_profile, container,
 				false);
-		// facebook debug textbox
-		textbox = (TextView) rootView.findViewById(R.id.facebookDebugBox);
-
 		profileUser = (TextView) rootView.findViewById(R.id.profileUser);
-		
+		picturesText = (TextView) rootView.findViewById(R.id.picturesText);
+		bookmarksText = (TextView) rootView.findViewById(R.id.bookmarksText);
 		profileUser.setText( AppFacebookAccess.getFacebookName());
 		
 		// start configuration for the logout button
@@ -76,15 +74,6 @@ public class ProfileFragment extends Fragment {
 		buttonLogout.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				onClickLogout();
-			}
-		});
-
-		buttonFacebook = (Button) rootView.findViewById(R.id.facebookTest);
-		buttonFacebook.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				onClickFacebookDebug();
-//				onClickFacebookPicUpdate();
-				// onClickLoadMyPictures();
 			}
 		});
 
@@ -118,6 +107,10 @@ public class ProfileFragment extends Fragment {
 		INITIALLOAD = false;
 	}
 
+	public void onStop() {
+		super.onStop();
+		INITIALLOAD = true;
+	}
 	// called when pressing the logout button
 	private void onClickLogout() {
 		Session session = Session.getActiveSession();
