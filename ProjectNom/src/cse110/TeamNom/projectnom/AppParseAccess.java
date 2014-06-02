@@ -120,9 +120,10 @@ public class AppParseAccess {
 		if (currentUser != null) {
 			
 			String bookmarkString = getBookmarkString(currentUser);
-			String[] bookmarkList = bookmarkString.split(",");
-
-			return bookmarkList;
+			if(bookmarkString != null) {
+				String[] bookmarkList = bookmarkString.split(",");
+				return bookmarkList;
+			}
 		}
 
 		return null;
