@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +55,8 @@ public class CameraFragment extends Fragment {
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 
 	// Misc variables
+	private Button redirect;
+	private ImageButton bigBtn;
 	private ImageButton picBtn;
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
@@ -275,19 +278,24 @@ public class CameraFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
+		redirect = (Button) rootView.findViewById(R.id.redirect);
 		picBtn = (ImageButton) rootView.findViewById(R.id.btnCapturePicture);
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
 		mImageView = (ImageView) rootView.findViewById(R.id.imageView1);
+		bigBtn = (ImageButton) rootView.findViewById(R.id.initialButton);
 		
 		context = getActivity().getApplicationContext();
 
 		if(isRestart) {
 			restaurant.setText(restTmp);
 			caption.setText(capTmp);
-			mImageView.setImageDrawable(imageTmp);
-			mImageView.setImageBitmap(mImageBitmap);
+			if(imageTmp != null) {
+				mImageView.setImageDrawable(imageTmp);
+				mImageView.setImageBitmap(mImageBitmap);
+				
+			}
 			if(!wasVisible) {
 				setFragmentVisibility(1);
 			}
@@ -299,6 +307,19 @@ public class CameraFragment extends Fragment {
 		else {
 			setFragmentVisibility(1);
 		}
+		
+		redirect.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick (View v) {
+				switchToMain();
+			}
+		});
+		bigBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onClickPicture(bigBtn);
+			}
+		});
 		mImageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -311,7 +332,7 @@ public class CameraFragment extends Fragment {
 		picBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onClickPicture();
+				onClickPicture(picBtn);
 			}
 		});
 		subBut.setOnClickListener(new View.OnClickListener() {
@@ -337,7 +358,6 @@ public class CameraFragment extends Fragment {
 	 */
 	private void resetFragment() {
 		setFragmentVisibility(1);
-		mImageView.setVisibility(View.INVISIBLE);
 		mImageView.setImageDrawable(null);
 		restaurant.setText(null);
 		caption.setText(null);
@@ -548,11 +568,17 @@ public class CameraFragment extends Fragment {
 			caption.setVisibility(View.INVISIBLE);
 			subBut.setVisibility(View.INVISIBLE);
 			mImageView.setVisibility(View.INVISIBLE);
+			picBtn.setVisibility(View.INVISIBLE);
+			bigBtn.setVisibility(View.VISIBLE);
+			redirect.setVisibility(View.VISIBLE);
 		} else {
 			restaurant.setVisibility(View.VISIBLE);
 			caption.setVisibility(View.VISIBLE);
 			subBut.setVisibility(View.VISIBLE);
 			mImageView.setVisibility(View.VISIBLE);
+			picBtn.setVisibility(View.VISIBLE);
+			bigBtn.setVisibility(View.INVISIBLE);
+			redirect.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -561,12 +587,10 @@ public class CameraFragment extends Fragment {
 	 * Calls: dispatchTakePictureIntent
 	 * Used by: onCreateView
 	 */
-	private void onClickPicture() {
-		mImageView = (ImageView) getActivity().findViewById(R.id.imageView1);
-		mImageBitmap = null;
-
+	private void onClickPicture(ImageButton btn) {
+	
 		setBtnListenerOrDisable(
-				picBtn,
+				btn,
 				mTakePicOnClickListener,
 				MediaStore.ACTION_IMAGE_CAPTURE
 				);
@@ -586,9 +610,6 @@ public class CameraFragment extends Fragment {
 	 * Used By: onCreateView
 	 */
 	private void onClickSubmit() {
-
-		mImageView = (ImageView) getActivity().findViewById(R.id.imageView1);
-		mImageBitmap = null;
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setCancelable(false);
@@ -618,5 +639,12 @@ public class CameraFragment extends Fragment {
 			}
 		});
 		builder.show();
+	}
+	
+	/**
+	 * method that switches fragment to main page
+	 */
+	public void switchToMain() {
+		getActivity().getActionBar().setSelectedNavigationItem(2);
 	}
 }
