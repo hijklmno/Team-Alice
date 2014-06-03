@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/NewsFeedCaption"
         android:text=""
-        android:drawableStart="@drawable/ic_action_like" />
+        android:drawableStart="@drawable/button_state" />
 
     <Button
         android:id="@+id/NewsFeedMmm"
@@ -76,7 +76,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/NewsFeedNOM"
         android:text=""
-        android:drawableStart="@drawable/ic_action_important" />
+        android:drawableStart="@drawable/button_state2" />
 
     <Button 
         android:id="@+id/NewsFeedReport"

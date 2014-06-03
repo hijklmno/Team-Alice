@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,7 @@ public class CustomListAdapter extends BaseAdapter {
 		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(
-					R.layout.newsfeed_list_row_layout, null);
+			R.layout.newsfeed_list_row_layout, null);
 			holder = new ViewHolder();
 			holder.captionTextView = (TextView) convertView.findViewById(R.id.NewsFeedCaption);
 			holder.dateTextView = (TextView) convertView.findViewById(R.id.NewsFeedDate);
