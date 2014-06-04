@@ -24,7 +24,7 @@ public class AppFacebookAccess {
 	private static String FB_ID;					// The Facebook ID of current user
 	private static String FB_Name;					// The full name of current user
 	private static Session session;					// The current active Facebook session
-	private static ArrayList<String> allFriends;	// ArrayList of friend's FB IDs
+	private static ArrayList<String> allFriends = new ArrayList<String>();	// ArrayList of friend's FB IDs
 	private static Bitmap profileBitmap;
 	
 	/*
@@ -34,13 +34,12 @@ public class AppFacebookAccess {
 		session = Session.getActiveSession();
 	}
 
-	// TODO: return list of my facebook friends
 	/*
 	 * loadMyFriends() loads the current Facebook user's friends that have also given Facebook
 	 * permissions to the NOM application.
 	 */
-	public static String[] loadMyFriends() {
-		allFriends = new ArrayList<String>();
+	public static ArrayList<String> loadMyFriends() {
+//		allFriends = new ArrayList<String>();
 
 		// Create new thread so that the request finishes before main thread continues
 		Thread thread = new Thread(new Runnable() {
@@ -61,7 +60,8 @@ public class AppFacebookAccess {
 								String friend_name = ((JSONObject) dataList.get(i)).getString("name");
 								String friend_id = ((JSONObject) dataList.get(i)).getString("id");
 								System.out.println(friend_name + ":" + friend_id);
-								friendsIDBuffer(friend_id);
+//								friendsIDBuffer(friend_id);
+								allFriends.add(friend_id);
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -81,7 +81,7 @@ public class AppFacebookAccess {
 			e.printStackTrace();
 		}
 		
-		return dumpfriendsIDBuffer();
+		return allFriends;
 	}
 
 	/*

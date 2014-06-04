@@ -614,4 +614,29 @@ public class AppParseAccess {
 							e.printStackTrace();
 						}
 	}
+	
+	public static ArrayList<PictureDBObject> getPictureFiles(int count, int offset) {
+		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
+		
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		query.orderByDescending("updatedAt");
+//		query.setLimit(count);
+//		query.setSkip(offset);
+
+		try {
+			List<ParseObject> objects = query.find();
+
+			if (objects.isEmpty()) {
+				return null;
+			} else {
+				for (int i = 0; i < objects.size(); i++) {
+					customList.add(new PictureDBObject(objects.get(i)));
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return customList;
+	}
 }

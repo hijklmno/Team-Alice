@@ -26,41 +26,86 @@ import cse110.TeamNom.projectnom.newsfeedadapter.CustomListAdapter;
 public class NewsFeedFragment extends Fragment {
 
 	// Initialization
+	private static int fMAXROWS = 4;
+	private static int fOFFSET = 0;
 	private static int MAXROWS = 4;
 	private static int OFFSET = 0;
 	private static boolean INITIALLOAD = true;
 	private static boolean listEndFlag = false;
-	
+	private static boolean listEndFlagAll = false;
 	private Switch switchButton;
-	private ViewPager yourViewPager;
-	private CustomListAdapter cLAdapter;
-	
 	private PullToRefreshListView mPullRefreshListView;
-	private String[] friends_list = new String[MAXROWS];
+	private ViewPager yourViewPager;
+	
+	private CustomListAdapter cLAdapterFriends;
+	private String[] friends_list;
+	
+	private CustomListAdapter cLAdapterAll;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
+		final View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
 		false);
 
+		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
+		mPullRefreshListView.setMode(Mode.PULL_FROM_START);
+		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				new RenewDataTask().execute();
+			}
+		});
+		
+		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+			@Override
+			public void onLastItemVisible() {
+				if (listEndFlag == false || listEndFlagAll == false) {
+					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
+					getMoreData();
+				}
+				else {
+					Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
 		switchButton
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if (isChecked) {
-							// friends
+							if (cLAdapterFriends != null) {
+								mPullRefreshListView.setAdapter(cLAdapterFriends);
+							}
+							else {
+								getFriendsData(rootView);
+							}
 						}
 						else {
+							if (cLAdapterAll != null) {
+								mPullRefreshListView.setAdapter(cLAdapterAll);
+							}
+							else {
+								getProxData(rootView);
+							}
 							// popular
 						}
 					}
 				});
 
 		if (INITIALLOAD) {
-			getNewsFeedData(rootView);
+			getFriendsData(rootView);
+			getProxData(rootView);
+			
+			mPullRefreshListView.setAdapter(cLAdapterFriends);
 		}
+		
+		
 
 		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
 			@Override
@@ -84,6 +129,9 @@ public class NewsFeedFragment extends Fragment {
 
 		yourViewPager = new ViewPager(getActivity());
 		yourViewPager.setOnPageChangeListener(mPageChangeListener);
+		
+		
+		
 		return rootView;
 	}
 	
@@ -91,24 +139,29 @@ public class NewsFeedFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		INITIALLOAD = false;
-		PullToRefreshListView mPullRefreshListView = (PullToRefreshListView) getView().findViewById(R.id.custom_list);
-		mPullRefreshListView.setAdapter(cLAdapter);
+		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
 	
-	private void getMoreData() {
-		ArrayList<PictureDBObject> newResults = getListData();
-		if (newResults != null) {
-			cLAdapter.updateResults(newResults);
-		}
+	private void getProxData(View rootView) {
+		ArrayList<PictureDBObject> all_img_details = getAllListData();
+		cLAdapterAll = new CustomListAdapter(getActivity(), all_img_details);
 	}
 	
-	private void getNewsFeedData(View rootView) {
-		friends_list = AppFacebookAccess.loadMyFriends();
+	private ArrayList<PictureDBObject> getAllListData() {
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(MAXROWS, OFFSET);
 		
-		ArrayList<PictureDBObject> image_details = getListData();
-		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
-		cLAdapter = new CustomListAdapter(getActivity(), image_details);
-		mPullRefreshListView.setAdapter(cLAdapter);
+		if (pictureArray != null) {
+			OFFSET += MAXROWS;
+		}
+		else {
+			listEndFlagAll = true;
+		}
+		return pictureArray;
+	}
+	
+	private void getFriendsData(View rootView) {
+		ArrayList<PictureDBObject> friends_img_details = getListData();
+		cLAdapterFriends = new CustomListAdapter(getActivity(), friends_img_details);
 //		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 //
 //			@Override
@@ -123,31 +176,12 @@ public class NewsFeedFragment extends Fragment {
 //			}
 //		});
 		//enable bottom and top scroll
-		mPullRefreshListView.setMode(Mode.PULL_FROM_START);
-		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-
-			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				new RenewDataTask().execute();
-			}
-		});
-		
-		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
-			@Override
-			public void onLastItemVisible() {
-				if (listEndFlag == false) {
-					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
-					getMoreData();
-				}
-				else {
-					Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
 	}
 
 	private ArrayList<PictureDBObject> getListData() {
-		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(friends_list, MAXROWS, OFFSET);
+		ArrayList<String> myFriends = AppFacebookAccess.loadMyFriends();
+		String[] myFriendsArr = myFriends.toArray(new String[myFriends.size()]);
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(myFriendsArr, fMAXROWS, fOFFSET);
 		
 		if (pictureArray != null) {
 			Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
@@ -155,7 +189,7 @@ public class NewsFeedFragment extends Fragment {
 				Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
 			}
 		
-			OFFSET += MAXROWS;
+			fOFFSET += fMAXROWS;
 		}
 		else {
 			listEndFlag = true;
@@ -164,14 +198,48 @@ public class NewsFeedFragment extends Fragment {
 		return pictureArray;
 	}
 
+	private void getMoreData() {
+		if (switchButton.isActivated()) {
+			ArrayList<PictureDBObject> newResults = getListData();
+			if (newResults != null) {
+				cLAdapterFriends.updateResults(newResults);
+			}
+		}
+		else {
+			ArrayList<PictureDBObject> newResults = getAllListData();
+			if (newResults != null) {
+				cLAdapterAll.updateResults(newResults);
+			}
+		}
+		
+	}
+	
 	public void refresh() {
-		listEndFlag = false;
-		OFFSET = 0;
-		friends_list = AppFacebookAccess.loadMyFriends();
 		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();
-		ArrayList<PictureDBObject> image_details = getListData();
-		cLAdapter.resetResults(image_details);
+		
+		if (switchButton.isActivated()) {
+			listEndFlag = false;
+			fOFFSET = 0;
+			ArrayList<PictureDBObject> image_details = getListData();
+			if (image_details != null) {
+				cLAdapterFriends.resetResults(image_details);
+			}
+			else {
+				cLAdapterFriends.resetResults(new ArrayList<PictureDBObject>());
+			}
+		}
+		else {
+			listEndFlagAll = false;
+			OFFSET = 0;
+			ArrayList<PictureDBObject> image_details = getAllListData();
+			if (image_details != null) {
+				cLAdapterAll.resetResults(image_details);
+			}
+			else {
+				cLAdapterAll.resetResults(new ArrayList<PictureDBObject>());
+			}
+		}
 	}
 	
 	private class RenewDataTask extends AsyncTask<Void, Void, String[]> {
@@ -190,5 +258,4 @@ public class NewsFeedFragment extends Fragment {
 		}
 	}
 	
-
 }
