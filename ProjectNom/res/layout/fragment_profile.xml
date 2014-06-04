@@ -36,8 +36,8 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/imageViewProfile"
         android:checked="true"
-        android:textOff="@string/ProfileToggleMyPictures"
-        android:textOn="@string/ProfileToggleMyBookmarks"
+        android:textOff="@string/ProfileToggleOff"
+        android:textOn="@string/ProfileToggleOn"
         android:paddingTop="10dp"
          />
           

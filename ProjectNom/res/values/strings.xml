@@ -27,7 +27,7 @@
     <!-- Camera -->
     <string name="hello">Helle there!</string>
     <string name="btnIntend">Take Picture</string>
-    <string name="restID">Restaurant Title</string>
+    <string name="restID">Restaurant Name</string>
     <string name="cannot">Cannot</string>
     <string name="cap">Caption</string>
     <string name="submit">Submit</string>
@@ -36,6 +36,7 @@
     <string name="cancel">Cancel</string>
     <string name="ccd">Button that starts the camera</string>
     <string name="pcd">Your Picture</string>
+    <string name="newsbtnn">Go to Newsfeed</string>
     <!-- End of Camera -->
     
     <!-- Yelp -->
@@ -48,7 +49,7 @@
     
     <!-- News Feed -->
     <string name="toggleOn">Friends</string>
-    <string name="toggleOff">Popular</string>
+    <string name="toggleOff">All</string>
     <string name="feed">News Feed</string>
     <!-- End Of News Feed -->
     
@@ -58,7 +59,7 @@
     <!-- End of Parse -->
     
     <!-- Profile -->
-    <string name="ProfileToggleMyPictures">My Pictures</string>
-    <string name="ProfileToggleMyBookmarks">My Bookmarks</string>
+    <string name="ProfileToggleOff">My Bookmarks</string>
+    <string name="ProfileToggleOn">My Pictures</string>
     <!-- End of profile -->
 </resources>

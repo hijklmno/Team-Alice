@@ -11,8 +11,10 @@ public class PictureDBObject {
 	byte[] Food_photo;
 	int Like;
 	String[] Like_id;
+	boolean isLiked;
 	int Bookmark;
 	String[] Bookmark_id;
+	boolean isBookmarked;
 	boolean report_image;
 	String FACEBOOK_ID;
 	String FACEBOOK_NAME;
@@ -39,6 +41,12 @@ public class PictureDBObject {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+		//Check if I liked it
+		setLikeStatus(parse.getString("Like_id"));
+		
+		//Check if I bookmarked it
+		setBookmarkStatus(parse.getString("Bookmark"));
 		
 		//Store image id
 		setImageID(parse.getObjectId());
@@ -78,6 +86,54 @@ public class PictureDBObject {
 		
 		//Store updated at date
 		setUpdatedDate(parse.getUpdatedAt());
+	}
+	
+	// Takes in a string of ids separated by commas and 
+	// check if my own id is in one of those
+	public void setLikeStatus(String ids) {
+		if (ids != null) {
+			String[] list = ids.split(",");
+			for (int i = 0; i < list.length; i++) {
+				if (list[i] == AppFacebookAccess.getFacebookId()) {
+					isLiked = true;
+					
+					return;
+				}
+			}
+		
+			isLiked = false;
+		}
+		else {
+			isLiked = false;
+		}
+	}
+	
+	// Accessor method return whether I have liked this picture
+	public boolean isLiked() {
+		return isLiked;
+	}
+	
+	// Method which takes in the image string of ids which liked this picture,
+	// and checks whether I have liked it
+	public void setBookmarkStatus(String ids) {
+		if (ids != null) {
+			String[] list = ids.split(",");
+			for (int i = 0; i < list.length; i++) {
+				if (list[i] == AppFacebookAccess.getFacebookId()) {
+					isBookmarked = true;
+					return;
+				}
+			}
+			isBookmarked = false;
+		}
+		else {
+			isBookmarked = false;
+		}
+	}
+	
+	// Accessor method return whether I have bookmarked this picture
+	public boolean isBookmarked() {
+		return isBookmarked;
 	}
 	
 	// Mutator method to set the facebook name for later retrieval

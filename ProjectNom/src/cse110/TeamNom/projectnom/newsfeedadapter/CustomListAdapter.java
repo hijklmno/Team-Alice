@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,14 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.nameTextView.setText(pictureObj.getFacebookName());
 		//Define the Mmm button settings
 		holder.mmm.setTag(pictureObj.getImageID());
+		if (AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+			holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
+			holder.mmm.refreshDrawableState();
+		}
+		else {
+			holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
+			holder.mmm.refreshDrawableState();
+		}
 		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
 		holder.mmm.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -106,11 +115,13 @@ public class CustomListAdapter extends BaseAdapter {
 				if(!AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
 					AppParseAccess.bookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());		
 					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() + 1);
+					holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
 					holder.mmm.refreshDrawableState();
 				} else {
 					AppParseAccess.unbookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() - 1);
+					holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
 					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
 					holder.mmm.refreshDrawableState();
 				}
@@ -118,8 +129,16 @@ public class CustomListAdapter extends BaseAdapter {
 		});
 		
 		
-		//Define the Nom button settings
+		//Defining the Nom button settings
 		holder.nom.setTag(pictureObj.getImageID());
+		if (AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+			holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
+			holder.nom.refreshDrawableState();
+		}
+		else {
+			holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
+			holder.nom.refreshDrawableState();
+		}
 		holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
 		holder.nom.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -127,11 +146,13 @@ public class CustomListAdapter extends BaseAdapter {
 				if(!AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
 					AppParseAccess.incrementNomCount(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setLikeCount(pictureObj.getLikeCount() + 1);
+					holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
 					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
 					holder.nom.refreshDrawableState();
 				} else {
 					AppParseAccess.unlikeImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setLikeCount(pictureObj.getLikeCount() - 1);
+					holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
 					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
 					holder.nom.refreshDrawableState();
 				}

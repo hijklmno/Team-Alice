@@ -62,12 +62,23 @@ public class NewsFeedFragment extends Fragment {
 		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				if (listEndFlag == false || listEndFlagAll == false) {
-					Toast.makeText(getActivity(), "Loading more...", Toast.LENGTH_SHORT).show();
-					getMoreData();
+				if (switchButton.isChecked()) {
+					if (listEndFlag == false) {
+						Toast.makeText(getActivity(), "Loading more friends data...", Toast.LENGTH_SHORT).show();
+						getMoreData();
+					}
+					else {
+						Toast.makeText(getActivity(), "No more friends data", Toast.LENGTH_SHORT).show();
+					}
 				}
 				else {
-					Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_LONG).show();
+					if (listEndFlagAll == false) {
+						Toast.makeText(getActivity(), "Loading more all data...", Toast.LENGTH_SHORT).show();
+						getMoreData();
+					}
+					else {
+						Toast.makeText(getActivity(), "No more all data", Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		});
@@ -107,28 +118,28 @@ public class NewsFeedFragment extends Fragment {
 		
 		
 
-		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-				Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
-				.show();
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				Toast.makeText(getActivity(), "scrolled", Toast.LENGTH_LONG)
-				.show();
-			}
-
-			@Override
-			public void onPageSelected(int pos) {
-				Toast.makeText(getActivity(), "selected", Toast.LENGTH_LONG)
-				.show();
-			}
-		};
-
-		yourViewPager = new ViewPager(getActivity());
-		yourViewPager.setOnPageChangeListener(mPageChangeListener);
+//		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
+//			@Override
+//			public void onPageScrollStateChanged(int arg0) {
+//				Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
+//				.show();
+//			}
+//
+//			@Override
+//			public void onPageScrolled(int arg0, float arg1, int arg2) {
+//				Toast.makeText(getActivity(), "scrolled", Toast.LENGTH_LONG)
+//				.show();
+//			}
+//
+//			@Override
+//			public void onPageSelected(int pos) {
+//				Toast.makeText(getActivity(), "selected", Toast.LENGTH_LONG)
+//				.show();
+//			}
+//		};
+//
+//		yourViewPager = new ViewPager(getActivity());
+//		yourViewPager.setOnPageChangeListener(mPageChangeListener);
 		
 		
 		
@@ -148,7 +159,8 @@ public class NewsFeedFragment extends Fragment {
 	}
 	
 	private ArrayList<PictureDBObject> getAllListData() {
-		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(MAXROWS, OFFSET);
+		GPSFragment gps = new GPSFragment(getActivity());
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(gps.getLatitude(), gps.getLongitude(), MAXROWS, OFFSET);
 		
 		if (pictureArray != null) {
 			OFFSET += MAXROWS;
@@ -199,16 +211,22 @@ public class NewsFeedFragment extends Fragment {
 	}
 
 	private void getMoreData() {
-		if (switchButton.isActivated()) {
+		if (switchButton.isChecked()) {
 			ArrayList<PictureDBObject> newResults = getListData();
 			if (newResults != null) {
 				cLAdapterFriends.updateResults(newResults);
+			}
+			else {
+				listEndFlag = true;
 			}
 		}
 		else {
 			ArrayList<PictureDBObject> newResults = getAllListData();
 			if (newResults != null) {
 				cLAdapterAll.updateResults(newResults);
+			}
+			else {
+				listEndFlagAll = true;
 			}
 		}
 		
@@ -218,7 +236,7 @@ public class NewsFeedFragment extends Fragment {
 		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();
 		
-		if (switchButton.isActivated()) {
+		if (switchButton.isChecked()) {
 			listEndFlag = false;
 			fOFFSET = 0;
 			ArrayList<PictureDBObject> image_details = getListData();

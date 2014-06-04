@@ -570,58 +570,71 @@ public class AppParseAccess {
 	
 	public static void unbookmarkImage(String FB_ID, String imageID) {
 		// Get the current user's objectID
-				ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
-				String userID = currentUser.getObjectId();
+		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
+		String userID = currentUser.getObjectId();
+		// Query through Food_Table_DB
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		try {
+			// Get the ParseObject that's objectID matches imageID
+			ParseObject photoObject = query.get(imageID);
+			if (photoObject != null) {
+				// Get the string of user objectIDs from Like_id
+				String bookmarkString = photoObject.getString("Bookmark_id");
 				
-				// Query through Food_Table_DB
-						ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
-						
-						try {
-							// Get the ParseObject that's objectID matches imageID
-							ParseObject photoObject = query.get(imageID);
-							
-							if (photoObject != null) {
-								// Get the string of user objectIDs from Like_id
-								String bookmarkString = photoObject.getString("Bookmark_id");
-								
-								if(bookmarkString != null) {
-									// Split the string by delimiting with ","
-									String[] bookmarkList = bookmarkString.split(",");
-									String newString = "";
-								
-									// Removes userID from likeList
-									List<String> list = new LinkedList<String>(Arrays.asList(bookmarkList));
-									
-									list.remove(userID);
-									
-									for(int i = 0; i < list.size(); i++) {
-										
-										if (newString == null || newString.equals("")) {
-											newString = "";
-											newString += list.get(i);
-										} else {
-											String addString = "," + list.get(i);
-											newString += addString;
-										}
-									}
-									
-									photoObject.put("Bookmark_id", newString);
-									photoObject.increment("Bookmark", -1);
-									photoObject.saveInBackground();
-								}
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
+				String userBookmarks = currentUser.getString("bookmarks");
+				String[] userBookmarkArr = userBookmarks.split(",");
+				List<String> userBookmarkList = new LinkedList<String>(Arrays.asList(userBookmarkArr));
+				userBookmarkList.remove(photoObject.getObjectId());
+				
+				String newUserBookmarkStr = null;
+				
+				for (int i = 0; i < userBookmarkList.size(); i++) {
+					
+					if (newUserBookmarkStr == null || newUserBookmarkStr.equals("")) {
+						newUserBookmarkStr = "";
+						newUserBookmarkStr += userBookmarkList.get(i);
+					} else {
+						String addString = "," + userBookmarkList.get(i);
+						newUserBookmarkStr += addString;
+					}
+				}
+				
+				currentUser.put("bookmarks", newUserBookmarkStr);
+				currentUser.saveInBackground();
+				if (bookmarkString != null) {
+					// Split the string by delimiting with ","
+					String[] bookmarkList = bookmarkString.split(",");
+					String newString = "";
+					// Removes userID from likeList
+					List<String> list = new LinkedList<String>(
+							Arrays.asList(bookmarkList));
+					list.remove(userID);
+					for (int i = 0; i < list.size(); i++) {
+						if (newString == null || newString.equals("")) {
+							newString = "";
+							newString += list.get(i);
+						} else {
+							String addString = "," + list.get(i);
+							newString += addString;
 						}
+					}
+					photoObject.put("Bookmark_id", newString);
+					photoObject.increment("Bookmark", -1);
+					photoObject.saveInBackground();
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public static ArrayList<PictureDBObject> getPictureFiles(int count, int offset) {
+	public static ArrayList<PictureDBObject> getPictureFiles(double lat, double lon, int count, int offset) {
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.orderByDescending("updatedAt");
-//		query.setLimit(count);
-//		query.setSkip(offset);
+		query.setLimit(count);
+		query.setSkip(offset);
 
 		try {
 			List<ParseObject> objects = query.find();
