@@ -56,4 +56,10 @@
     <string name="ParseAppID">k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW</string>
     <string name="ParseClientKey">KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC</string>
     <!-- End of Parse -->
+    
+    <!-- loading -->
+    
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="dummy_content">Loading...</string>
+    <!-- end of loading -->
 </resources>

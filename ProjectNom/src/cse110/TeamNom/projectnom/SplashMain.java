@@ -43,7 +43,7 @@ public class SplashMain extends Activity {
     private TextView textInstructionsOrLink;
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
-
+    private boolean initial = true;
     /**
      * Called when activity is created. Checks if Facebook session is already active. If
      * not, it'll create a new session and open the session when the user logs in.
@@ -51,7 +51,9 @@ public class SplashMain extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        System.out.println("DAVID");
+        System.out.println("DAVID");
+        System.out.println("DAVID");
 //        Swagging the hash key to the logcat
 //        PackageInfo info;
 //        try {
@@ -168,8 +170,11 @@ public class SplashMain extends Activity {
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
+            if(initial) {
+            	gotoLoadAndEnd();
+            	initial=false;
+            }
             
-            gotoMainAndEnd();
         } else {
         	// Login button
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
@@ -208,9 +213,8 @@ public class SplashMain extends Activity {
     }
     
     // Sends user to home page
-    private void gotoMainAndEnd() {
-        Intent intent = new Intent(SplashMain.this, MainActivity.class);
-        intent.putExtra("FacebookSession", Session.getActiveSession());
+    private void gotoLoadAndEnd() {
+        Intent intent = new Intent(SplashMain.this, LoadingActivity.class);
         startActivity(intent);
         finish();
     }

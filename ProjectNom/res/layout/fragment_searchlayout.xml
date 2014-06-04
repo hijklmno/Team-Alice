@@ -32,7 +32,7 @@
 
     <EditText
         android:id="@+id/searchLocation"
-        android:hint="Ex. San Diego, sd"
+        android:hint="Ex. San Diego, Los Angeles, San Francisco"
         android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -40,7 +40,8 @@ public class NewsFeedFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	Bundle savedInstanceState) {
-
+		//watson
+//		INITIALLOAD = true;
 		View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
 		false);
 

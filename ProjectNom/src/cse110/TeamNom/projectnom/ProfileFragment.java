@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment {
 		Intent intent = new Intent(getActivity(), SplashMain.class);
 		intent.putExtra("logoutCall", "logout");
 		startActivity(intent);
-		getActivity().finish();
+	//	getActivity().finish();
 	}
 
 	private void onClickFacebookDebug() {

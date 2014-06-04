@@ -29,33 +29,33 @@ public class MainActivity extends FragmentActivity implements
 
 	// Testing comment
 	// Tab titles
-	private String[] tabs = { "Camera", "Search", "News Feed", "Profile" };
+	private String[] tabs = { "NewsFeed", "Camera", "Search", "Profile" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// retrieves the facebook session established in the splash page
-		Intent i = getIntent();
-		Session session = (Session) i.getSerializableExtra("FacebookSession");
+//		Intent i = getIntent();
+//		Session session = (Session) i.getSerializableExtra("FacebookSession");
 
 		// debugging, test if session is logged in
-		if (session != null && session.isOpened()) {
-			Log.d("MainActivityFacebookSession", "Logged in");
-		} else {
-			Log.d("MainActivityFacebookSession", "Logged out");
-		}
+//		if (session != null && session.isOpened()) {
+	//		Log.d("MainActivityFacebookSession", "Logged in");
+		//} else {
+	//		Log.d("MainActivityFacebookSession", "Logged out");
+	//	}
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		//Facebook stuff
-		AppFacebookAccess.setActiveSession();
-		AppFacebookAccess.getNameAndID();
+//		AppFacebookAccess.setActiveSession();
+//		AppFacebookAccess.getNameAndID();
 		
 
 		// Parse stuff
-		Context context = this.getApplicationContext();
-		AppParseAccess.initialize(this, context.getString(R.string.ParseAppID), context.getString(R.string.ParseClientKey));
-		AppParseAccess.loadOrAddNewUser(AppFacebookAccess.getFacebookId(), AppFacebookAccess.getFacebookName());
+//		Context context = this.getApplicationContext();
+//		AppParseAccess.initialize(this, context.getString(R.string.ParseAppID), context.getString(R.string.ParseClientKey));
+//		AppParseAccess.loadOrAddNewUser(AppFacebookAccess.getFacebookId(), AppFacebookAccess.getFacebookName());
 
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -63,7 +63,7 @@ public class MainActivity extends FragmentActivity implements
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-		// viewPager.setOffscreenPageLimit(4);
+	    viewPager.setOffscreenPageLimit(4);
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
