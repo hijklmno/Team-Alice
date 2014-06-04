@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:checked="true"
+        android:paddingTop="8dp"
         android:textOff="@string/toggleOff"
         android:textOn="@string/toggleOn" />
 <!--
@@ -39,7 +40,10 @@
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_selector_flatcolor" />
 -->
+
+        
 <!-- testing drag to refresh -->
+<!-- android:divider="#FFFFFF"-->
  <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/custom_list"
         android:layout_width="fill_parent"
@@ -47,13 +51,14 @@
         android:layout_below="@+id/newsFeedToggle"
         android:cacheColorHint="#00000000"
         android:divider="#FFFFFF"
-        android:dividerHeight="6dp"
+        android:dividerHeight="15dp"
         android:fadingEdge="none"
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
-        android:headerDividersEnabled="true"
+        android:headerDividersEnabled="false"
         android:background="#FFFFFF"
-        android:layout_margin="6dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:smoothScrollbar="true" />
  <!-- end drag to refresh -->
 </RelativeLayout>

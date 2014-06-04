@@ -5,7 +5,7 @@
     android:layout_margin="6dp"
     android:layout_height="wrap_content"
     android:minHeight="50dp"
-    android:background="#BABABA"
+    android:background="#F5F2E4"
     android:padding="6dp"
     android:orientation="horizontal" >
 
@@ -19,11 +19,13 @@
          
      <ImageView
         android:id="@+id/NewsFeedThumbImage"
+        android:contentDescription=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+		android:layout_centerHorizontal="true"
+		android:padding="10dp"
         android:layout_below="@id/NewsFeedName"
-        android:background="#BABABA" />
+        android:background="#F5F2E4" />
         
     <TextView
         android:id="@+id/NewsFeedCaption"
@@ -31,17 +33,16 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_below="@id/NewsFeedThumbImage"
-        android:textColor="@color/black"
-        android:typeface="sans"
+        android:textColor="#000000"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/NewsFeedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/NewsFeedThumbImage"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/NewsFeedMmm"
+        android:gravity="right"
         android:textColor="#000000"
         android:textSize="12sp" />
 
@@ -52,36 +53,35 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/NewsFeedCaption"
         android:text=""
-        android:textColor="@color/black"
+        android:textColor="#000000"
         android:typeface="sans"
         android:textSize="18sp" />
 
     <Button
         android:id="@+id/NewsFeedNOM"
         android:tag=""
-        style="?android:attr/buttonStyleSmall"
+		style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/NewsFeedCaption"
         android:text=""
-        android:drawableStart="@drawable/ic_action_like" />
+        android:drawableStart="@drawable/button_state" />
 
     <Button
         android:id="@+id/NewsFeedMmm"
         android:tag=""
-        style="?android:attr/buttonStyleSmall"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/NewsFeedNOM"
         android:text=""
-        android:drawableStart="@drawable/ic_action_important" />
+        android:drawableStart="@drawable/button_state2" />
 
     <Button 
         android:id="@+id/NewsFeedReport"
         android:tag=""
-        style="?android:attr/buttonStyleSmall"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
