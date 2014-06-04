@@ -28,62 +28,55 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent" />
           -->
-
-<!-- Gallery horizontal slide view -->
-
-	<TextView
-	    android:id="@+id/picturesText"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="Your Pictures"
-	    android:layout_below="@id/imageViewProfile" 
-	    android:paddingTop="10dp"/>
-   <HorizontalScrollView 
-        android:layout_width="match_parent"
+          
+	<Switch
+        android:id="@+id/profileToggle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/horizontal_scrollview" 
-        android:fadingEdge="none"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageViewProfile"
+        android:checked="true"
+        android:textOff="@string/ProfileToggleMyPictures"
+        android:textOn="@string/ProfileToggleMyBookmarks"
         android:paddingTop="10dp"
-        android:layout_below="@id/picturesText" >
-        	<LinearLayout 
-        	    android:id="@+id/horizontal_outer_layout"
-        	    android:layout_height="fill_parent"
-        	    android:layout_width="wrap_content"
-        	    android:orientation="horizontal">
-        	</LinearLayout>
-        	
-    </HorizontalScrollView>
-
-   	<TextView
-	    android:id="@+id/bookmarksText"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="Your Bookmarks"
-	    android:paddingTop="10dp"
-	    android:layout_below="@id/horizontal_scrollview" />
-    <HorizontalScrollView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/horizontal_scrollview2" 
-        android:fadingEdge="none" 
-        android:paddingTop="10dp"
-        android:layout_below="@id/bookmarksText">
-        	<LinearLayout 
-        	    android:id="@+id/horizontal_outer_layout2"
-        	    android:layout_height="fill_parent"
-        	    android:layout_width="wrap_content"
-        	    android:orientation="horizontal">
-        	</LinearLayout>
-    </HorizontalScrollView>
-    
-    <Button
+         />
+          
+	<Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log Out"
         android:onClick="onClickLogout" 
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/horizontal_scrollview2"/>
+        android:layout_alignParentBottom="true"/>
+	  
+	<GridView 
+    	android:id="@+id/grid_view"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:numColumns="auto_fit"
+    	android:columnWidth="90dp"
+    	android:horizontalSpacing="10dp"
+    	android:verticalSpacing="10dp"
+    	android:gravity="center"
+    	android:stretchMode="columnWidth"
+    	android:layout_below="@id/profileToggle"
+    	android:paddingTop="10dp"
+    	android:layout_above="@id/buttonLogout" />  
+    	
+	<GridView 
+    	android:id="@+id/grid_view2"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:numColumns="auto_fit"
+    	android:columnWidth="90dp"
+    	android:horizontalSpacing="10dp"
+    	android:verticalSpacing="10dp"
+    	android:gravity="center"
+    	android:stretchMode="columnWidth"
+    	android:layout_below="@id/profileToggle"
+    	android:paddingTop="10dp"
+    	android:layout_above="@id/buttonLogout" />  
     
-   
-</RelativeLayout>
+  
+    
+  </RelativeLayout>

@@ -1,21 +1,14 @@
 package cse110.TeamNom.projectnom;
 
 import java.net.URL;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,41 +16,33 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
-import com.parse.FindCallback;
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 public class ProfileFragment extends Fragment {
 	// check if first load
 	private static boolean INITIALLOAD = true;
 
-	private TextView picturesText;
-	private TextView bookmarksText;
 	private Button buttonLogout;
 	private static Bitmap profileBitmap;
 	private TextView profileUser;
 
 	private ProfilePictureView profilePictureView;
 
-	// Gallery variables
-	private HorizontalScrollView mScrollView;
-	private LinearLayout mOuterLayout;
-	private HorizontalScrollView horizontalScrollview;
-	private LinearLayout horizontalOuterLayout;
-
+	private Switch switchBut;
+	private GridView gridV;
+	private GridView bookmarks;
+	public Drawable[] d;
+	public Drawable[] b;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -65,8 +50,6 @@ public class ProfileFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_profile, container,
 				false);
 		profileUser = (TextView) rootView.findViewById(R.id.profileUser);
-		picturesText = (TextView) rootView.findViewById(R.id.picturesText);
-		bookmarksText = (TextView) rootView.findViewById(R.id.bookmarksText);
 		profileUser.setText( AppFacebookAccess.getFacebookName());
 		
 		// start configuration for the logout button
@@ -77,22 +60,36 @@ public class ProfileFragment extends Fragment {
 			}
 		});
 
-		horizontalScrollview = (HorizontalScrollView) rootView
-				.findViewById(R.id.horizontal_scrollview);
-		horizontalOuterLayout = (LinearLayout) rootView
-				.findViewById(R.id.horizontal_outer_layout);
-
-		horizontalScrollview.setHorizontalScrollBarEnabled(false);
-
-		mScrollView = (HorizontalScrollView) rootView
-				.findViewById(R.id.horizontal_scrollview2);
-		mOuterLayout = (LinearLayout) rootView
-				.findViewById(R.id.horizontal_outer_layout2);
+		switchBut = (Switch) rootView.findViewById(R.id.profileToggle);
+		gridV = (GridView) rootView.findViewById(R.id.grid_view);
+		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
+		
 		
 		if (INITIALLOAD) {
 			onClickLoadMyPictures();
 			onClickLoadM();
 		}
+		gridV.setAdapter(new ProfileImageAdapter(getActivity(), d));
+		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), b));
+		
+
+		bookmarks.setVisibility(View.INVISIBLE);
+		switchBut
+		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					// pic
+					gridV.setVisibility(View.VISIBLE);
+					bookmarks.setVisibility(View.INVISIBLE);
+				}
+				else {
+					gridV.setVisibility(View.INVISIBLE);
+					bookmarks.setVisibility(View.VISIBLE);
+					// bookmark
+				}
+			}
+		});
 
 		return rootView;
 	}
@@ -119,7 +116,7 @@ public class ProfileFragment extends Fragment {
 		Intent intent = new Intent(getActivity(), SplashMain.class);
 		intent.putExtra("logoutCall", "logout");
 		startActivity(intent);
-		getActivity().finish();
+	//	getActivity().finish();
 	}
 
 	private void onClickFacebookDebug() {
@@ -178,10 +175,34 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void onClickFacebookPicUpdate() {
-		profileBitmap = AppFacebookAccess.getFacebookProfilePicture();
+		getFacebookProfilePicture();
 		ImageView profPic = (ImageView) getView().findViewById(
 				R.id.imageViewProfile);
 		profPic.setImageBitmap(profileBitmap);
+	}
+
+	private void getFacebookProfilePicture() {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					System.out.println(AppFacebookAccess.getFacebookId());
+					URL imageURL = new URL("https://graph.facebook.com/"
+							+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
+					profileBitmap = BitmapFactory.decodeStream(imageURL
+							.openConnection().getInputStream());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// get list of pictures from parse
@@ -194,6 +215,8 @@ public class ProfileFragment extends Fragment {
 			return;
 		}
 		
+		d = new Drawable[pictureIDs.length];
+		
 		for (int i = 0; i < pictureIDs.length; i++) {
 			PictureDBObject object = AppParseAccess.getSpecificPicture(pictureIDs[i]);
 			if (object != null) {
@@ -201,7 +224,7 @@ public class ProfileFragment extends Fragment {
 	
 				final Button photoGalleryButton = new Button(getActivity());
 				Drawable image = null;
-				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+				d[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
 				photoGalleryButton.setBackground(image);
 				photoGalleryButton.setOnClickListener(new OnClickListener() {
 					@Override
@@ -210,7 +233,7 @@ public class ProfileFragment extends Fragment {
 					}
 				});
 	
-				horizontalOuterLayout.addView(photoGalleryButton);
+				System.out.println(d.length);
 			}
 		}
 	}
@@ -225,6 +248,8 @@ public class ProfileFragment extends Fragment {
 			return;
 		}
 		
+		b = new Drawable[bookmarkIDs.length];
+		
 		for (int i = 0; i < bookmarkIDs.length; i++) {
 			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
 			if (object != null) {
@@ -232,7 +257,7 @@ public class ProfileFragment extends Fragment {
 	
 				final Button photoGalleryButton = new Button(getActivity());
 				Drawable image = null;
-				image = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+				b[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
 				photoGalleryButton.setBackground(image);
 				photoGalleryButton.setOnClickListener(new OnClickListener() {
 					@Override
@@ -241,7 +266,7 @@ public class ProfileFragment extends Fragment {
 					}
 				});
 	
-				mOuterLayout.addView(photoGalleryButton);
+				//mOuterLayout.addView(photoGalleryButton);
 			}
 		}
 	}

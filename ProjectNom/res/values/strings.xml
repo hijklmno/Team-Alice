@@ -56,4 +56,9 @@
     <string name="ParseAppID">k6xrLx1ka30TdyjSmZZRF2XVkyrvEJJq38YtZbKW</string>
     <string name="ParseClientKey">KTchPGVBZhFSaCOetY7XbBWyaQN262o2T04b60RC</string>
     <!-- End of Parse -->
+    
+    <!-- Profile -->
+    <string name="ProfileToggleMyPictures">My Pictures</string>
+    <string name="ProfileToggleMyBookmarks">My Bookmarks</string>
+    <!-- End of profile -->
 </resources>
