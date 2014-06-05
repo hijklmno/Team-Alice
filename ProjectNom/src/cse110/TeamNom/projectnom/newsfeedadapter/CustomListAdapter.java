@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import cse110.TeamNom.projectnom.AppFacebookAccess;
 import cse110.TeamNom.projectnom.AppParseAccess;
@@ -68,6 +59,7 @@ public class CustomListAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
+		// Create a new holder to contain all the elements to be populated per row
 		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(
@@ -77,86 +69,108 @@ public class CustomListAdapter extends BaseAdapter {
 			holder.dateTextView = (TextView) convertView.findViewById(R.id.NewsFeedDate);
 			holder.imageView = (ImageView) convertView.findViewById(R.id.NewsFeedThumbImage);
 			holder.nameTextView = (TextView) convertView.findViewById(R.id.NewsFeedName);
-			holder.mmm = (Button) convertView.findViewById(R.id.NewsFeedMmm);
-			holder.nom = (Button) convertView.findViewById(R.id.NewsFeedNOM);
+			holder.bookmark = (Button) convertView.findViewById(R.id.NewsFeedMmm);
+			holder.like = (Button) convertView.findViewById(R.id.NewsFeedNOM);
 			holder.Report = (Button) convertView.findViewById(R.id.NewsFeedReport);
 			
 			convertView.setTag(holder);
-			
 		}
 		else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		// Get the respective picture object 
 		final PictureDBObject pictureObj = (PictureDBObject) listData.get(position);
 		
+		// Defining the text for the caption
 		holder.captionTextView.setText(pictureObj.getRestID());
+		
+		// Defining the date
 		holder.dateTextView.setText(pictureObj.getUpdatedDate().toString());
+		
+		// Determine whether a picture is reported; if not, then load image
 		if (pictureObj.isReported()) {
 			holder.imageView.setImageResource(R.drawable.ic_action_error);
 		} else {
 			holder.imageView.setImageBitmap(uncompressImage(pictureObj.getPicture()));
 		}
+		
+		// Defining the name
 		holder.nameTextView.setText(pictureObj.getFacebookName());
-		//Define the Mmm button settings
-		holder.mmm.setTag(pictureObj.getImageID());
-		if (/*AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())*/
-				pictureObj.isBookmarked()) {
-			holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
-			holder.mmm.refreshDrawableState();
+		
+		// Define the Mmm button settings
+		holder.bookmark.setTag(pictureObj.getImageID());
+		
+		// Set the number count and highlight bookmark button if chosen
+		if (pictureObj.isBookmarked()) {
+			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
+			holder.bookmark.refreshDrawableState();
 		}
 		else {
-			holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
-			holder.mmm.refreshDrawableState();
+			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
+			holder.bookmark.refreshDrawableState();
 		}
-		holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
-		holder.mmm.setOnClickListener(new View.OnClickListener() {
+		
+		// Set text for the bookmark button
+		holder.bookmark.setText(Integer.toString(pictureObj.getBookmarkCount()));
+		
+		// Define the on click listener for the bookmark button
+		holder.bookmark.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+					// If not bookmarked, then bookmark image (submitted to parse)
 					AppParseAccess.bookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());		
 					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() + 1);
-					holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
-					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
-					holder.mmm.refreshDrawableState();
+					holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
+					holder.bookmark.setText(Integer.toString(pictureObj.getBookmarkCount()));
+					holder.bookmark.refreshDrawableState();
 				} else {
+					// If bookmarked, then unbookmark image (submitted to parse)
 					AppParseAccess.unbookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() - 1);
-					holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
-					holder.mmm.setText(Integer.toString(pictureObj.getBookmarkCount()));
-					holder.mmm.refreshDrawableState();
+					holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
+					holder.bookmark.setText(Integer.toString(pictureObj.getBookmarkCount()));
+					holder.bookmark.refreshDrawableState();
 				}
 			}
 		});
 		
 		
 		//Defining the Nom button settings
-		holder.nom.setTag(pictureObj.getImageID());
-		if (/*AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())*/
-				pictureObj.isLiked()) {
-			holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
-			holder.nom.refreshDrawableState();
+		holder.like.setTag(pictureObj.getImageID());
+		
+		// Set the number count and highlight like button if chosen
+		if (pictureObj.isLiked()) {
+			holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
+			holder.like.refreshDrawableState();
 		}
 		else {
-			holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
-			holder.nom.refreshDrawableState();
+			holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
+			holder.like.refreshDrawableState();
 		}
-		holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
-		holder.nom.setOnClickListener(new View.OnClickListener() {
+		
+		// Set text for the bookmark button
+		holder.like.setText(Integer.toString(pictureObj.getLikeCount()));
+		
+		// Define the on click listener for the like button
+		holder.like.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+					// If not liked, then like image (submitted to parse)
 					AppParseAccess.incrementNomCount(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setLikeCount(pictureObj.getLikeCount() + 1);
-					holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
-					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
-					holder.nom.refreshDrawableState();
+					holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
+					holder.like.setText(Integer.toString(pictureObj.getLikeCount()));
+					holder.like.refreshDrawableState();
 				} else {
+					// If liked, then unlike image (submitted to parse)
 					AppParseAccess.unlikeImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setLikeCount(pictureObj.getLikeCount() - 1);
-					holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
-					holder.nom.setText(Integer.toString(pictureObj.getLikeCount()));
-					holder.nom.refreshDrawableState();
+					holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
+					holder.like.setText(Integer.toString(pictureObj.getLikeCount()));
+					holder.like.refreshDrawableState();
 				}
 			}
 		});
@@ -187,8 +201,8 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView nameTextView;
 		TextView dateTextView;
 		ImageView imageView;
-		Button nom;
-		Button mmm;
+		Button like;
+		Button bookmark;
 		Button Report;
 	}
 }
