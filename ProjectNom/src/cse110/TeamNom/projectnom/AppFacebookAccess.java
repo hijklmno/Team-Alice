@@ -15,7 +15,7 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 
-/*
+/**
  * AppFacebookAccess is a access class for the purpose of layering access to Facebook in the 
  * NOM application. 
  */
@@ -27,14 +27,14 @@ public class AppFacebookAccess {
 	private static ArrayList<String> allFriends = new ArrayList<String>();	// ArrayList of friend's FB IDs
 	private static Bitmap profileBitmap;
 	
-	/*
+	/**
 	 * setActiveSession() stores the current active Facebook session.
 	 */
 	public static void setActiveSession() {
 		session = Session.getActiveSession();
 	}
 
-	/*
+	/**
 	 * loadMyFriends() loads the current Facebook user's friends that have also given Facebook
 	 * permissions to the NOM application.
 	 */
@@ -85,14 +85,14 @@ public class AppFacebookAccess {
 		return allFriends;
 	}
 
-	/*
+	/**
 	 * friendsIDBuffer() adds a new friend string to the String array.
 	 */
 	private static void friendsIDBuffer(String friend_id) {
 		allFriends.add(friend_id);
 	}
 	
-	/*
+	/**
 	 * dumpfriendsIDBuffer() returns a copy of the friends array and then clears the old
 	 * friends array.
 	 */
@@ -109,7 +109,7 @@ public class AppFacebookAccess {
 		return friendsStrArr;
 	}
 	
-	/*
+	/**
 	 * getNameAndID() stores the current Facebook user's ID and name in the
 	 * FB_ID and FB_Name.
 	 */
@@ -150,21 +150,21 @@ public class AppFacebookAccess {
 		}
 	}
 
-	/*
+	/**
 	 * getFacebookId() returns the Facebook ID of the current user.
 	 */
 	public static String getFacebookId() {
 		return FB_ID;
 	}
 
-	/*
+	/**
 	 * getFacebookName() returns the Facebook name of the current user.
 	 */
 	public static String getFacebookName() {
 		return FB_Name;
 	}
 	
-	/*
+	/**
 	 * getFacebookProfilePicture() starts a new thread that gets the current 
 	 * logged in user's profile picture and returns that picture as a Bitmap.
 	 */

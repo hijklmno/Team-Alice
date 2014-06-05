@@ -14,14 +14,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-/*
+/**
  * AppParseAccess is a access class for the purpose of layering access to Parse in the 
  * NOM application. The NOM Parse database includes the FacebookAccounts and Food_table
  * tables.
  */
 public class AppParseAccess {
 
-	/*
+	/**
 	 * initialize() initializes the Parse access using NOM's application ID and
 	 * client key.
 	 */
@@ -49,7 +49,7 @@ public class AppParseAccess {
 
 	}
 
-	/*
+	/**
 	 * isExistingUser() checks if user is already existing on the
 	 * FacebookAccounts table of the NOM Parse database.
 	 */
@@ -72,7 +72,7 @@ public class AppParseAccess {
 		return true;
 	}
 
-	/*
+	/**
 	 * addNewUser() adds a new user to the FacebookAccounts table of the NOM
 	 * Parse database, if there isn't already an account on the
 	 * FacebookAccounts.
@@ -90,7 +90,7 @@ public class AppParseAccess {
 		}
 	}
 
-	/*
+	/**
 	 * getMyPictureIds() returns a string array by splitting the string from the
 	 * pictures column of the FacebookAccounts table in the NOM Parse database.
 	 */
@@ -113,7 +113,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getMyBookmarkIds() returns a string array by splitting the string from the
 	 * pictures column of the FacebookAccounts table in the NOM Parse database.
 	 */
@@ -137,7 +137,7 @@ public class AppParseAccess {
 		return null;
 	}
 	
-	/*
+	/**
 	 * getBookmarkString() returns the string from the pictures column of the
 	 * FacebookAccounts table of the parseUser in the NOM Parse database.
 	 * 
@@ -155,7 +155,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getSpecificPicture() returns a PictureDBObject by querying through the
 	 * Food_Table_DB table through the objectId column.
 	 */
@@ -180,7 +180,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * putMyPicture() adds a new ParseObject to the Food_Table_DB.
 	 */
 	public static void putMyPicture(byte[] data, final String FB_ID,
@@ -245,7 +245,7 @@ public class AppParseAccess {
 		});
 	}
 
-	/*
+	/**
 	 * getCurrentUser() returns the ParseObject of the FacebookAccounts table of
 	 * the NOM Parse database by querying with FB_ID.
 	 */
@@ -271,7 +271,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getPictureString() returns the string from the pictures column of the
 	 * FacebookAccounts table of the parseUser in the NOM Parse database.
 	 * 
@@ -289,7 +289,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getFoodObject() returns a ParseObject by querying through the
 	 * Food_Table_DB for the objectID corresponding to foodID.
 	 */
@@ -312,7 +312,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getPhoto() returns the ParseFile of the photo from the Food_photo column
 	 * of the photoObject ParseObject.
 	 */
@@ -328,7 +328,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getFriends() returns a string array by splitting the string from the
 	 * friends column of the FacebookAccounts NOM Parse database.
 	 */
@@ -348,7 +348,7 @@ public class AppParseAccess {
 		return null;
 	}
 
-	/*
+	/**
 	 * getFriendsPictureWithLimits() returns an ArrayList of PictureDBObject with the
 	 * limit of count and skipping by offset. Each PictureDBObject is created by querying
 	 * through "Food_Table_DB" on Parse for picture_ids in "FACEBOOK_ID"
@@ -384,7 +384,7 @@ public class AppParseAccess {
 		return customList;
 	}
 
-	/*
+	/**
 	 * incrementNomCount() increments the Nom number of the object with imageID
 	 * in the Food_Table_DB by 1.
 	 */
@@ -426,7 +426,7 @@ public class AppParseAccess {
 		}
 	}
 
-	/*
+	/**
 	 * bookmarkImage() adds the imageID to the bookmarks string of the current
 	 * Parse user.
 	 */
@@ -492,7 +492,7 @@ public class AppParseAccess {
 		}
 	}
 
-	/*
+	/**
 	 * setFlag() sets the flag of the object with imageID.
 	 */
 	public static void setFlag(String imageID) {
@@ -513,7 +513,7 @@ public class AppParseAccess {
 		}
 	}
 	
-	/*
+	/**
 	 * isLiked() checks if the ParseObject with FB_ID has already liked the
 	 * ParseObject that corresponds with imageID.
 	 */
@@ -548,7 +548,7 @@ public class AppParseAccess {
 		return false;
 	}
 	
-	/*
+	/**
 	 * isBookmarked() checks if the ParseObject with FB_ID has already liked the
 	 * ParseObject that corresponds with imageID.
 	 */
@@ -583,7 +583,7 @@ public class AppParseAccess {
 		return false;
 	}
 	
-	/*
+	/**
 	 * unlikeImage() decrements the "Like" number from the ParseObject in "Food_Table_DB"
 	 * with an objectID that matches imageID. It also removes FB_ID from the "Like_id" 
 	 * string in the same ParseObject.
@@ -638,7 +638,7 @@ public class AppParseAccess {
 				}
 	}
 	
-	/*
+	/**
 	 * unbookmarkImage() decrements the "Bookmark" number from the ParseObject in "Food_Table_DB"
 	 * with an objectID that matches imageID. It also removes FB_ID from the "Bookmark_id" 
 	 * string in the same ParseObject.
@@ -723,7 +723,8 @@ public class AppParseAccess {
 		}
 	}
 	
-	/* getPictureFiles() returns an ArrayList of PictureDBObjects that are within a certain latitude and longitude
+	/**
+	 * getPictureFiles() returns an ArrayList of PictureDBObjects that are within a certain latitude and longitude
 	 * range of the lat and lon. The query's parameters are set with limit of count and it skips offset. Each
 	 * PictureDBObject is created from each ParseObject from "Food_Table_DB" that is returned from the query.
 	 */

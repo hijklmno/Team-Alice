@@ -74,11 +74,11 @@ public class CameraFragment extends Fragment {
 	private String pathtophoto;
 	private String pictureID;
 
-	//Uri
+	// Uri
 	private Uri contentUri;
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
-	//restart/pause strings
+	// Restart/pause strings
 	private String restTmp;
 	private String capTmp;
 	private Drawable imageTmp;
@@ -341,6 +341,7 @@ public class CameraFragment extends Fragment {
 				onClickSubmit();
 			}
 		});
+		
 		// Checking camera availability
 		if (!isDeviceSupportCamera()) {
 			Toast.makeText( super.getActivity().getApplicationContext(),
@@ -363,6 +364,7 @@ public class CameraFragment extends Fragment {
 		caption.setText(null);
 		isRestart=false;
 	}
+	
 	// Some lifecycle callbacks so that the image can survive orientation change
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -370,17 +372,20 @@ public class CameraFragment extends Fragment {
 		outState.putParcelable(BITMAP_STORAGE_KEY, mImageBitmap);
 		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY, (mImageBitmap != null) );
 	}
+	
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		mImageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
 		mImageView.setImageBitmap(mImageBitmap);
 		setFragmentVisibility(0);
 	}
+	
 	public void onPause() {
 		super.onPause();
 		restTmp = restaurant.getText().toString();
 		capTmp = caption.getText().toString();
 	}
+	
 	public void onStop() {
 		isRestart = true;
 		super.onStop();
@@ -392,6 +397,7 @@ public class CameraFragment extends Fragment {
 			wasVisible = true;
 		}
 	}
+	
 	public void onRestart() {
 		restaurant.setText(restTmp);
 		caption.setText(capTmp);
@@ -399,6 +405,7 @@ public class CameraFragment extends Fragment {
 		mImageView.setImageBitmap(mImageBitmap);
 		setFragmentVisibility(0);
 	}
+	
 	public void onResume() {
 		super.onResume();
 	}
@@ -415,16 +422,17 @@ public class CameraFragment extends Fragment {
 		GPSFragment gps = new GPSFragment(getActivity());
 		Bitmap bitmap;
 		bitmap = BitmapFactory.decodeFile(path);
+		
 		if(bitmap == null)
 		{
 			System.out.println(path + "cannot be converted to a bitmap!");
 			return;
 		}
+		
 		Bitmap bmpCompressed = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		bmpCompressed.compress(CompressFormat.JPEG, 100, bos);
 		byte[] data = bos.toByteArray();
-		//uncompressFile(data);
 
 		final ParseObject object = new ParseObject("Food_Table_DB");
 		ParseFile file = new ParseFile(data);
@@ -440,7 +448,6 @@ public class CameraFragment extends Fragment {
 			}
 		});
 
-		//parseTitle = title.getText().toString();
 		parseRestaurant = restaurant.getText().toString();
 		parseCaption = caption.getText().toString();
 
@@ -459,13 +466,10 @@ public class CameraFragment extends Fragment {
 		object.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
-				Log.d("asdfdsfasdf", object.getObjectId());
 				pictureID = object.getObjectId();
 
-				Log.d("asdasd", pictureID);
 				ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
 
-				Log.d("GettingFacebookinfo", "asdf");
 				Session session = Session.getActiveSession();
 
 				query.whereEqualTo("facebook_id", AppFacebookAccess.getFacebookId());
@@ -477,7 +481,6 @@ public class CameraFragment extends Fragment {
 							Log.d("GettingFacebookinfo", "no object returned");
 						}
 						else {
-							Log.d("GettingFacebookinfo", objects.get(0).toString());
 							ParseObject facebookAccount = objects.get(0);
 
 							String pictureString = (String) facebookAccount.get("pictures");
@@ -501,8 +504,6 @@ public class CameraFragment extends Fragment {
 
 	}
 	
-	//----------------------------Facebook-----------------------------------------------
-
 	//--------------------------------Helper Methods----------------------------------------
 	
 	/**
@@ -513,7 +514,6 @@ public class CameraFragment extends Fragment {
 	private boolean isDeviceSupportCamera() {
 		if (super.getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_CAMERA)) {
-			// this device has a camera
 			return true;
 		} else {
 			// no camera on this device
@@ -535,7 +535,6 @@ public class CameraFragment extends Fragment {
 		if (isIntentAvailable(super.getActivity().getApplicationContext(), intentName)) {
 			btn.setOnClickListener(onClickListener);
 		} else {
-			//btn.setText(getText(R.string.cannot).toString() + " " + btn.getText());
 			btn.setClickable(false);
 		}
 	}
