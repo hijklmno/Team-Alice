@@ -100,7 +100,8 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.nameTextView.setText(pictureObj.getFacebookName());
 		//Define the Mmm button settings
 		holder.mmm.setTag(pictureObj.getImageID());
-		if (AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+		if (/*AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())*/
+				pictureObj.isBookmarked()) {
 			holder.mmm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 			holder.mmm.refreshDrawableState();
 		}
@@ -131,7 +132,8 @@ public class CustomListAdapter extends BaseAdapter {
 		
 		//Defining the Nom button settings
 		holder.nom.setTag(pictureObj.getImageID());
-		if (AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+		if (/*AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())*/
+				pictureObj.isLiked()) {
 			holder.nom.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
 			holder.nom.refreshDrawableState();
 		}

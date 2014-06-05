@@ -6,7 +6,13 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+/**
+ * PictureDBOject is a class that stores information about a ParseObject from
+ * the "Food_Table_DB" on Parse.
+ */
 public class PictureDBObject {
+	
+	// Field variables which will be populated through a ParseObject
 	String image_id;
 	byte[] Food_photo;
 	int Like;
@@ -25,14 +31,22 @@ public class PictureDBObject {
 	Date createdAt;
 	Date updatedAt;
 	
+	/**
+	 * The only constructor which should be used for PictureDBOject which takes in
+	 * a ParseObject from "Food_Table_DB". It calls many mutator methods to set the
+	 * instance fields of PictureDBObject.
+	 * 
+	 * @param parse
+	 */
 	public PictureDBObject(ParseObject parse) {
+		// Default settings
 		Like = 0;
 		Bookmark = 0;
 		report_image = false;
 		Latitude = 0;
 		Longitude = 0;
 		
-		//Store picture
+		// Store picture
 		ParseFile pf;
 		pf = (ParseFile) parse.get("Food_photo");
 		
@@ -42,70 +56,70 @@ public class PictureDBObject {
 			e.printStackTrace();
 		}
 		
-		//Check if I liked it
-		setLikeStatus(parse.getString("Like_id"));
-		
-		//Check if I bookmarked it
-		setBookmarkStatus(parse.getString("Bookmark"));
-		
-		//Store image id
+		// Store image id
 		setImageID(parse.getObjectId());
 		
-		//Store facebook name
+		// Store facebook name
 		setFacebookName(parse.getString("FACEBOOK_NAME"));
 		
-		//Store facebook id
+		// Store facebook id
 		setFacebookID(parse.getString("FACEBOOK_ID"));
 		
-		//Store like
+		// Store like
 		setLikeCount(parse.getInt("Like"));
 
-		//Store list of ids which liked the picture
+		// Store list of ids which liked the picture
 		setLikeIDs(parse.getString("Like_id"));
 		
-		//Store bookmarks
+		// Store bookmarks
 		setBookmarkCount(parse.getInt("Bookmark"));
 		
-		//Store list of ids which bookmarked the picture
+		// Store list of ids which bookmarked the picture
 		setBookmarkIDs(parse.getString("Bookmark_id"));
 		
-		//Store image reported status
+		// Store image reported status
 		setImageReportStatus(parse.getBoolean("report_image"));
 		
-		//Store food name
+		// Store food name
 		setRestID(parse.getString("Restaurant_Id"));
 		
-		//Store latitude
+		// Store latitude
 		setLatitude(parse.getDouble("Latitude"));
 		
-		//Store longitude
+		// Store longitude
 		setLongitude(parse.getDouble("Longitude"));
 		
-		//Store created at date
+		// Store created at date
 		setCreatedDate(parse.getCreatedAt());
 		
-		//Store updated at date
+		// Store updated at date
 		setUpdatedDate(parse.getUpdatedAt());
+		
+		// Check if I liked it
+		setLikeStatus(getLikeIDs());
+				
+		// Check if I bookmarked it
+		setBookmarkStatus(getBookmarkIDs());
 	}
 	
-	// Takes in a string of ids separated by commas and 
-	// check if my own id is in one of those
-	public void setLikeStatus(String ids) {
-		if (ids != null) {
-			String[] list = ids.split(",");
-			for (int i = 0; i < list.length; i++) {
-				if (list[i] == AppFacebookAccess.getFacebookId()) {
-					isLiked = true;
-					
-					return;
-				}
+	/**
+	 * setLikeStatus takes in a string of ids seperated by commas and checks if
+	 * the current user's Facebook ID is within them. If yes, then it sets
+	 * isLiked to true. Otherwise, isLiked is set to false.
+	 * 
+	 * @param ids
+	 */
+	public void setLikeStatus(String[] ids) {
+
+		for (int i = 0; i < ids.length; i++) {
+			if (ids[i] == AppFacebookAccess.getFacebookId()) {
+				isLiked = true;
+
+				return;
 			}
-		
-			isLiked = false;
 		}
-		else {
-			isLiked = false;
-		}
+
+		isLiked = false;
 	}
 	
 	// Accessor method return whether I have liked this picture
@@ -115,20 +129,15 @@ public class PictureDBObject {
 	
 	// Method which takes in the image string of ids which liked this picture,
 	// and checks whether I have liked it
-	public void setBookmarkStatus(String ids) {
-		if (ids != null) {
-			String[] list = ids.split(",");
-			for (int i = 0; i < list.length; i++) {
-				if (list[i] == AppFacebookAccess.getFacebookId()) {
-					isBookmarked = true;
-					return;
-				}
+	public void setBookmarkStatus(String[] ids) {
+
+		for (int i = 0; i < ids.length; i++) {
+			if (ids[i] == AppFacebookAccess.getFacebookId()) {
+				isBookmarked = true;
+				return;
 			}
-			isBookmarked = false;
 		}
-		else {
-			isBookmarked = false;
-		}
+		isBookmarked = false;
 	}
 	
 	// Accessor method return whether I have bookmarked this picture

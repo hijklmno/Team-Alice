@@ -65,7 +65,7 @@ public class CameraFragment extends Fragment {
 	private Button subBut;
 	private Context context;
 
-	// String variables\
+	// String variables
 	String parseRestaurant;
 	String parseCaption;
 
