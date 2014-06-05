@@ -53,6 +53,8 @@ public class AppFacebookAccess {
 						try {
 							String incomingText = response.getRawResponse();
 							JSONObject json = new JSONObject(incomingText);
+							
+							// Get the JSONArray "data" inside json
 							JSONArray dataList = json.getJSONArray("data");
 							
 							// Loop to add each friend's id to allFriends array
@@ -60,7 +62,6 @@ public class AppFacebookAccess {
 								String friend_name = ((JSONObject) dataList.get(i)).getString("name");
 								String friend_id = ((JSONObject) dataList.get(i)).getString("id");
 								System.out.println(friend_name + ":" + friend_id);
-//								friendsIDBuffer(friend_id);
 								allFriends.add(friend_id);
 							}
 						} catch (JSONException e) {
@@ -89,7 +90,6 @@ public class AppFacebookAccess {
 	 */
 	private static void friendsIDBuffer(String friend_id) {
 		allFriends.add(friend_id);
-		System.out.println("Added: " + friend_id + ", allFriends size: " + Integer.toString(allFriends.size()));
 	}
 	
 	/*
@@ -97,10 +97,15 @@ public class AppFacebookAccess {
 	 * friends array.
 	 */
 	private static String[] dumpfriendsIDBuffer() {
-		System.out.println("allFriends size: " + allFriends.size());
+		// Create a string array that is the length of the allFriends ArrayList
 		String[] newArr = new String[allFriends.size()];
+		
+		// Create a string array that stores allFriends elements with size of newArr
 		String[] friendsStrArr = (String[]) allFriends.toArray(newArr);
+		
+		// Clear the allFriends ArrayList
 		allFriends.clear();
+		
 		return friendsStrArr;
 	}
 	
@@ -122,6 +127,8 @@ public class AppFacebookAccess {
 									
 									try {
 										JSONObject json = new JSONObject(incomingText);
+										
+										// Store the information in static field variables
 										FB_ID = (String) json.get("id");
 										FB_Name = (String) json.get("name");
 									} catch (JSONException e) {
@@ -157,17 +164,22 @@ public class AppFacebookAccess {
 		return FB_Name;
 	}
 	
+	/*
+	 * getFacebookProfilePicture() starts a new thread that gets the current 
+	 * logged in user's profile picture and returns that picture as a Bitmap.
+	 */
 	public static Bitmap getFacebookProfilePicture() {
 		
+		// Start new thread to make sure request runs ahead of main thread
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					System.out.println(AppFacebookAccess.getFacebookId());
-					URL imageURL = new URL("https://graph.facebook.com/"
-							+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
-					profileBitmap = BitmapFactory.decodeStream(imageURL
-							.openConnection().getInputStream());
+					// URL that stores the user's profile picture
+					URL imageURL = new URL("https://graph.facebook.com/" 
+					+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
+					// Get the bitmap using a BitmapFactory
+					profileBitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
