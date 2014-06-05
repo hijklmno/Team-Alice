@@ -1,5 +1,6 @@
 package cse110.TeamNom.projectnom;
 
+
 import java.net.URL;
 
 import android.annotation.SuppressLint;
@@ -10,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,14 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
+
 
 public class ProfileFragment extends Fragment {
 	// check if first load
@@ -37,11 +36,12 @@ public class ProfileFragment extends Fragment {
 
 	private ProfilePictureView profilePictureView;
 
+	private Button refresh;
 	private Switch switchBut;
 	private GridView gridV;
 	private GridView bookmarks;
-	public Drawable[] d;
-	public Drawable[] b;
+	public Drawable[] pics;
+	public Drawable[] book;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,13 +64,21 @@ public class ProfileFragment extends Fragment {
 		gridV = (GridView) rootView.findViewById(R.id.grid_view);
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		
+		refresh= (Button) rootView.findViewById(R.id.profileRefresh);
+		
+		refresh.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				onClickLoadMyPictures();
+				onClickLoadMyBookmarks();
+			}
+		});
 		
 		if (INITIALLOAD) {
 			onClickLoadMyPictures();
-			onClickLoadM();
+			onClickLoadMyBookmarks();
 		}
-		gridV.setAdapter(new ProfileImageAdapter(getActivity(), d));
-		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), b));
+		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
+		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
 		
 
 		bookmarks.setVisibility(View.INVISIBLE);
@@ -119,57 +127,6 @@ public class ProfileFragment extends Fragment {
 	//	getActivity().finish();
 	}
 
-	private void onClickFacebookDebug() {
-//		Session session = Session.getActiveSession();
-//		textbox.setText(AppFacebookAccess.getMyFriends().toString());
-		
-		
-		
-
-//		/* make the API call */
-//		new Request(session, "/me", null, HttpMethod.GET,
-//				new Request.Callback() {
-//					public void onCompleted(Response response) {
-//						/* handle the result */
-//						String incomingText = response.getRawResponse();
-//						textbox.setText(incomingText);
-//
-//						try {
-//							JSONObject json = new JSONObject(incomingText);
-//							// id working
-//							final String id = (String) json.get("id");
-//							final String name = (String) json.get("name");
-//
-//							// testing to see if is a user already
-//							ParseQuery<ParseObject> query = ParseQuery
-//									.getQuery("FacebookAccounts");
-//							query.whereEqualTo("facebook_id", id);
-//							query.findInBackground(new FindCallback<ParseObject>() {
-//								@Override
-//								public void done(List<ParseObject> objects,
-//										ParseException e) {
-//									Log.d("FacebookFriendQuery", "done");
-//									textbox.setText(objects.toString());
-//									if (objects.isEmpty()) {
-//										ParseObject testObject = new ParseObject(
-//												"FacebookAccounts");
-//										testObject.put("facebook_id", id);
-//										testObject.put("Name", name);
-//										testObject.saveInBackground();
-//										Log.d("FacebookFriendQuery", "new user");
-//									}
-//								}
-//							});
-//
-//							textbox.setText(name);
-//						} catch (JSONException e) {
-//							e.printStackTrace();
-//						}
-//
-//					}
-//				}).executeAsync();
-	}
-
 	private void onClickFacebookPicUpdate() {
 		getFacebookProfilePicture();
 		ImageView profPic = (ImageView) getView().findViewById(
@@ -211,32 +168,22 @@ public class ProfileFragment extends Fragment {
 			return;
 		}
 		
-		d = new Drawable[pictureIDs.length];
+		pics = new Drawable[pictureIDs.length];
 		
 		for (int i = 0; i < pictureIDs.length; i++) {
 			PictureDBObject object = AppParseAccess.getSpecificPicture(pictureIDs[i]);
 			if (object != null) {
 				byte[] data = object.getPicture();
 	
-				final Button photoGalleryButton = new Button(getActivity());
-				Drawable image = null;
-				d[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
-				photoGalleryButton.setBackground(image);
-				photoGalleryButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						System.out.println("df");
-					}
-				});
-	
-				System.out.println(d.length);
+				pics[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+				
 			}
 		}
 	}
 	
 	
 	@SuppressLint("NewApi")
-	private void onClickLoadM() {
+	private void onClickLoadMyBookmarks() {
 		// bookmarks gallery
 		String[] bookmarkIDs = AppParseAccess.getMyBookmarkIds(AppFacebookAccess.getFacebookId());
 		
@@ -244,25 +191,15 @@ public class ProfileFragment extends Fragment {
 			return;
 		}
 		
-		b = new Drawable[bookmarkIDs.length];
+		book = new Drawable[bookmarkIDs.length];
 		
 		for (int i = 0; i < bookmarkIDs.length; i++) {
 			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
 			if (object != null) {
 				byte[] data = object.getPicture();
 	
-				final Button photoGalleryButton = new Button(getActivity());
-				Drawable image = null;
-				b[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
-				photoGalleryButton.setBackground(image);
-				photoGalleryButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						System.out.println("df");
-					}
-				});
-	
-				//mOuterLayout.addView(photoGalleryButton);
+				book[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
+							//mOuterLayout.addView(photoGalleryButton);
 			}
 		}
 	}

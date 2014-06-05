@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity implements
 
 	// Testing comment
 	// Tab titles
-	private String[] tabs = { "Camera", "Search", "News Feed", "Profile" };
+	private String[] tabs = { "News Feed","Camera", "Search", "Profile" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

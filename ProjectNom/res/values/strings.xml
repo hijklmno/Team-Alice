@@ -62,4 +62,9 @@
     <string name="ProfileToggleOff">My Bookmarks</string>
     <string name="ProfileToggleOn">My Pictures</string>
     <!-- End of profile -->
+    
+    <!-- Loading -->
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="dummy_content">Loading...</string>
+    <!-- end of loading -->
 </resources>

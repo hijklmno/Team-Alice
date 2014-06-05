@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,6 +54,10 @@ public class SplashMain extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 //        Swagging the hash key to the logcat
 //        PackageInfo info;
 //        try {
@@ -209,7 +215,7 @@ public class SplashMain extends Activity {
     
     // Sends user to home page
     private void gotoMainAndEnd() {
-        Intent intent = new Intent(SplashMain.this, MainActivity.class);
+        Intent intent = new Intent(SplashMain.this, LoadingActivity.class);
         intent.putExtra("FacebookSession", Session.getActiveSession());
         startActivity(intent);
         finish();
