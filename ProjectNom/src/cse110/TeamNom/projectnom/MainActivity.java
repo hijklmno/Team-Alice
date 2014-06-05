@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity implements
 		Context context = this.getApplicationContext();
 		AppParseAccess.initialize(this, context.getString(R.string.ParseAppID), context.getString(R.string.ParseClientKey));
 		AppParseAccess.loadOrAddNewUser(AppFacebookAccess.getFacebookId(), AppFacebookAccess.getFacebookName());
-
+		
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();

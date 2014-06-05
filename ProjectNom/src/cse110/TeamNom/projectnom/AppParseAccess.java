@@ -732,12 +732,20 @@ public class AppParseAccess {
 		// ArrayList of PictureDBObjects that will be returned
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 		
+		// 69.2 miles = 1 degree
+		double radius = 5 / 69.2;
+		
 		// Create query for "Food_Table_Db" and set parameters
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.orderByDescending("updatedAt");
 		query.setLimit(count);
 		query.setSkip(offset);
-
+		
+		query.whereGreaterThan("Latitude", lat - radius);
+		query.whereLessThan("Latitude", lat + radius);
+		query.whereGreaterThan("Longitude", lon - radius);
+		query.whereLessThan("Longitude", lon + radius);
+		
 		try {
 			List<ParseObject> objects = query.find();
 
