@@ -110,16 +110,17 @@ public class PictureDBObject {
 	 * @param ids
 	 */
 	public void setLikeStatus(String[] ids) {
-
-		for (int i = 0; i < ids.length; i++) {
-			if (ids[i] == AppFacebookAccess.getFacebookId()) {
-				isLiked = true;
-
-				return;
+		isLiked = false;
+		
+		if (ids != null) {
+			for (int i = 0; i < ids.length; i++) {
+				if (ids[i] == AppFacebookAccess.getFacebookId()) {
+					isLiked = true;
+	
+					return;
+				}
 			}
 		}
-
-		isLiked = false;
 	}
 	
 	// Accessor method return whether I have liked this picture
@@ -130,14 +131,16 @@ public class PictureDBObject {
 	// Method which takes in the image string of ids which liked this picture,
 	// and checks whether I have liked it
 	public void setBookmarkStatus(String[] ids) {
-
-		for (int i = 0; i < ids.length; i++) {
-			if (ids[i] == AppFacebookAccess.getFacebookId()) {
-				isBookmarked = true;
-				return;
+		isBookmarked = false;
+		
+		if (ids != null) {
+			for (int i = 0; i < ids.length; i++) {
+				if (ids[i] == AppFacebookAccess.getFacebookId()) {
+					isBookmarked = true;
+					return;
+				}
 			}
 		}
-		isBookmarked = false;
 	}
 	
 	// Accessor method return whether I have bookmarked this picture
