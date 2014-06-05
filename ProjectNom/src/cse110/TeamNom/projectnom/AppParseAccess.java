@@ -99,8 +99,12 @@ public class AppParseAccess {
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 
 		if (currentUser != null) {
+			// Obtain picture string from parse
 			String pictureString = getPictureString(currentUser);
+			
 			if (pictureString != null) {
+				
+				// Split by delimiting with "," to obtain the array of strings
 				String[] pictureList = pictureString.split(",");
 				return pictureList;
 			}
@@ -119,8 +123,12 @@ public class AppParseAccess {
 
 		if (currentUser != null) {
 			
+			// Obtain bookmark string from Parse
 			String bookmarkString = getBookmarkString(currentUser);
+			
 			if(bookmarkString != null) {
+				
+				// Split by delimiting with "," to obtain the array of strings
 				String[] bookmarkList = bookmarkString.split(",");
 				return bookmarkList;
 			}
@@ -136,7 +144,9 @@ public class AppParseAccess {
 	 * Note: The string should be split with "," to obtain each photo ID.
 	 */
 	private static String getBookmarkString(ParseObject parseUser) {
+		
 		if (parseUser != null) {
+			// Obtain the "bookmarks" string from Parse
 			String list = (String) parseUser.get("bookmarks");
 
 			return list;
@@ -150,6 +160,8 @@ public class AppParseAccess {
 	 * Food_Table_DB table through the objectId column.
 	 */
 	public static PictureDBObject getSpecificPicture(String picture_id) {
+		
+		// Query through Food_Table_DB for "objectId"
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.whereEqualTo("objectId", picture_id);
 
@@ -159,6 +171,7 @@ public class AppParseAccess {
 			if (objects.isEmpty()) {
 				return null;
 			} else
+				// Return a new PictureDBObject using information from Parse
 				return new PictureDBObject(objects.get(0));
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -172,8 +185,10 @@ public class AppParseAccess {
 	 */
 	public static void putMyPicture(byte[] data, final String FB_ID,
 			String caption, String resName, double latitude, double longitude) {
+		// Create new ParseObject in "Food_Table_DB"
 		final ParseObject object = new ParseObject("Food_Table_DB");
 
+		// Save the photo byte array in Food_Table_DB
 		ParseFile file = new ParseFile(data);
 		file.saveInBackground(new SaveCallback() {
 			@Override
@@ -235,15 +250,19 @@ public class AppParseAccess {
 	 * the NOM Parse database by querying with FB_ID.
 	 */
 	public static ParseObject getCurrentUser(String FB_ID) {
+		// Query through "FacebookAccounts" for "faecbook_id"
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("FacebookAccounts");
 		query.whereEqualTo("facebook_id", FB_ID);
 
 		try {
+			// List of object that were returned from Parse
 			List<ParseObject> objects = query.find();
 
+			// Return null if list is empty
 			if (objects.isEmpty()) {
 				return null;
 			} else
+				// Return what should be the only object in list
 				return objects.get(0);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -260,6 +279,8 @@ public class AppParseAccess {
 	 */
 	private static String getPictureString(ParseObject parseUser) {
 		if (parseUser != null) {
+			// Get "pictures" from Parse table "FacebookAccounts"
+			// in the parseUser row
 			String list = (String) parseUser.get("pictures");
 
 			return list;
@@ -273,12 +294,15 @@ public class AppParseAccess {
 	 * Food_Table_DB for the objectID corresponding to foodID.
 	 */
 	public static ParseObject getFoodObject(String foodID) {
+		// Query through "Food_Table_DB"
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 
 		try {
+			// Get the ParseObject with objectID of foodID
 			ParseObject photoObject = query.get(foodID);
 
 			if (photoObject != null) {
+				// Return that ParseObject
 				return photoObject;
 			}
 		} catch (ParseException e) {
@@ -293,9 +317,11 @@ public class AppParseAccess {
 	 * of the photoObject ParseObject.
 	 */
 	public static ParseFile getPhoto(ParseObject photoObject) {
+		// Get "Food_Photo" from photoObject
 		ParseFile photo = (ParseFile) photoObject.get("Food_photo");
 
 		if (photo != null) {
+			// Return "Food_Photo"
 			return photo;
 		}
 
@@ -307,10 +333,13 @@ public class AppParseAccess {
 	 * friends column of the FacebookAccounts NOM Parse database.
 	 */
 	public static String[] getFriends(String FB_ID) {
+		// Get the current user corresponding to FB_ID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 
 		if (currentUser != null) {
+			// Get "friends" from currentUser on Parse
 			String friendsString = (String) currentUser.get("friends");
+			// Split the list with "," and return it
 			String[] friendsList = friendsString.split(",");
 
 			return friendsList;
@@ -320,12 +349,16 @@ public class AppParseAccess {
 	}
 
 	/*
-	 * Get a list of pictures given a list of friends
+	 * getFriendsPictureWithLimits() returns an ArrayList of PictureDBObject with the
+	 * limit of count and skipping by offset. Each PictureDBObject is created by querying
+	 * through "Food_Table_DB" on Parse for picture_ids in "FACEBOOK_ID"
 	 */
 	public static ArrayList<PictureDBObject> getFriendsPictureWithLimits(
 			String[] picture_ids, int count, int offset) {
+		// ArrayList that will be populated and returned
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 
+		// Set parameters for query
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.whereContainedIn("FACEBOOK_ID", Arrays.asList(picture_ids));
 		query.orderByDescending("updatedAt");
@@ -335,9 +368,11 @@ public class AppParseAccess {
 		try {
 			List<ParseObject> objects = query.find();
 
+			// Return null if no objects in list
 			if (objects.isEmpty()) {
 				return null;
 			} else {
+				// Add new PictureDBObjects to customList
 				for (int i = 0; i < objects.size(); i++) {
 					customList.add(new PictureDBObject(objects.get(i)));
 				}
@@ -354,18 +389,26 @@ public class AppParseAccess {
 	 * in the Food_Table_DB by 1.
 	 */
 	public static void incrementNomCount(String FB_ID, String imageID) {
+		// Query through "Food_Table_DB"
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		
+		// Get the current user's objectID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 		String userID = currentUser.getObjectId();
 
 		try {
+			// Get the ParseObject with an objectID matching imageID
 			ParseObject photoObject = query.get(imageID);
 
 			if (photoObject != null) {
+				// Increment the "Like" number
 				photoObject.increment("Like");
 				
+				// Get the "Like_id" string from photoObject
 				String nomString = photoObject.getString("Like_id");
 				
+				// Add on the objectID of the current user to the string
+				// and add a "," to split the string
 				if (nomString == null || nomString.equals("")) {
 					nomString = "";
 					nomString += userID;
@@ -374,6 +417,7 @@ public class AppParseAccess {
 					nomString += addString;
 				}
 				
+				// Save the new string to "Like_id" on Parse
 				photoObject.put("Like_id", nomString);
 				photoObject.saveInBackground();
 			}
@@ -387,18 +431,27 @@ public class AppParseAccess {
 	 * Parse user.
 	 */
 	public static void bookmarkImage(String FB_ID, String imageID) {
+		// Query through "Food_Table__DB"
 		 ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
+		 
+		 // Get the current user's objectID
 		 ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
 		 String userID = currentUser.getObjectId();
 		
 		 try {
+			 // Get the ParseObject from "Food_Table_DB" with an objectID
+			 // matching imageID
 			 ParseObject photoObject = query.get(imageID);
 		
 			 if (photoObject != null) {
+				 // Increment the "Bookmark" number on Parse
 				 photoObject.increment("Bookmark");
 			 
+				 // Get the "Bookmark_id" string from photoObject
 				 String bookmarkString = photoObject.getString("Bookmark_id");
 				
+				 // Add the current user's objectID to the bookmarkString
+				 // while also splitting with "," if necessary
 				 if (bookmarkString == null || bookmarkString.equals("")) {
 					 bookmarkString = "";
 					 bookmarkString += userID;
@@ -407,6 +460,8 @@ public class AppParseAccess {
 					 bookmarkString += addString;
 				 }
 				
+				 
+				 // Save the photoObject to Parse
 				 photoObject.put("Bookmark_id", bookmarkString);
 				 photoObject.saveInBackground();
 			 }
@@ -415,10 +470,14 @@ public class AppParseAccess {
 		 }
 
 		
-		// Add the objectID to the user's bookmarks string
+		// Add the photoObject's objectID to the user's bookmarks string
 		if (currentUser != null) {
+			
+			// Get the "bookmarks" string from currentUser ParseObject
 			String pictureString = (String) currentUser.get("bookmarks");
 
+			// Append the photoObject's objectID on while also adding a
+			// "," if necessary to split the string
 			if (pictureString == null || pictureString.equals("")) {
 				pictureString = "";
 				pictureString += imageID;
@@ -426,6 +485,8 @@ public class AppParseAccess {
 				String addString = "," + imageID;
 				pictureString += addString;
 			}
+			
+			// Save the new "bookmarks" string to currentUser on Parse
 			currentUser.put("bookmarks", pictureString);
 			currentUser.saveInBackground();
 		}
@@ -435,14 +496,15 @@ public class AppParseAccess {
 	 * setFlag() sets the flag of the object with imageID.
 	 */
 	public static void setFlag(String imageID) {
-		System.out.println(imageID + " flagged!");
-
+		// Query through "Food_Table_DB" on Parse
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 
 		try {
+			// Get the ParseObject with an objectID matching imageID
 			ParseObject photoObject = query.get(imageID);
 
 			if (photoObject != null) {
+				// Set the flag in "report_image" and save to Parse
 				photoObject.put("report_image", true);
 				photoObject.saveInBackground();
 			}
@@ -521,6 +583,11 @@ public class AppParseAccess {
 		return false;
 	}
 	
+	/*
+	 * unlikeImage() decrements the "Like" number from the ParseObject in "Food_Table_DB"
+	 * with an objectID that matches imageID. It also removes FB_ID from the "Like_id" 
+	 * string in the same ParseObject.
+	 */
 	public static void unlikeImage(String FB_ID, String imageID) {
 		// Get the current user's objectID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
@@ -542,11 +609,13 @@ public class AppParseAccess {
 							String[] likeList = likeString.split(",");
 							String newString = "";
 						
-							// Removes userID from likeList
+							// Changes likeList to a LinkedList to facilitate removing userID
 							List<String> list = new LinkedList<String>(Arrays.asList(likeList));
-							
+							// Remove userID from list
 							list.remove(userID);
 							
+							// Combines list back together into a string array with each
+							// string split with a ","
 							for(int i = 0; i < list.size(); i++) {
 								
 								if (newString == null || newString.equals("")) {
@@ -558,6 +627,7 @@ public class AppParseAccess {
 								}
 							}
 							
+							// Save new "Like_id" and "Like"
 							photoObject.put("Like_id", newString);
 							photoObject.increment("Like", -1);
 							photoObject.saveInBackground();
@@ -568,6 +638,11 @@ public class AppParseAccess {
 				}
 	}
 	
+	/*
+	 * unbookmarkImage() decrements the "Bookmark" number from the ParseObject in "Food_Table_DB"
+	 * with an objectID that matches imageID. It also removes FB_ID from the "Bookmark_id" 
+	 * string in the same ParseObject.
+	 */
 	public static void unbookmarkImage(String FB_ID, String imageID) {
 		// Get the current user's objectID
 		ParseObject currentUser = AppParseAccess.getCurrentUser(FB_ID);
@@ -578,16 +653,25 @@ public class AppParseAccess {
 			// Get the ParseObject that's objectID matches imageID
 			ParseObject photoObject = query.get(imageID);
 			if (photoObject != null) {
-				// Get the string of user objectIDs from Like_id
+				// Get the string of user objectIDs from Bookmark_id
 				String bookmarkString = photoObject.getString("Bookmark_id");
 				
+				// Get the "bookmarks" string from currentUser
 				String userBookmarks = currentUser.getString("bookmarks");
+				
+				// Split the userBookmarks with ","
 				String[] userBookmarkArr = userBookmarks.split(",");
+				
+				// Change userBookmarkArr to a LinkedList to facilitate removing an element
 				List<String> userBookmarkList = new LinkedList<String>(Arrays.asList(userBookmarkArr));
+				// Remove the objectID of photoObject from the LinkedList
 				userBookmarkList.remove(photoObject.getObjectId());
 				
+				// String that will be concatenated and added to parse
 				String newUserBookmarkStr = null;
 				
+				// Combine userBookmarkList for new "bookmarks" string while
+				// adding a "," between each element
 				for (int i = 0; i < userBookmarkList.size(); i++) {
 					
 					if (newUserBookmarkStr == null || newUserBookmarkStr.equals("")) {
@@ -599,16 +683,25 @@ public class AppParseAccess {
 					}
 				}
 				
+				// Save newUserBookmarkStr to "bookmarks" in currentUser on Parse
 				currentUser.put("bookmarks", newUserBookmarkStr);
 				currentUser.saveInBackground();
+				
+				
 				if (bookmarkString != null) {
 					// Split the string by delimiting with ","
 					String[] bookmarkList = bookmarkString.split(",");
-					String newString = "";
-					// Removes userID from likeList
-					List<String> list = new LinkedList<String>(
-							Arrays.asList(bookmarkList));
+					
+					// Create a LinkedList from bookmarkList to facilitate removing an element
+					List<String> list = new LinkedList<String>(Arrays.asList(bookmarkList));
+					// Remove userID from the list
 					list.remove(userID);
+					
+					// The new string that will be saved to "Bookmark_id" on Parse
+					String newString = "";
+					
+					// Create the new string by appending each element from list together
+					// while adding a "," in between
 					for (int i = 0; i < list.size(); i++) {
 						if (newString == null || newString.equals("")) {
 							newString = "";
@@ -618,6 +711,8 @@ public class AppParseAccess {
 							newString += addString;
 						}
 					}
+					
+					// Save "Bookmark_Id" and "Bookmark" to photoObject and Parse
 					photoObject.put("Bookmark_id", newString);
 					photoObject.increment("Bookmark", -1);
 					photoObject.saveInBackground();
@@ -628,9 +723,15 @@ public class AppParseAccess {
 		}
 	}
 	
+	/* getPictureFiles() returns an ArrayList of PictureDBObjects that are within a certain latitude and longitude
+	 * range of the lat and lon. The query's parameters are set with limit of count and it skips offset. Each
+	 * PictureDBObject is created from each ParseObject from "Food_Table_DB" that is returned from the query.
+	 */
 	public static ArrayList<PictureDBObject> getPictureFiles(double lat, double lon, int count, int offset) {
+		// ArrayList of PictureDBObjects that will be returned
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 		
+		// Create query for "Food_Table_Db" and set parameters
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
 		query.orderByDescending("updatedAt");
 		query.setLimit(count);
@@ -642,6 +743,7 @@ public class AppParseAccess {
 			if (objects.isEmpty()) {
 				return null;
 			} else {
+				// Add each new PictureDBObject to customList to be returned
 				for (int i = 0; i < objects.size(); i++) {
 					customList.add(new PictureDBObject(objects.get(i)));
 				}
