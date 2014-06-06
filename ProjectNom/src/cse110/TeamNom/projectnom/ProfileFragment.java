@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment {
 		gridV = (GridView) rootView.findViewById(R.id.grid_view);
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		refresh = (Button) rootView.findViewById(R.id.profileRefresh);
+		
 		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
 		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
 		
@@ -102,8 +103,9 @@ public class ProfileFragment extends Fragment {
 		});
 		refresh.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				onClickLoadMyPictures();
-				onClickLoadMyBookmarks();
+				gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
+				bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
+				
 			}
 		});
 
