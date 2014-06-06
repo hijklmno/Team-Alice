@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".LoadingActivity" >
+    tools:context=".LoadingActivity" 
+    android:background="@color/white">
 
     
     <!--
@@ -20,9 +21,16 @@
         android:keepScreenOn="true"
         android:text="Loading..."
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:drawableStart="@drawable/ic_launcher" />
+        android:textSize="30sp"/>
 
- 
+
+	<ImageView
+	    android:id="@+id/loadingPic"
+	    android:layout_width="150dp"
+	    android:layout_height="150dp"
+	    android:layout_marginTop="30dp"
+	    android:layout_marginLeft="30dp"
+	    android:layout_marginRight="30dp"
+	    android:background="@drawable/ic_nom" /> 
    
 </FrameLayout>

@@ -13,7 +13,8 @@
         android:layout_alignParentLeft="True"
         android:layout_alignParentTop="true"
         android:paddingLeft="10dp"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+         />
     <Button 
         android:id="@+id/profileRefresh"
         android:layout_width="wrap_content"
@@ -44,6 +45,8 @@
         android:textOff="@string/ProfileToggleOff"
         android:textOn="@string/ProfileToggleOn"
         android:paddingTop="10dp"
+	    android:thumb="@drawable/nom_switch_thumb_activated_holo_light"
+	    android:track="@drawable/nom_switch_bg_holo_light"
          />
           
 	<Button
@@ -51,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log Out"
+        android:textColor="@color/nom"
         android:onClick="onClickLogout" 
         android:layout_alignParentBottom="true"
         android:background="@drawable/mybutton"

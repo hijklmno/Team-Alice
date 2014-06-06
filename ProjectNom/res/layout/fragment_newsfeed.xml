@@ -14,7 +14,9 @@
         android:checked="true"
         android:paddingTop="8dp"
         android:textOff="@string/toggleOff"
-        android:textOn="@string/toggleOn" />
+        android:textOn="@string/toggleOn"	
+	    android:thumb="@drawable/nom_switch_thumb_activated_holo_light"
+	    android:track="@drawable/nom_switch_bg_holo_light"/>
 <!--
     <Button
         android:id="@+id/refresh"

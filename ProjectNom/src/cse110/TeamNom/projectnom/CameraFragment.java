@@ -55,7 +55,6 @@ public class CameraFragment extends Fragment {
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 
 	// Misc variables
-	private Button redirect;
 	private ImageButton bigBtn;
 	private ImageButton picBtn;
 	private ImageView mImageView;
@@ -294,7 +293,6 @@ public class CameraFragment extends Fragment {
 				false);
 
 		// set local variables to fragment part
-		redirect = (Button) rootView.findViewById(R.id.redirect);
 		picBtn = (ImageButton) rootView.findViewById(R.id.btnCapturePicture);
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
 		caption = (EditText) rootView.findViewById(R.id.pictureCaption);
@@ -324,16 +322,6 @@ public class CameraFragment extends Fragment {
 		} else {
 			setFragmentVisibility(1);
 		}
-
-		/**
-		 * redirect to main page button on click event
-		 */
-		redirect.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				switchToMain();
-			}
-		});
 
 		/**
 		 * initial camera button on click event
@@ -643,7 +631,6 @@ public class CameraFragment extends Fragment {
 			mImageView.setVisibility(View.INVISIBLE);
 			picBtn.setVisibility(View.INVISIBLE);
 			bigBtn.setVisibility(View.VISIBLE);
-			redirect.setVisibility(View.VISIBLE);
 		} else {
 			restaurant.setVisibility(View.VISIBLE);
 			caption.setVisibility(View.VISIBLE);
@@ -651,7 +638,6 @@ public class CameraFragment extends Fragment {
 			mImageView.setVisibility(View.VISIBLE);
 			picBtn.setVisibility(View.VISIBLE);
 			bigBtn.setVisibility(View.INVISIBLE);
-			redirect.setVisibility(View.INVISIBLE);
 		}
 	}
 
