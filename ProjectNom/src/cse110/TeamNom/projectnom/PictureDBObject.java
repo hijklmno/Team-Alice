@@ -96,10 +96,10 @@ public class PictureDBObject {
 		setUpdatedDate(parse.getUpdatedAt());
 		
 		// Check if I liked it
-		setLikeStatus();
+		setLikeStatus(getLikeIDs());
 				
 		// Check if I bookmarked it
-		setBookmarkStatus();
+		setBookmarkStatus(getBookmarkIDs());
 		
 		setCaption(parse.getString("Tags"));
 	}
@@ -111,14 +111,16 @@ public class PictureDBObject {
 	 * 
 	 * @param ids
 	 */
-	public void setLikeStatus() {
+	public void setLikeStatus(String[] ids) {
 		isLiked = false;
 		
-		for (int i = 0; i < Like_id.length; i++) {
-			if (Like_id[i] == AppParseAccess.getUserObjectID()) {
-				isLiked = true;
+		if(ids != null) {
+			for (int i = 0; i < ids.length; i++) {
+				if (ids[i] == AppFacebookAccess.getFacebookId()) {
+					isLiked = true;
 	
-				return;
+					return;
+				}
 			}
 		}
 	}
@@ -139,15 +141,17 @@ public class PictureDBObject {
 	 * 
 	 * @param ids
 	 */
-	public void setBookmarkStatus() {
+	public void setBookmarkStatus(String[] ids) {
 		isBookmarked = false;
+		
+		if(ids != null) {
+			// Loop through ids to search for a match with Facebook ID
+			for (int i = 0; i < ids.length; i++) {
+				if (ids[i] == AppFacebookAccess.getFacebookId()) {
+					isBookmarked = true;
 				
-		// Loop through ids to search for a match with Facebook ID
-		for (int i = 0; i < Bookmark_id.length; i++) {
-			if (Bookmark_id[i] == AppParseAccess.getUserObjectID()) {
-				isBookmarked = true;
-				
-				return;
+					return;
+				}
 			}
 		}
 	}
