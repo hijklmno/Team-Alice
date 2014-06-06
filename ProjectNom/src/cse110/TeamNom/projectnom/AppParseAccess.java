@@ -204,9 +204,15 @@ public class AppParseAccess {
 		});
 
 		// Store the necessary info in Parse
-		object.put("Food_photo", file);
-		object.put("Restaurant_Id", resName);
-		object.put("Food_Name", caption);
+		if(file != null) {
+			object.put("Food_photo", file);
+		}
+		if(resName != null) {
+			object.put("Restaurant_Id", resName);
+		}
+		if(caption != null) {
+			object.put("Food_Name", caption);
+		}
 		object.put("Like", 0);
 		object.put("Bookmark", 0);
 		object.put("Longitude", longitude);
@@ -214,7 +220,7 @@ public class AppParseAccess {
 		object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
 		object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
 		object.put("report_image", false);
-
+			
 		// When saving to Parse must also update user's picture string
 		object.saveInBackground(new SaveCallback() {
 			@Override
