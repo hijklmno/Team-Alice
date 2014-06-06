@@ -14,15 +14,20 @@
         android:orientation="vertical" >
         <Button
             android:id="@+id/redirect"
-            style=""
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            style="ButtonBarButton"
             android:gravity="center"
             android:text="Go To Main Page" 
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/mybutton"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
         <ImageButton
             android:id="@+id/initialButton"
-            style="ButtonBarButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -30,16 +35,18 @@
             android:layout_above="@id/redirect"
             android:src="@drawable/ic_action_photo"
             android:contentDescription="@string/ccd" />
-        
-        
         <ImageButton
             android:id="@+id/btnCapturePicture"
-            style="ButtonBarButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textColor="@color/white"
             android:src="@drawable/ic_action_photo"
-            android:contentDescription="@string/ccd">
+            android:contentDescription="@string/ccd"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
         </ImageButton>
         
       <!-- style="?android:attr/borderlessButtonStyle"       -->
