@@ -97,6 +97,7 @@ public class CameraFragment extends Fragment {
 	 */
 	private File getAlbumDir() {
 		File storageDir = null;
+		
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(ALBUM_NAME);
 			if (storageDir != null) {
@@ -140,7 +141,7 @@ public class CameraFragment extends Fragment {
 	 */
 	private File setUpPhotoFile() throws IOException {
 		File f = createImageFile();
-		mCurrentPhotoPath = f.getAbsolutePath();
+		mCurrentPhotoPath = f.getAbsolutePath(); // gets the path of the photofile in the android device
 		return f;
 	}
 
@@ -220,11 +221,15 @@ public class CameraFragment extends Fragment {
 	 * @param actionCode what action user specified when taking picture (cancel, check, undo)
 	 */
 	private void dispatchTakePictureIntent(int actionCode) {
+		
+		// dispatch intent to android for camera access
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		if(actionCode == TAKE_PHOTO){
 			File f = null;
 			try {
+				// set up photo
 				f = setUpPhotoFile();
+				// set path
 				mCurrentPhotoPath = f.getAbsolutePath();
 				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 			} catch (IOException e) {
@@ -236,6 +241,7 @@ public class CameraFragment extends Fragment {
 		startActivityForResult(takePictureIntent, actionCode);
 	}
 
+	// on click for picture taking button
 	Button.OnClickListener mTakePicOnClickListener =
 			new Button.OnClickListener() {
 		@Override
@@ -253,6 +259,7 @@ public class CameraFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PHOTO && resultCode == -1) {
 
+			// save location of picture, used in location based feed
 			GPSFragment gps = new GPSFragment(getActivity());
 
 			if(!gps.canGetLocation())
@@ -278,6 +285,7 @@ public class CameraFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
+		// set local variables to fragment part
 		redirect = (Button) rootView.findViewById(R.id.redirect);
 		picBtn = (ImageButton) rootView.findViewById(R.id.btnCapturePicture);
 		restaurant = (EditText) rootView.findViewById(R.id.RestaurantTitle);
@@ -286,8 +294,12 @@ public class CameraFragment extends Fragment {
 		mImageView = (ImageView) rootView.findViewById(R.id.imageView1);
 		bigBtn = (ImageButton) rootView.findViewById(R.id.initialButton);
 		
+		// get context for toast
 		context = getActivity().getApplicationContext();
 
+		
+		// if statement that restores user input on 
+		// fragment restart after process was killed
 		if(isRestart) {
 			restaurant.setText(restTmp);
 			caption.setText(capTmp);
@@ -308,24 +320,36 @@ public class CameraFragment extends Fragment {
 			setFragmentVisibility(1);
 		}
 		
+		/**
+		 * redirect to main page button on click event
+		 */
 		redirect.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick (View v) {
 				switchToMain();
 			}
 		});
+		
+		/**
+		 * initial camera button on click event
+		 */
 		bigBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				onClickPicture(bigBtn);
 			}
 		});
+		
+		/**  
+		 * image on click event
+		 */
 		mImageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				PicturePopUp ppp = new PicturePopUp(contentUri, context);
 			}
 		});
+		
 		/**
 		 * Capture image button click event
 		 */
@@ -335,6 +359,10 @@ public class CameraFragment extends Fragment {
 				onClickPicture(picBtn);
 			}
 		});
+		
+		/**
+		 * submission button on click event
+		 */
 		subBut.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -365,7 +393,9 @@ public class CameraFragment extends Fragment {
 		isRestart=false;
 	}
 	
-	// Some lifecycle callbacks so that the image can survive orientation change
+	/**
+	 *  Some lifecycle callbacks so that the image can survive orientation change
+	 */
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -373,6 +403,11 @@ public class CameraFragment extends Fragment {
 		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY, (mImageBitmap != null) );
 	}
 	
+	/**
+	 * Method that restores the state of the fragment after the user comes back after
+	 * leaving, used to ensure no loss of user input
+	 * @param savedInstanceState
+	 */
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 		mImageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
@@ -380,12 +415,19 @@ public class CameraFragment extends Fragment {
 		setFragmentVisibility(0);
 	}
 	
+	/**
+	 * method that saves params and user inputs when the fragment gets left or if
+	 * the app is paused
+	 */
 	public void onPause() {
 		super.onPause();
 		restTmp = restaurant.getText().toString();
 		capTmp = caption.getText().toString();
 	}
 	
+	/**
+	 * method that saves parameters and user inputs for when the fragment gets killed/stopped
+	 */
 	public void onStop() {
 		isRestart = true;
 		super.onStop();
@@ -398,6 +440,9 @@ public class CameraFragment extends Fragment {
 		}
 	}
 	
+	/**
+	 * method that sets up the fragment after the fragment is stopped/killed and come back to
+	 */
 	public void onRestart() {
 		restaurant.setText(restTmp);
 		caption.setText(capTmp);
@@ -406,6 +451,10 @@ public class CameraFragment extends Fragment {
 		setFragmentVisibility(0);
 	}
 	
+	/**
+	 * Method that sets up the fragment when the fragment is resumed after the user
+	 * goes away and comes back
+	 */
 	public void onResume() {
 		super.onResume();
 	}
@@ -532,6 +581,8 @@ public class CameraFragment extends Fragment {
 			Button.OnClickListener onClickListener,
 			String intentName
 			) {
+		
+		// checks if intent is availabe for the camera button, if not makes the button unclickable
 		if (isIntentAvailable(super.getActivity().getApplicationContext(), intentName)) {
 			btn.setOnClickListener(onClickListener);
 		} else {
@@ -547,6 +598,7 @@ public class CameraFragment extends Fragment {
 	 * @return returns true if list.size > 0
 	 */
 	public static boolean isIntentAvailable(Context context, String action) {
+		
 		final PackageManager packageManager = context.getPackageManager();
 		final Intent intent = new Intent(action);
 		List<ResolveInfo> list =
@@ -588,6 +640,7 @@ public class CameraFragment extends Fragment {
 	 */
 	private void onClickPicture(ImageButton btn) {
 	
+		// sets button listener for the param image btn
 		setBtnListenerOrDisable(
 				btn,
 				mTakePicOnClickListener,
@@ -599,6 +652,8 @@ public class CameraFragment extends Fragment {
 		} else {
 			mAlbumStorageDirFactory = new BaseAlbumDirFactory();
 		}
+		
+		// sends intent to method that accesses camera
 		dispatchTakePictureIntent(TAKE_PHOTO);
 	}
 	
@@ -610,22 +665,30 @@ public class CameraFragment extends Fragment {
 	 */
 	private void onClickSubmit() {
 
+		// builder creates the popup box 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setCancelable(false);
 		builder.setMessage("Are you sure you want to upload?")
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				try {
+					
+					// check to see if restuarant box was left empty
 					String test = restaurant.getText().toString();
 					if(test.matches("")) {
+						// if so, create a toast that asks for the restuarant name
 						Toast toast = Toast.makeText(context, "Please enter restaurant name ", Toast.LENGTH_LONG);
 						toast.show();
 					}
 					else {
+						//if not, send file to parse
 						compressFile(pathtophoto);
 						
+						// create toast to show completion
 						Toast toast = Toast.makeText(context,  "File Uploaded Successfully", Toast.LENGTH_LONG);
 						toast.show();
+						
+						// reset the ui of the fragment
 						resetFragment();
 					}
 				} catch (Exception e) {
@@ -637,6 +700,7 @@ public class CameraFragment extends Fragment {
 			public void onClick(DialogInterface dialog, int id) {
 			}
 		});
+		//show the builder
 		builder.show();
 	}
 	
@@ -644,6 +708,6 @@ public class CameraFragment extends Fragment {
 	 * method that switches fragment to main page
 	 */
 	public void switchToMain() {
-		getActivity().getActionBar().setSelectedNavigationItem(2);
+		getActivity().getActionBar().setSelectedNavigationItem(0);
 	}
 }
