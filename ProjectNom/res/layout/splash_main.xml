@@ -8,7 +8,8 @@
         android:id="@+id/instructionsOrLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please Log In using Facebook"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="Welcome to NOM"
         android:autoLink="web"
         android:linksClickable="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -17,7 +18,8 @@
         android:id="@+id/buttonLoginLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In" />
+        android:layout_gravity="center"
+        android:text="Log In Through Facebook" />
     
 
 </LinearLayout>

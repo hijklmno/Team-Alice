@@ -14,21 +14,26 @@
         android:layout_alignParentTop="true"
         android:paddingLeft="10dp"
         android:paddingTop="10dp" />
+    <Button 
+        android:id="@+id/profileRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:drawableStart="@drawable/ic_action_refresh"
+        style="?android:attr/borderlessButtonStyle"
+        />"
     <TextView
         android:id="@+id/profileUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageViewProfile"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/profileRefresh"
         android:paddingLeft="10dp" 
         android:paddingTop="10dp"
-        android:textSize="20sp"/>    
- 	<!--  <fragment android:name="com.facebook.widget.UserSettingsFragment"
-          android:id="@+id/userSettingsFragment"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
-          -->
-          
+        android:textSize="20sp"/>         
 	<Switch
         android:id="@+id/profileToggle"
         android:layout_width="wrap_content"
