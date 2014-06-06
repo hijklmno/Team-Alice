@@ -69,14 +69,13 @@ public class ProfileFragment extends Fragment {
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		refresh = (Button) rootView.findViewById(R.id.profileRefresh);
 		
-		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
-		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
-		
-		
 		if (INITIALLOAD) {
 			onClickLoadMyPictures();
 			onClickLoadMyBookmarks();
 		}
+		
+		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
+		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
 		
 		bookmarks.setVisibility(View.INVISIBLE);
 		
