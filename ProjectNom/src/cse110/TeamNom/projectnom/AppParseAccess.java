@@ -76,8 +76,9 @@ public class AppParseAccess {
 	 * addNewUser() adds a new user to the FacebookAccounts table of the NOM
 	 * Parse database, if there isn't already an account on the
 	 * FacebookAccounts.
+	 * @throws ParseException 
 	 */
-	public static void loadOrAddNewUser(String FB_ID, String fullName) {
+	public static void loadOrAddNewUser(String FB_ID, String fullName) throws ParseException {
 		if (!AppParseAccess.isExistingUser(FB_ID)) {
 			// Adds new Parse user and get the necessary info from Facebook
 			ParseObject newUser = new ParseObject("FacebookAccounts");
@@ -86,7 +87,8 @@ public class AppParseAccess {
 			newUser.put("pictures", "");
 			newUser.put("bookmarks", "");
 			newUser.put("friends", "");
-			newUser.saveInBackground();
+//			newUser.saveInBackground();
+			newUser.save();
 		}
 	}
 

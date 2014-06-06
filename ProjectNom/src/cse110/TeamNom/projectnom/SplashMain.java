@@ -1,21 +1,16 @@
 package cse110.TeamNom.projectnom;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,7 +20,6 @@ import com.facebook.LoggingBehavior;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
-import com.parse.Parse;
 
 /**
  * The SplashMain class stores the implementation of the splash login screen.
@@ -52,6 +46,10 @@ public class SplashMain extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 //        Swagging the hash key to the logcat
 //        PackageInfo info;
 //        try {
@@ -81,6 +79,7 @@ public class SplashMain extends Activity {
         // Checks for logout call from MainActivity
         Bundle passedData = getIntent().getExtras();
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
+        	System.out.println("Logoutcall Received.");
         	onClickLogout();
         }
         
@@ -112,7 +111,7 @@ public class SplashMain extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        buttonLoginLogout.setEnabled(true);
+//        buttonLoginLogout.setEnabled(true);
         Bundle passedData = getIntent().getExtras();
         
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -125,7 +124,7 @@ public class SplashMain extends Activity {
     // Called when activity is resumed
     public void onResume() {
     	super.onResume();
-    	buttonLoginLogout.setEnabled(true);
+//    	buttonLoginLogout.setEnabled(true);
     	Bundle passedData = getIntent().getExtras();
     	
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -139,7 +138,7 @@ public class SplashMain extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        buttonLoginLogout.setEnabled(true);
+//        buttonLoginLogout.setEnabled(true);
         Session.getActiveSession().removeCallback(statusCallback);
     }
 
@@ -163,14 +162,16 @@ public class SplashMain extends Activity {
         
         // Checks if session is opened but this state should not happen
         if (session != null && session.isOpened()) {
+        	System.out.println("Update: Session is opened.");
             textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
             buttonLoginLogout.setText("Logout...but we shouldn't see this");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
             
-            gotoMainAndEnd();
+//            gotoLoadingAndEnd();
         } else {
+        	System.out.println("Update: Session is closed.");
         	// Login button
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
@@ -196,7 +197,7 @@ public class SplashMain extends Activity {
             Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
         }
         
-        buttonLoginLogout.setEnabled(false);
+//        buttonLoginLogout.setEnabled(false);
     }
 
     // Logs out user by closing session
@@ -208,8 +209,9 @@ public class SplashMain extends Activity {
     }
     
     // Sends user to home page
-    private void gotoMainAndEnd() {
-        Intent intent = new Intent(SplashMain.this, MainActivity.class);
+    private void gotoLoadingAndEnd() {
+    	System.out.println("GoToLoading.");
+        Intent intent = new Intent(SplashMain.this, LoadingActivity.class);
         intent.putExtra("FacebookSession", Session.getActiveSession());
         startActivity(intent);
         finish();
@@ -218,7 +220,14 @@ public class SplashMain extends Activity {
     private class SessionStatusCallback implements Session.StatusCallback {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-            updateView();
+//            updateView();
+        	if (session.isOpened()) {
+        		System.out.println("SessionCallback: Session is open.");
+        		gotoLoadingAndEnd();
+        	}
+        	else {
+        		System.out.println("SessionCallback: Session is closed.");
+        	}
         }
     }
 }

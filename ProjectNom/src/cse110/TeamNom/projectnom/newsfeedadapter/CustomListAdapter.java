@@ -2,6 +2,8 @@ package cse110.TeamNom.projectnom.newsfeedadapter;
 
 import java.util.ArrayList;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import cse110.TeamNom.projectnom.AppFacebookAccess;
 import cse110.TeamNom.projectnom.AppParseAccess;
 import cse110.TeamNom.projectnom.PictureDBObject;
@@ -86,7 +87,8 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.captionTextView.setText(pictureObj.getRestID());
 		
 		// Defining the date
-		holder.dateTextView.setText(pictureObj.getUpdatedDate().toString());
+		PrettyTime ptime = new PrettyTime();
+		holder.dateTextView.setText(ptime.format(pictureObj.getUpdatedDate()));
 		
 		// Determine whether a picture is reported; if not, then load image
 		if (pictureObj.isReported()) {

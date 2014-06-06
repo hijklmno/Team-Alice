@@ -22,7 +22,10 @@ public class ProfileImageAdapter extends BaseAdapter {
  
     @Override
     public int getCount() {
-        return mThumbIds.length;
+    	if (mThumbIds != null) {
+    		return mThumbIds.length;
+    	}
+        return 0;
     }
  
     @Override

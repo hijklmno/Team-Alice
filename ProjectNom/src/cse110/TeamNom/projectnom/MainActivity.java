@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity implements
 
 	// Testing comment
 	// Tab titles
-	private String[] tabs = { "Camera", "Search", "News Feed", "Profile" };
+	private String[] tabs = { "News Feed", "Search", "Camera", "Profile" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +54,14 @@ public class MainActivity extends FragmentActivity implements
 
 		// Parse stuff
 		Context context = this.getApplicationContext();
-		AppParseAccess.initialize(this, context.getString(R.string.ParseAppID), context.getString(R.string.ParseClientKey));
-		AppParseAccess.loadOrAddNewUser(AppFacebookAccess.getFacebookId(), AppFacebookAccess.getFacebookName());
-		
+
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-		// viewPager.setOffscreenPageLimit(4);
+		viewPager.setOffscreenPageLimit(4);
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -131,7 +129,7 @@ public class MainActivity extends FragmentActivity implements
 					"William Huang", "Ryan Fu", "Tiffany Wang", "Alice Chen",
 					"David Ung", "Watson Lim", "Trent Stevens", "Rex Tong",
 					"Raymond Tran", "Jean Park", "Exit" };
-			// TODO
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setCancelable(false);
 			builder.setTitle("Team NOM");

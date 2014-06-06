@@ -30,7 +30,6 @@ public class NewsFeedFragment extends Fragment {
 	private static int fOFFSET = 0;
 	private static int MAXROWS = 4;
 	private static int OFFSET = 0;
-	private static boolean INITIALLOAD = true;
 	private static boolean listEndFlag = false;
 	private static boolean listEndFlagAll = false;
 	private Switch switchButton;
@@ -109,14 +108,10 @@ public class NewsFeedFragment extends Fragment {
 					}
 				});
 
-		if (INITIALLOAD) {
-			getFriendsData(rootView);
-			getProxData(rootView);
-			
-			mPullRefreshListView.setAdapter(cLAdapterFriends);
-		}
+		getFriendsData(rootView);
+		getProxData(rootView);
 		
-		
+		mPullRefreshListView.setAdapter(cLAdapterFriends);
 
 //		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
 //			@Override
@@ -149,7 +144,6 @@ public class NewsFeedFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		INITIALLOAD = false;
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
 	
