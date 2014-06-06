@@ -124,7 +124,7 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.bookmark.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(!AppParseAccess.isBookmarked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+				if(!pictureObj.isBookmarked()) {
 					// If not bookmarked, then bookmark image (submitted to parse)
 					AppParseAccess.bookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());		
 					pictureObj.setBookmarkCount(pictureObj.getBookmarkCount() + 1);
@@ -163,7 +163,7 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.like.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(!AppParseAccess.isLiked(AppFacebookAccess.getFacebookId(), pictureObj.getImageID())) {
+				if(!pictureObj.isLiked()) {
 					// If not liked, then like image (submitted to parse)
 					AppParseAccess.incrementNomCount(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
 					pictureObj.setLikeCount(pictureObj.getLikeCount() + 1);
