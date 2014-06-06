@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.facebook.widget.ProfilePictureView;
@@ -31,9 +32,6 @@ import com.facebook.widget.ProfilePictureView;
  * fragment for user profile
  */
 public class ProfileFragment extends Fragment {
-	// check if first load
-	private static boolean INITIALLOAD = true;
-	
 	// variables for fragment
 	private Button buttonLogout;
 	private TextView profileUser;
@@ -69,10 +67,8 @@ public class ProfileFragment extends Fragment {
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		refresh = (Button) rootView.findViewById(R.id.profileRefresh);
 		
-		if (INITIALLOAD) {
-			onClickLoadMyPictures();
-			onClickLoadMyBookmarks();
-		}
+		onClickLoadMyPictures();
+		onClickLoadMyBookmarks();
 		
 		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
 		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
@@ -102,6 +98,9 @@ public class ProfileFragment extends Fragment {
 		});
 		refresh.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
+			Toast.makeText(getActivity(), "Refreshing...", 2).show();
+			onClickLoadMyPictures();
+			onClickLoadMyBookmarks();
 			gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
 			bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
 			
@@ -118,12 +117,10 @@ public class ProfileFragment extends Fragment {
 
 	public void onResume() {
 		super.onResume();
-		INITIALLOAD = false;
 	}
 
 	public void onStop() {
 		super.onStop();
-		INITIALLOAD = true;
 	}
 	// called when pressing the logout button
 	private void onClickLogout() {

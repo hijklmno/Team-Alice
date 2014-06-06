@@ -25,7 +25,6 @@ public class LoadingActivity extends Activity {
 
 	private Context context;
 	private Activity activity;
-	private boolean initial = true;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -38,7 +37,6 @@ public class LoadingActivity extends Activity {
 		setContentView(R.layout.fragment_loading);
 		
 		new Loader().execute();
-		initial = true;
 		super.onCreate(savedInstanceState);
 	}
 

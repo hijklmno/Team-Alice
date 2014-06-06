@@ -89,7 +89,7 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.captionTextView.setText(pictureObj.getRestID());
 		
 		// Defining the text for the subcaption
-		holder.subCaptionTextView.setText(pictureObj.getCaption());
+		holder.subCaptionTextView.setText(pictureObj.getFoodName());
 		
 		// Defining the date
 		PrettyTime ptime = new PrettyTime();
@@ -111,12 +111,10 @@ public class CustomListAdapter extends BaseAdapter {
 		// Set the number count and highlight bookmark button if chosen
 //		Log.d("UserObjectID: ", AppParseAccess.getUserObjectID());
 		if (pictureObj.isBookmarked()) {
-			Log.d("isBookmarked: ", "true");
 			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 			holder.bookmark.refreshDrawableState();
 		}
 		else {
-			Log.d("isBookmarked: ", "false");
 			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
 			holder.bookmark.refreshDrawableState();
 		}

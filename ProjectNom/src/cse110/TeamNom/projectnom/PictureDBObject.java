@@ -24,7 +24,7 @@ public class PictureDBObject {
 	boolean report_image;
 	String FACEBOOK_ID;
 	String FACEBOOK_NAME;
-	String caption;
+	String Food_Name;
 	String Restaurant_Id;
 	double Latitude;
 	double Longitude;
@@ -101,7 +101,7 @@ public class PictureDBObject {
 		// Check if I bookmarked it
 		setBookmarkStatus(getBookmarkIDs());
 		
-		setCaption(parse.getString("Tags"));
+		setFoodName(parse.getString("Food_Name"));
 	}
 	
 	/**
@@ -372,20 +372,20 @@ public class PictureDBObject {
 	}
 
 	/**
-	 * setCaption() is a mutator method that sets caption to newCaption.
+	 * setFoodName() is a mutator method that sets caption to newCaption.
 	 * 
-	 * @param newCaption
+	 * @param newFoodName
 	 */
-	public void setCaption(String newCaption) {
-		caption = newCaption;
+	public void setFoodName(String newFoodName) {
+		Food_Name = newFoodName;
 	}
 	
 	/**
-	 * getCaption() is an accessor method that returns caption.
+	 * getFoodName() is an accessor method that returns caption.
 	 * @return 
 	 */
-	public String getCaption() {
-		return caption;
+	public String getFoodName() {
+		return Food_Name;
 	}
 	
 	/**

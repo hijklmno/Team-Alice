@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -57,6 +58,7 @@ public class CameraFragment extends Fragment {
 	// Misc variables
 	private ImageButton bigBtn;
 	private ImageButton picBtn;
+	private TextView text;
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
 	private EditText restaurant;
@@ -299,7 +301,8 @@ public class CameraFragment extends Fragment {
 		subBut = (Button) rootView.findViewById(R.id.submitButton);
 		mImageView = (ImageView) rootView.findViewById(R.id.imageView1);
 		bigBtn = (ImageButton) rootView.findViewById(R.id.initialButton);
-
+		text = (TextView) rootView.findViewById(R.id.TakePictureText);
+		
 		// get context for toast
 		context = getActivity().getApplicationContext();
 
@@ -333,6 +336,7 @@ public class CameraFragment extends Fragment {
 			}
 		});
 
+		text.bringToFront();
 		/**
 		 * image on click event
 		 */

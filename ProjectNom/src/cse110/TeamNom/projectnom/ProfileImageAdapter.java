@@ -70,7 +70,7 @@ public class ProfileImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(mContext);
         imageView.setImageDrawable(mThumbIds[position]);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         return imageView;
 
     }

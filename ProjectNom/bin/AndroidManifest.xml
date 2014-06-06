@@ -27,11 +27,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-<<<<<<< HEAD
-        android:theme="@style/Theme.Bluenom" >
-=======
         android:theme="@style/Theme.Nom" >
->>>>>>> remotes/origin/THEME
         <activity
             android:name="cse110.TeamNom.projectnom.SplashMain"
             android:label="@string/app_name"

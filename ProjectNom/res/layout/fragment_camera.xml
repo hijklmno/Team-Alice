@@ -18,15 +18,25 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:gravity="center"
+            android:paddingBottom="100dp"
             android:background="@color/nom2"
-            android:src="@drawable/ic_action_camera_light"
+            android:src="@drawable/slr_camera_256"
             android:contentDescription="@string/ccd" />
+        <TextView 
+            android:id="@+id/TakePictureText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="150dp"
+            android:textSize="20sp"
+            android:text="Document a Picture!" />
         <ImageButton
             android:id="@+id/btnCapturePicture"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:src="@drawable/ic_action_camera_light"
+            android:src="@drawable/slr_camera_48"
             android:contentDescription="@string/ccd"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"

@@ -677,6 +677,7 @@ public class AppParseAccess {
 				
 				// Get the "bookmarks" string from currentUser
 				String userBookmarks = currentUser.getString("bookmarks");
+				System.out.println("BookmarksUser: " + userBookmarks);
 				
 				// Split the userBookmarks with ","
 				String[] userBookmarkArr = userBookmarks.split(",");
@@ -687,14 +688,13 @@ public class AppParseAccess {
 				userBookmarkList.remove(photoObject.getObjectId());
 				
 				// String that will be concatenated and added to parse
-				String newUserBookmarkStr = null;
+				String newUserBookmarkStr = "";
 				
 				// Combine userBookmarkList for new "bookmarks" string while
 				// adding a "," between each element
 				for (int i = 0; i < userBookmarkList.size(); i++) {
 					
-					if (newUserBookmarkStr == null || newUserBookmarkStr.equals("")) {
-						newUserBookmarkStr = "";
+					if (newUserBookmarkStr.equals("")) {
 						newUserBookmarkStr += userBookmarkList.get(i);
 					} else {
 						String addString = "," + userBookmarkList.get(i);
