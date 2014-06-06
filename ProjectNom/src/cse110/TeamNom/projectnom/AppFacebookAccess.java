@@ -195,4 +195,12 @@ public class AppFacebookAccess {
 		
 		return profileBitmap;
 	}
+	
+	public static void clearFacebookSession() {
+		FB_ID = null;
+		FB_Name = null;
+		session = null;	
+		allFriends = null;
+		profileBitmap = null;
+	}
 }

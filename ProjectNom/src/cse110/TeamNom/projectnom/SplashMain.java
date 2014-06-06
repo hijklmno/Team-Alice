@@ -170,6 +170,9 @@ public class SplashMain extends Activity {
         if (!session.isClosed()) {
             session.closeAndClearTokenInformation();
         }
+        
+        AppParseAccess.clearUserObjectID();
+        AppFacebookAccess.clearFacebookSession();
     }
     
     /**

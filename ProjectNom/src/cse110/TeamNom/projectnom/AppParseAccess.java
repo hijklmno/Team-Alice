@@ -21,6 +21,8 @@ import com.parse.SaveCallback;
  */
 public class AppParseAccess {
 
+	public static String userObjectID = null;
+	
 	/**
 	 * initialize() initializes the Parse access using NOM's application ID and
 	 * client key.
@@ -88,6 +90,8 @@ public class AppParseAccess {
 			newUser.put("bookmarks", "");
 			newUser.save();
 		}
+		else
+			userObjectID = getCurrentUser(FB_ID).getObjectId();
 	}
 
 	/**
@@ -770,5 +774,13 @@ public class AppParseAccess {
 		}
 
 		return customList;
+	}
+	
+	public static String getUserObjectID() {
+		return userObjectID;
+	}
+	
+	public static void clearUserObjectID() {
+		userObjectID = null;
 	}
 }

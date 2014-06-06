@@ -115,7 +115,7 @@ public class PictureDBObject {
 		isLiked = false;
 		
 		for (int i = 0; i < Like_id.length; i++) {
-			if (Like_id[i] == AppFacebookAccess.getFacebookId()) {
+			if (Like_id[i] == AppParseAccess.getUserObjectID()) {
 				isLiked = true;
 	
 				return;
@@ -144,7 +144,7 @@ public class PictureDBObject {
 				
 		// Loop through ids to search for a match with Facebook ID
 		for (int i = 0; i < Bookmark_id.length; i++) {
-			if (Bookmark_id[i] == AppFacebookAccess.getFacebookId()) {
+			if (Bookmark_id[i] == AppParseAccess.getUserObjectID()) {
 				isBookmarked = true;
 				
 				return;
