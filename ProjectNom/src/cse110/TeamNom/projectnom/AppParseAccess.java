@@ -212,8 +212,16 @@ public class AppParseAccess {
 		if(resName != null) {
 			object.put("Restaurant_Id", resName);
 		}
+		else
+		{
+			object.put("Restaurant_Id", "");
+		}
 		if(caption != null) {
-			object.put("Food_Name", caption);
+			object.put("Tags", caption);
+		}
+		else
+		{
+			object.put("Tags", "");
 		}
 		object.put("Like", 0);
 		object.put("Bookmark", 0);
