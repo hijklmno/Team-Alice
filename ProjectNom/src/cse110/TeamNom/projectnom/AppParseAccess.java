@@ -90,8 +90,7 @@ public class AppParseAccess {
 			newUser.put("bookmarks", "");
 			newUser.save();
 		}
-		else
-			userObjectID = getCurrentUser(FB_ID).getObjectId();
+		userObjectID = getCurrentUser(FB_ID).getObjectId();
 	}
 
 	/**

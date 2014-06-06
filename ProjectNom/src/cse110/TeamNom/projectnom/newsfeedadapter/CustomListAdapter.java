@@ -7,6 +7,7 @@ import com.ocpsoft.pretty.time.PrettyTime;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,11 +109,14 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.bookmark.setTag(pictureObj.getImageID());
 		
 		// Set the number count and highlight bookmark button if chosen
+//		Log.d("UserObjectID: ", AppParseAccess.getUserObjectID());
 		if (pictureObj.isBookmarked()) {
+			Log.d("isBookmarked: ", "true");
 			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 			holder.bookmark.refreshDrawableState();
 		}
 		else {
+			Log.d("isBookmarked: ", "false");
 			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
 			holder.bookmark.refreshDrawableState();
 		}
