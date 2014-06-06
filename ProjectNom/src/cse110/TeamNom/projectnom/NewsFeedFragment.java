@@ -82,7 +82,6 @@ public class NewsFeedFragment extends Fragment {
 			}
 		});
 		
-		
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
 		switchButton
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -86,8 +86,6 @@ public class AppParseAccess {
 			newUser.put("Name", fullName);
 			newUser.put("pictures", "");
 			newUser.put("bookmarks", "");
-			newUser.put("friends", "");
-//			newUser.saveInBackground();
 			newUser.save();
 		}
 	}

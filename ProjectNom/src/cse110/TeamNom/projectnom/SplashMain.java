@@ -26,7 +26,6 @@ import com.facebook.Settings;
  * 
  */
 public class SplashMain extends Activity {
-	private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 	private static final List<String> PERMISSIONS = new ArrayList<String>() {
         {
             add("user_friends");
@@ -34,7 +33,6 @@ public class SplashMain extends Activity {
         }
     };
     
-    private TextView textInstructionsOrLink;
     private Button buttonLoginLogout;
     private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
@@ -52,7 +50,6 @@ public class SplashMain extends Activity {
         
         setContentView(R.layout.splash_main);
         buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
-        textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
@@ -127,14 +124,15 @@ public class SplashMain extends Activity {
         Session.saveSession(session, outState);
     }
 
-    // View with a login/logout button depending on session.
+    /**
+     * updateView() updates the view depending on Facebook session state.
+     */
     private void updateView() {
         Session session = Session.getActiveSession();
         
         // Checks if session is opened but this state should not happen
         if (session != null && session.isOpened()) {
-            textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
-            buttonLoginLogout.setText("Logout...but we shouldn't see this");
+            buttonLoginLogout.setText("Login");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
@@ -164,7 +162,9 @@ public class SplashMain extends Activity {
         }        
     }
 
-    // Logs out user by closing session
+    /**
+     * onClickLogout() logs out the user by closing their Facebook session
+     */
     private void onClickLogout() {
         Session session = Session.getActiveSession();
         if (!session.isClosed()) {
@@ -172,7 +172,9 @@ public class SplashMain extends Activity {
         }
     }
     
-    // Sends user to home page
+    /**
+     * gotoLoadingAndEnd() signals the system to go to the loading screen.
+     */
     private void gotoLoadingAndEnd() {
         Intent intent = new Intent(SplashMain.this, LoadingActivity.class);
         startActivity(intent);
