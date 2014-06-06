@@ -494,6 +494,9 @@ public class CameraFragment extends Fragment {
 		bmpCompressed.compress(CompressFormat.JPEG, 100, bos);
 		byte[] data = bos.toByteArray();
 
+		parseRestaurant = restaurant.getText().toString();
+		parseCaption = caption.getText().toString();
+		
 		// Makes a call to AppParseAccess to save the new picture with to Parse
 		AppParseAccess.putMyPicture(data, AppFacebookAccess.getFacebookId(),
 				parseCaption, parseRestaurant, gps.getLatitude(),

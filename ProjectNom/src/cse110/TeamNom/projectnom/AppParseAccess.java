@@ -220,6 +220,8 @@ public class AppParseAccess {
 		object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
 		object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
 		object.put("report_image", false);
+		object.put("Like_id", "");
+		object.put("Bookmark_id", "");
 			
 		// When saving to Parse must also update user's picture string
 		object.saveInBackground(new SaveCallback() {
