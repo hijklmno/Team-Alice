@@ -154,7 +154,10 @@ public class NewsFeedFragment extends Fragment {
 	
 	private ArrayList<PictureDBObject> getAllListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
-		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(gps.getLatitude(), gps.getLongitude(), MAXROWS, OFFSET);
+		
+		// hard code 5 mile radius
+		int radius = 5;
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(gps.getLatitude(), gps.getLongitude(), radius, MAXROWS, OFFSET);
 		
 		if (pictureArray != null) {
 			OFFSET += MAXROWS;

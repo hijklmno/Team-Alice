@@ -730,12 +730,12 @@ public class AppParseAccess {
 	 * range of the lat and lon. The query's parameters are set with limit of count and it skips offset. Each
 	 * PictureDBObject is created from each ParseObject from "Food_Table_DB" that is returned from the query.
 	 */
-	public static ArrayList<PictureDBObject> getPictureFiles(double lat, double lon, int count, int offset) {
+	public static ArrayList<PictureDBObject> getPictureFiles(double lat, double lon, int radius, int count, int offset) {
 		// ArrayList of PictureDBObjects that will be returned
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 		
-		// 69.2 miles = 1 degree
-		double radius = 5 / 69.2;
+		// 69.2 miles = 1 degree - here defined as 5 miles
+		double radiusCircle = radius / 69.2;
 		
 		// Create query for "Food_Table_Db" and set parameters
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Food_Table_DB");
@@ -743,10 +743,10 @@ public class AppParseAccess {
 		query.setLimit(count);
 		query.setSkip(offset);
 		
-		query.whereGreaterThan("Latitude", lat - radius);
-		query.whereLessThan("Latitude", lat + radius);
-		query.whereGreaterThan("Longitude", lon - radius);
-		query.whereLessThan("Longitude", lon + radius);
+		query.whereGreaterThan("Latitude", lat - radiusCircle);
+		query.whereLessThan("Latitude", lat + radiusCircle);
+		query.whereGreaterThan("Longitude", lon - radiusCircle);
+		query.whereLessThan("Longitude", lon + radiusCircle);
 		
 		try {
 			List<ParseObject> objects = query.find();
