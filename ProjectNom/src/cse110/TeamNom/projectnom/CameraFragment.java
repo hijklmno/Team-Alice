@@ -66,8 +66,8 @@ public class CameraFragment extends Fragment {
 	private Context context;
 
 	// String variables
-	String parseRestaurant;
-	String parseCaption;
+	String parseRestaurant = "";
+	String parseCaption = "";
 
 	// The current Photo path
 	private String mCurrentPhotoPath;
