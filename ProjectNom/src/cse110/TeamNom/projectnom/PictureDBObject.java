@@ -100,6 +100,8 @@ public class PictureDBObject {
 				
 		// Check if I bookmarked it
 		setBookmarkStatus(getBookmarkIDs());
+		
+		setCaption(parse.getString("Tags"));
 	}
 	
 	/**
