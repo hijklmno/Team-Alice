@@ -49,26 +49,6 @@ public class SplashMain extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-//        Swagging the hash key to the logcat
-//        PackageInfo info;
-//        try {
-//            info = getPackageManager().getPackageInfo("cse110.TeamNom.projectnom", PackageManager.GET_SIGNATURES);
-//            for (android.content.pm.Signature signature : info.signatures) {
-//                MessageDigest md;
-//                md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                String something = new String(Base64.encode(md.digest(), 0));
-//                //String something = new String(Base64.encodeBytes(md.digest()));
-//                Log.d("hash key", something);
-//            }
-//        } catch (NameNotFoundException e1) {
-//            Log.e("name not found", e1.toString());
-//        } catch (NoSuchAlgorithmException e) {
-//            Log.e("no such an algorithm", e.toString());
-//        } catch (Exception e) {
-//            Log.e("exception", e.toString());
-//        }
         
         setContentView(R.layout.splash_main);
         buttonLoginLogout = (Button)findViewById(R.id.buttonLoginLogout);
@@ -79,7 +59,6 @@ public class SplashMain extends Activity {
         // Checks for logout call from MainActivity
         Bundle passedData = getIntent().getExtras();
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
-        	System.out.println("Logoutcall Received.");
         	onClickLogout();
         }
         
@@ -88,19 +67,14 @@ public class SplashMain extends Activity {
         if (session == null) {
             if (savedInstanceState != null) {
                 session = Session.restoreSession(this, null, statusCallback, savedInstanceState);
-                Log.d("FacebookSessionSplash", "restored session");
             }
             if (session == null) {
                 session = new Session(this);
-                Log.d("FacebookSessionSplash", "created new session");
             }
             Session.setActiveSession(session);
             if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
                 session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-                
-                System.out.println("CREATED_TOKEN_LOADED");
             }
-            Log.d("FacebookSessionIfNull", "nulled!");
             
         }
 
@@ -111,7 +85,6 @@ public class SplashMain extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-//        buttonLoginLogout.setEnabled(true);
         Bundle passedData = getIntent().getExtras();
         
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -124,7 +97,6 @@ public class SplashMain extends Activity {
     // Called when activity is resumed
     public void onResume() {
     	super.onResume();
-//    	buttonLoginLogout.setEnabled(true);
     	Bundle passedData = getIntent().getExtras();
     	
         if (passedData != null && passedData.getString("logoutCall") == "logout") {
@@ -138,7 +110,6 @@ public class SplashMain extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-//        buttonLoginLogout.setEnabled(true);
         Session.getActiveSession().removeCallback(statusCallback);
     }
 
@@ -162,16 +133,12 @@ public class SplashMain extends Activity {
         
         // Checks if session is opened but this state should not happen
         if (session != null && session.isOpened()) {
-        	System.out.println("Update: Session is opened.");
             textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
             buttonLoginLogout.setText("Logout...but we shouldn't see this");
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
-            
-//            gotoLoadingAndEnd();
         } else {
-        	System.out.println("Update: Session is closed.");
         	// Login button
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogin(); }
@@ -190,14 +157,11 @@ public class SplashMain extends Activity {
             
         if (session == null || session.isClosed()) {
         	Session.setActiveSession(session);
-//            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback)); 
         	Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
             Toast.makeText(context, "Loading Facebook. Please wait...", 3).show();
         } else {
             Session.openActiveSession(this, true, PERMISSIONS, statusCallback);
-        }
-        
-//        buttonLoginLogout.setEnabled(false);
+        }        
     }
 
     // Logs out user by closing session
@@ -210,9 +174,7 @@ public class SplashMain extends Activity {
     
     // Sends user to home page
     private void gotoLoadingAndEnd() {
-    	System.out.println("GoToLoading.");
         Intent intent = new Intent(SplashMain.this, LoadingActivity.class);
-        intent.putExtra("FacebookSession", Session.getActiveSession());
         startActivity(intent);
         finish();
     }
@@ -220,13 +182,8 @@ public class SplashMain extends Activity {
     private class SessionStatusCallback implements Session.StatusCallback {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-//            updateView();
         	if (session.isOpened()) {
-        		System.out.println("SessionCallback: Session is open.");
         		gotoLoadingAndEnd();
-        	}
-        	else {
-        		System.out.println("SessionCallback: Session is closed.");
         	}
         }
     }

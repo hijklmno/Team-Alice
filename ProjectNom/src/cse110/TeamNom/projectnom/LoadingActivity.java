@@ -25,10 +25,9 @@ public class LoadingActivity extends Activity {
 
 	private Context context;
 	private Activity activity;
-	private TextView loading;
 	private boolean initial = true;
+	
 	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -38,7 +37,6 @@ public class LoadingActivity extends Activity {
 		
 		setContentView(R.layout.fragment_loading);
 		
-		System.out.println("Loading loader.");
 		new Loader().execute();
 		initial = true;
 		super.onCreate(savedInstanceState);
@@ -50,7 +48,6 @@ public class LoadingActivity extends Activity {
 		protected Long doInBackground(String... arg0) {
 			AppFacebookAccess.setActiveSession();
 			AppFacebookAccess.getNameAndID();
-			System.out.println("Facebook name and ID retrieved.");
 			
 			// Parse stuff
 			AppParseAccess.initialize(activity,
@@ -61,7 +58,6 @@ public class LoadingActivity extends Activity {
 				AppParseAccess.loadOrAddNewUser(
 						AppFacebookAccess.getFacebookId(),
 						AppFacebookAccess.getFacebookName());
-				System.out.println("Parse user configuration done.");
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -75,9 +71,7 @@ public class LoadingActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(Long result) {
-			System.out.println("Done execution.");
 			Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
-			intent.putExtra("FacebookSession", Session.getActiveSession());
 			startActivity(intent);
 			finish();
 		}

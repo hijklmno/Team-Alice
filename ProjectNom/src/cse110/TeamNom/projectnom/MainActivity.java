@@ -33,17 +33,6 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// retrieves the facebook session established in the splash page
-		Intent i = getIntent();
-		Session session = (Session) i.getSerializableExtra("FacebookSession");
-
-		// debugging, test if session is logged in
-		if (session != null && session.isOpened()) {
-			Log.d("MainActivityFacebookSession", "Logged in");
-		} else {
-			Log.d("MainActivityFacebookSession", "Logged out");
-		}
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
