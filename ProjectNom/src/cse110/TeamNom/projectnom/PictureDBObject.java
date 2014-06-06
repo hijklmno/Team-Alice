@@ -123,17 +123,27 @@ public class PictureDBObject {
 		}
 	}
 	
-	// Accessor method return whether I have liked this picture
+	/**
+	 * isLiked() is an accessor method for the isLiked boolean.
+	 * 
+	 * @return
+	 */
 	public boolean isLiked() {
 		return isLiked;
 	}
 	
-	// Method which takes in the image string of ids which liked this picture,
-	// and checks whether I have liked it
+	/**
+	 * setBookmarkStatus() checks if the current user's Facebook ID is
+	 * within ids. If it is then it sets isBookmarked to true. Otherwise,
+	 * false.
+	 * 
+	 * @param ids
+	 */
 	public void setBookmarkStatus(String[] ids) {
 		isBookmarked = false;
 		
 		if (ids != null) {
+			// Loop through ids to search for a match with Facebook ID
 			for (int i = 0; i < ids.length; i++) {
 				if (ids[i] == AppFacebookAccess.getFacebookId()) {
 					isBookmarked = true;
@@ -143,134 +153,302 @@ public class PictureDBObject {
 		}
 	}
 	
-	// Accessor method return whether I have bookmarked this picture
+	/**
+	 * isBookmarked() is an accessor method which returns the current state
+	 * of the boolean isBookmarked.
+	 * 
+	 * @return
+	 */
 	public boolean isBookmarked() {
 		return isBookmarked;
 	}
 	
-	// Mutator method to set the facebook name for later retrieval
+	/**
+	 * setFacebookName() is a mutator method that sets FACEBOOK_NAME to
+	 * name.
+	 * 
+	 * @param name
+	 */
 	public void setFacebookName(String name) {
 		FACEBOOK_NAME = name;
 	}
 	
-	// Accessor method to return the facebook name 
+	/**
+	 * getFacebookName() is an accessor method that returns the current
+	 * state of FACEBOOK_NAME.
+	 * 
+	 * @return
+	 */
 	public String getFacebookName() {
 		return FACEBOOK_NAME;
 	}
 	
-	// Mutator method to set the image id for later retrieval
+	/**
+	 * setImageID() is a mutator method that sets image_id to id.
+	 * 
+	 * @param id
+	 */
 	public void setImageID(String id) {
 		image_id = id;
 	}
 	
+	/**
+	 * getImageID() is a accessor method that returns the current state
+	 * of image_id.
+	 * 
+	 * @return
+	 */
 	public String getImageID() {
 		return image_id;
 	}
 	
+	/**
+	 * setFacebookID() is a mutator method that sets FACEBOOK_ID to
+	 * id.
+	 * 
+	 * @param id
+	 */
 	public void setFacebookID(String id) {
 		FACEBOOK_ID = id;
 	}
 	
+	/**
+	 * getFacebookID() is a accessor method that returns the current
+	 * state of FACEBOOK_ID.
+	 * 
+	 * @return
+	 */
 	public String getFacebookID() {
 		return FACEBOOK_ID;
 	}
 	
+	/**
+	 * setPicture() is a mutator method that sets Food_photo to
+	 * picture using the clone() method.
+	 * 
+	 * @param picture
+	 */
 	public void setPicture(byte[] picture) {
 		Food_photo = picture.clone();
 	}
 
+	/**
+	 * getPicture() is a accessor method that returns the current state
+	 * of Food_photo.
+	 * 
+	 * @return
+	 */
 	public byte[] getPicture() {
 		return Food_photo;
 	}
 
+	/**
+	 * setLikeCount() is a mutator method that sets Like to count.
+	 * 
+	 * @param count
+	 */
 	public void setLikeCount(int count) {
 		Like = count;
 	}
 
+	/**
+	 * getLikeCount() is an accessor method that returns the current
+	 * state of Like.
+	 * 
+	 * @return
+	 */
 	public int getLikeCount() {
 		return Like;
 	}
 
+	/**
+	 * setLikeIDs() is a mutator method that sets Like_id to ids split
+	 * with ",".
+	 * 
+	 * @param ids
+	 */
 	public void setLikeIDs(String ids) {
 		if (ids != null) {
 			Like_id = ids.split(",");
 		}
 	}
 	
+	/**
+	 * getLikeIDs() is an accessor method that returns the current state
+	 * of Like_id.
+	 * 
+	 * @return
+	 */
 	public String[] getLikeIDs() {
 		return Like_id;
 	}
 	
+	/**
+	 * setBookmarkIDs() is a mutator method that sets Bookmark_id to
+	 * ids split with ","/
+	 * 
+	 * @param ids
+	 */
 	public void setBookmarkIDs(String ids) {
 		if (ids != null) {
 			Bookmark_id = ids.split(",");
 		}
 	}
 	
+	/**
+	 * getBookmarkIDs() is an accessor method that returns the current
+	 * state of Bookmark_id.
+	 * 
+	 * @return
+	 */
 	public String[] getBookmarkIDs() {
 		return Bookmark_id;
 	}
 	
+	/**
+	 * setBookmarkCount() is a mutator method that sets Bookmark to
+	 * count.
+	 * 
+	 * @param count
+	 */
 	public void setBookmarkCount(int count) {
 		Bookmark = count;
 	}
 
+	/**
+	 * getBookmarkCount() is an accessor method that returns the
+	 * current state of Bookmark.
+	 * 
+	 * @return
+	 */
 	public int getBookmarkCount() {
 		return Bookmark;
 	}
 
+	/**
+	 * reportImage() is a mutator method that sets report_image to
+	 * true.
+	 */
 	public void reportImage() {
 		report_image = true;
 	}
 
+	/**
+	 * unreportImage() is a mutator method that sets report_image to
+	 * false.
+	 */
 	public void unreportImage() {
 		report_image = false;
 	}
 
+	/**
+	 * setImageReportStatus() is a mutator method that sets report_image
+	 * to status.
+	 * 
+	 * @param status
+	 */
 	public void setImageReportStatus(boolean status) {
 		report_image = status;
 	}
 	
+	/**
+	 * isReported() is an accessor method that returns report_image.
+	 * 
+	 * @return
+	 */
 	public boolean isReported() {
 		return report_image;
 	}
 
+	/**
+	 * setRestID() is a mutator method that sets Food_name to caption.
+	 * 
+	 * @param caption
+	 */
 	public void setRestID(String caption) {
 		Food_name = caption;
 	}
 
+	/**
+	 * getRestID() is an accessor method that returns Food_name.
+	 * 
+	 * @return
+	 */
 	public String getRestID() {
 		return Food_name;
 	}
 	
+	/**
+	 * setLatitude() is a mutator method that sets Latitude to lat.
+	 * 
+	 * @param lat
+	 */
 	public void setLatitude(double lat) {
 		Latitude = lat;
 	}
 	
+	/**
+	 * getLatitude() is an accessor method that returns Latitude.
+	 * 
+	 * @return
+	 */
 	public double getLatitude() {
 		return Latitude;
 	}
 	
+	/**
+	 * setLongitude() is a mutator method that sets Longitude to
+	 * longit.
+	 * 
+	 * @param longit
+	 */
 	public void setLongitude(double longit) {
 		Longitude = longit;
 	}
 	
+	/**
+	 * getLongitude() is an accessor method that returns Longitude.
+	 * 
+	 * @return
+	 */
 	public double getLongitude() {
 		return Longitude;
 	}
 	
+	/**
+	 * setCreatedDate() is a mutator method that sets createdAt to
+	 * created.
+	 * 
+	 * @param created
+	 */
 	public void setCreatedDate(Date created) {
 		createdAt = created;
 	}
 	
+	/**
+	 * getCreatedDate() is an accessor method that returns createdAt.
+	 * 
+	 * @return
+	 */
 	public Date getCreatedDate() {
 		return createdAt;
 	}
 	
+	/**
+	 * setUpdatedDate() is a mutator method that sets updatedAt to
+	 * updated.
+	 * 
+	 * @param updated
+	 */
 	public void setUpdatedDate(Date updated) {
 		updatedAt = updated;
 	}
 	
+	/**
+	 * getUpdatedDate() is an accessor method that returns updatedAt.
+	 * 
+	 * @return
+	 */
 	public Date getUpdatedDate() {
 		return updatedAt;
 	}
