@@ -211,8 +211,8 @@ public class AppParseAccess {
 		object.put("Bookmark", 0);
 		object.put("Longitude", longitude);
 		object.put("Latitude", latitude);
-		object.put("roundLongitude", (double) Math.round(longitude * 10) / 10);
-		object.put("roundLatitude", (double) Math.round(latitude * 10) / 10);
+		object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
+		object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
 		object.put("report_image", false);
 
 		// When saving to Parse must also update user's picture string
