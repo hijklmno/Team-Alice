@@ -24,7 +24,7 @@ public class PictureDBObject {
 	boolean report_image;
 	String FACEBOOK_ID;
 	String FACEBOOK_NAME;
-	String Food_name;
+	String caption;
 	String Restaurant_Id;
 	double Latitude;
 	double Longitude;
@@ -361,21 +361,38 @@ public class PictureDBObject {
 	}
 
 	/**
-	 * setRestID() is a mutator method that sets Food_name to caption.
+	 * setCaption() is a mutator method that sets caption to newCaption.
+	 * 
+	 * @param newCaption
+	 */
+	public void setCaption(String newCaption) {
+		caption = newCaption;
+	}
+	
+	/**
+	 * getCaption() is an accessor method that returns caption.
+	 * @return 
+	 */
+	public String getCaption() {
+		return caption;
+	}
+	
+	/**
+	 * setRestID() is a mutator method that sets Restaurant_Id to caption.
 	 * 
 	 * @param caption
 	 */
-	public void setRestID(String caption) {
-		Food_name = caption;
+	public void setRestID(String rest_id) {
+		Restaurant_Id = rest_id;
 	}
 
 	/**
-	 * getRestID() is an accessor method that returns Food_name.
+	 * getRestID() is an accessor method that returns Restaurant_Id.
 	 * 
 	 * @return
 	 */
 	public String getRestID() {
-		return Food_name;
+		return Restaurant_Id;
 	}
 	
 	/**

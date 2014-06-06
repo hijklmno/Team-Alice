@@ -67,6 +67,7 @@ public class CustomListAdapter extends BaseAdapter {
 			R.layout.newsfeed_list_row_layout, null);
 			holder = new ViewHolder();
 			holder.captionTextView = (TextView) convertView.findViewById(R.id.NewsFeedCaption);
+			holder.subCaptionTextView = (TextView) convertView.findViewById(R.id.NewsFeedsubCaption);
 			holder.dateTextView = (TextView) convertView.findViewById(R.id.NewsFeedDate);
 			holder.imageView = (ImageView) convertView.findViewById(R.id.NewsFeedThumbImage);
 			holder.nameTextView = (TextView) convertView.findViewById(R.id.NewsFeedName);
@@ -85,6 +86,9 @@ public class CustomListAdapter extends BaseAdapter {
 		
 		// Defining the text for the caption
 		holder.captionTextView.setText(pictureObj.getRestID());
+		
+		// Defining the text for the subcaption
+		holder.subCaptionTextView.setText(pictureObj.getCaption());
 		
 		// Defining the date
 		PrettyTime ptime = new PrettyTime();
