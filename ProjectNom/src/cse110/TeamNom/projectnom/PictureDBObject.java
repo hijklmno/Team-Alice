@@ -156,6 +156,14 @@ public class PictureDBObject {
 		}
 	}
 	
+	public void setBookmark(boolean bool) {
+		isBookmarked = bool;
+	}
+	
+	public void setLike(boolean bool) {
+		isLiked = bool;
+	}
+	
 	/**
 	 * isBookmarked() is an accessor method which returns the current state
 	 * of the boolean isBookmarked.

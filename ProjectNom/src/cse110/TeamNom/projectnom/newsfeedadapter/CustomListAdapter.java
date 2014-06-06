@@ -131,6 +131,7 @@ public class CustomListAdapter extends BaseAdapter {
 					holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 					holder.bookmark.setText(Integer.toString(pictureObj.getBookmarkCount()));
 					holder.bookmark.refreshDrawableState();
+					pictureObj.setBookmark(true);
 				} else {
 					// If bookmarked, then unbookmark image (submitted to parse)
 					AppParseAccess.unbookmarkImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
@@ -138,6 +139,7 @@ public class CustomListAdapter extends BaseAdapter {
 					holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_important, 0, 0, 0);
 					holder.bookmark.setText(Integer.toString(pictureObj.getBookmarkCount()));
 					holder.bookmark.refreshDrawableState();
+					pictureObj.setBookmark(false);
 				}
 			}
 		});
@@ -170,6 +172,7 @@ public class CustomListAdapter extends BaseAdapter {
 					holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_liked, 0, 0, 0);
 					holder.like.setText(Integer.toString(pictureObj.getLikeCount()));
 					holder.like.refreshDrawableState();
+					pictureObj.setLike(true);
 				} else {
 					// If liked, then unlike image (submitted to parse)
 					AppParseAccess.unlikeImage(AppFacebookAccess.getFacebookId(), pictureObj.getImageID());
@@ -177,6 +180,7 @@ public class CustomListAdapter extends BaseAdapter {
 					holder.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_like, 0, 0, 0);
 					holder.like.setText(Integer.toString(pictureObj.getLikeCount()));
 					holder.like.refreshDrawableState();
+					pictureObj.setLike(false);
 				}
 			}
 		});
