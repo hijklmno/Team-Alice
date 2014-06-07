@@ -494,78 +494,9 @@ public class CameraFragment extends Fragment {
 				parseCaption, parseRestaurant, gps.getLatitude(),
 				gps.getLongitude());
 
-		// final ParseObject object = new ParseObject("Food_Table_DB");
-		// ParseFile file = new ParseFile(data);
-		// file.saveInBackground(new SaveCallback() {
-		// @Override
-		// public void done(ParseException e) {
-		// if (e == null) {
-		//
-		// }
-		// else {
-		// System.err.println("ParseException: " + e);
-		// }
-		// }
-		// });
-		//
-		// parseRestaurant = restaurant.getText().toString();
-		// parseCaption = caption.getText().toString();
-		//
-		// object.put("Food_photo", file);
-		// object.put("Restaurant_Id", parseRestaurant);
-		// object.put("FACEBOOK_ID", AppFacebookAccess.getFacebookId());
-		// object.put("FACEBOOK_NAME", AppFacebookAccess.getFacebookName());
-		// object.put("Tags",parseCaption);
-		// object.put("Like", 0);
-		// object.put("Bookmark", 0);
-		// object.put("Longitude", gps.getLongitude());
-		// object.put("Latitude", gps.getLatitude());
-		// object.put("report_image", false);
-		// object.saveInBackground();
-		//
-		// object.saveInBackground(new SaveCallback() {
-		// @Override
-		// public void done(ParseException e) {
-		// pictureID = object.getObjectId();
-		//
-		// ParseQuery<ParseObject> query =
-		// ParseQuery.getQuery("FacebookAccounts");
-		//
-		// Session session = Session.getActiveSession();
-		//
-		// query.whereEqualTo("facebook_id", AppFacebookAccess.getFacebookId());
-		//
-		// query.findInBackground(new FindCallback<ParseObject>() {
-		// @Override
-		// public void done(List<ParseObject> objects, ParseException e) {
-		// if (objects == null || objects.isEmpty()) {
-		// Log.d("GettingFacebookinfo", "no object returned");
-		// }
-		// else {
-		// ParseObject facebookAccount = objects.get(0);
-		//
-		// String pictureString = (String) facebookAccount.get("pictures");
-		//
-		// if (pictureString == null || pictureString.equals("")) {
-		// pictureString = "";
-		// pictureString += pictureID;
-		// }
-		// else {
-		// pictureID = "," + pictureID;
-		// pictureString += pictureID;
-		// }
-		// facebookAccount.put("pictures", pictureString);
-		// facebookAccount.saveInBackground();
-		// }
-		// }
-		// });
-		// }
-		// });
-
 	}
 
-	// --------------------------------Helper
-	// Methods----------------------------------------
+	// --------------------------------Helper Methods----------------------------------------
 
 	/**
 	 * Pretty straightforward, checks if device has camera functions or not Used
@@ -635,6 +566,7 @@ public class CameraFragment extends Fragment {
 			mImageView.setVisibility(View.INVISIBLE);
 			picBtn.setVisibility(View.INVISIBLE);
 			bigBtn.setVisibility(View.VISIBLE);
+			text.setVisibility(View.VISIBLE);
 		} else {
 			restaurant.setVisibility(View.VISIBLE);
 			caption.setVisibility(View.VISIBLE);
@@ -642,6 +574,7 @@ public class CameraFragment extends Fragment {
 			mImageView.setVisibility(View.VISIBLE);
 			picBtn.setVisibility(View.VISIBLE);
 			bigBtn.setVisibility(View.INVISIBLE);
+			text.setVisibility(View.INVISIBLE);
 		}
 	}
 
