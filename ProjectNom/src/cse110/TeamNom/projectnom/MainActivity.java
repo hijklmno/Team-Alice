@@ -104,6 +104,21 @@ public class MainActivity extends FragmentActivity implements
 		mSearchLocation = (EditText) findViewById(R.id.searchLocation);
 		String term = mSearchTerm.getText().toString();
 		String location = mSearchLocation.getText().toString();
+		
+		if (term.matches("")) {
+			Toast toast = Toast
+					.makeText(this,"Please enter a search term! ",
+							Toast.LENGTH_LONG);
+			toast.show();
+			return;
+		}
+		if (location.matches("")) {
+			Toast toast = Toast
+					.makeText(this,"Please enter a location! ",
+							Toast.LENGTH_LONG);
+			toast.show();
+			return;
+		}
 		Intent intent = new Intent(this, YelpSearchListActivity.class);
 		intent.setData(new Uri.Builder().appendQueryParameter("term", term)
 				.appendQueryParameter("location", location).build());

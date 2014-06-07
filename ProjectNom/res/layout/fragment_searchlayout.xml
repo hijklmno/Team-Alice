@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:hint="Ex: Hawaiian"
         android:maxLines="1"
-        android:imeOptions="actionSearch"
+        android:imeOptions="actionDone"
         android:singleLine="true" >
         <requestFocus />
     </EditText>
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Ex: San Diego"
-        android:imeOptions="actionSearch"
+        android:imeOptions="actionDone"
         android:maxLines="1"
         android:singleLine="true" />
     <LinearLayout
