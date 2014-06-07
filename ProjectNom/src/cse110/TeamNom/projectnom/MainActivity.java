@@ -120,7 +120,7 @@ public class MainActivity extends FragmentActivity implements
 					"Raymond Tran", "Jean Park", "Exit" };
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setCancelable(false);
+			builder.setCancelable(true);
 			builder.setTitle("Team NOM");
 			builder.setItems(teamnom, new DialogInterface.OnClickListener() {
 				@Override
@@ -132,7 +132,7 @@ public class MainActivity extends FragmentActivity implements
 								.makeText(
 										MainActivity.this,
 										teamnom[which]
-												+ "- If there's a will there's a William!",
+												+ " is the best",
 										Toast.LENGTH_LONG);
 						toast.show();
 						break;
