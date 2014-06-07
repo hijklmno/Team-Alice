@@ -751,7 +751,7 @@ public class AppParseAccess {
 		// ArrayList of PictureDBObjects that will be returned
 		ArrayList<PictureDBObject> customList = new ArrayList<PictureDBObject>();
 		
-		// 69.2 miles = 1 degree - here defined as 5 miles
+		// 69.2 miles = 1 degree - here defined as 50 miles
 		double radiusCircle = radius / 69.2;
 		
 		// Create query for "Food_Table_Db" and set parameters

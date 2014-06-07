@@ -153,15 +153,35 @@ public class NewsFeedFragment extends Fragment {
 	
 	private ArrayList<PictureDBObject> getAllListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
+		Toast.makeText(getActivity(), "Getting nearby 50 miles of food...", 2).show();
+		// hard code 50 mile radius
+		int radius = 50;
 		
-		// hard code 5 mile radius
-		int radius = 5;
-		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(gps.getLatitude(), gps.getLongitude(), radius, MAXROWS, OFFSET);
+		// if current latitude and longitude is 0 (something is wrong with GPS), default to san diego
+		double currentLat = 0;
+		double currentLong = 0;
+		
+		if (gps.getLatitude() == 0) {
+			Toast.makeText(getActivity(), "GPS Error, defaulting to San Diego", 2).show();
+			currentLat = 32.88;
+		}
+		if (gps.getLongitude() == 0) {
+			Toast.makeText(getActivity(), "GPS Error, defaulting to San Diego", 2).show();
+			currentLong = -117.2;
+		}
+
+		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(currentLat, currentLong, radius, MAXROWS, OFFSET);
 		
 		if (pictureArray != null) {
+			Log.d("ProxPictureArrayLen", Integer.toString(pictureArray.size()));
+			for (int i = 0; i < pictureArray.size(); i++) {
+				Log.d("ProxPictureArray", pictureArray.get(i).getCreatedDate().toString());
+			}
+			
 			OFFSET += MAXROWS;
 		}
 		else {
+			Toast.makeText(getActivity(), "No more posts nearby", 2).show();
 			listEndFlagAll = true;
 		}
 		return pictureArray;
