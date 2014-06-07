@@ -50,7 +50,7 @@
     <!-- News Feed -->
     <string name="toggleOn">Friends</string>
     <string name="toggleOff">All</string>
-    <string name="feed">News Feed</string>
+    <string name="feed">Newsfeed</string>
     <!-- End Of News Feed -->
     
     <!-- Parse -->
