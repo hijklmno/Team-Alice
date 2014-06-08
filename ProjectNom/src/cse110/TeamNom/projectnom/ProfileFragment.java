@@ -27,15 +27,15 @@ import com.facebook.Session;
  * Fragment class for the user profile.
  */
 public class ProfileFragment extends Fragment {
-	// variables for fragment
+	// Variables for fragment
 	private Button buttonLogout;
 	private TextView profileUser;
-	private Switch switchBut;
+	private Switch switchButton;
 	private GridView gridV;
 	private GridView bookmarks;
 	private Button refresh;
 	
-	// variables for grid images
+	// Variables for grid images
 	public Drawable[] pics;
 	public Drawable[] book;
 	
@@ -54,35 +54,36 @@ public class ProfileFragment extends Fragment {
 		profileUser = (TextView) rootView.findViewById(R.id.profileUser);
 		profileUser.setText( AppFacebookAccess.getFacebookName());
 		
-		// start configuration for the logout button
+		// Start configuration for the logout button
 		buttonLogout = (Button) rootView.findViewById(R.id.buttonLogout);
-		switchBut = (Switch) rootView.findViewById(R.id.profileToggle);
+		switchButton = (Switch) rootView.findViewById(R.id.profileToggle);
 		gridV = (GridView) rootView.findViewById(R.id.grid_view);
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		refresh = (Button) rootView.findViewById(R.id.profileRefresh);
 		// Loads the picture taken from the user
-		onClickLoadMyPictures();
+		loadMyPictures();
 		// Loads the bookmark of the user.
-		onClickLoadMyBookmarks();
+		loadMyBookmarks();
 		
 		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
 		bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
 		
 		bookmarks.setVisibility(View.INVISIBLE);
 		
-		switchBut
+		// Change visibility of galleries depending on state of switchbutton
+		switchButton
 		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					// pictures
+					// Sets visibility of pictures
 					gridV.setVisibility(View.VISIBLE);
 					bookmarks.setVisibility(View.INVISIBLE);
 				}
 				else {
+					// Sets visibility of bookmarks
 					gridV.setVisibility(View.INVISIBLE);
 					bookmarks.setVisibility(View.VISIBLE);
-					// bookmarks
 				}
 			}
 		});
@@ -102,11 +103,10 @@ public class ProfileFragment extends Fragment {
 		refresh.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 			Toast.makeText(getActivity(), "Refreshing...", 2).show();
-			onClickLoadMyPictures();
-			onClickLoadMyBookmarks();
+			loadMyPictures();
+			loadMyBookmarks();
 			gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
 			bookmarks.setAdapter(new ProfileImageAdapter(getActivity(), book));
-			
 			}
 		});
 
@@ -127,9 +127,9 @@ public class ProfileFragment extends Fragment {
 	}
 	// called when pressing the logout button
 	private void onClickLogout() {
-		Session session = Session.getActiveSession();
-		session.closeAndClearTokenInformation(); // end session and go
-		// create splash page
+//		Session session = Session.getActiveSession();
+//		session.closeAndClearTokenInformation(); // end session and go
+//		// create splash page
 		Intent intent = new Intent(getActivity(), SplashMain.class);
 		intent.putExtra("logoutCall", "logout");
 		startActivity(intent);
@@ -147,14 +147,14 @@ public class ProfileFragment extends Fragment {
 	}
 
 	/**
-	 * Gets the most recent facebook profile picture of the user.
+	 * Gets the most recent Facebook profile picture of the user.
 	 */
 	private void getFacebookProfilePicture() {
+		// Start a new thread for network calls
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					System.out.println(AppFacebookAccess.getFacebookId());
 					URL imageURL = new URL("https://graph.facebook.com/"
 							+ AppFacebookAccess.getFacebookId() + "/picture?type=large");
 					profileBitmap = BitmapFactory.decodeStream(imageURL
@@ -165,8 +165,10 @@ public class ProfileFragment extends Fragment {
 			}
 		});
 
+		// Start the thread
 		thread.start();
 		try {
+			// Join the thread so that the main thread does not run ahead
 			thread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -177,21 +179,29 @@ public class ProfileFragment extends Fragment {
 	 * Method that loads the user's taken photos.
 	 */
 	@SuppressLint("NewApi")
-	private void onClickLoadMyPictures() {
+	private void loadMyPictures() {
 		
+		// Load picture ids
 		String[] pictureIDs = AppParseAccess.getMyPictureIds(AppFacebookAccess.getFacebookId());
 		
+		// Check for null
 		if (pictureIDs == null) {
 			return;
 		}
 		
+		// Create array of Drawables
 		pics = new Drawable[pictureIDs.length];
 		
+		// Loop through each picture id
 		for (int i = 0; i < pictureIDs.length; i++) {
+			// Create a PictureDBObject from each picture id
 			PictureDBObject object = AppParseAccess.getSpecificPicture(pictureIDs[i]);
+			
 			if (object != null) {
+				// Get the byte array from each object
 				byte[] data = object.getPicture();
 				
+				// Create a BitmapDrawable from each bye array
 				pics[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
 			}
 		}
@@ -201,23 +211,29 @@ public class ProfileFragment extends Fragment {
 	 * Load the bookmark photo of other users posts.
 	 */
 	@SuppressLint("NewApi")
-	private void onClickLoadMyBookmarks() {
-		// bookmarks gallery
+	private void loadMyBookmarks() {
+		// Get the bookmark ids from user
 		String[] bookmarkIDs = AppParseAccess.getMyBookmarkIds(AppFacebookAccess.getFacebookId());
 		
+		// Check for null
 		if (bookmarkIDs == null) {
 			return;
 		}
 		
+		// Create array of Drawables
 		book = new Drawable[bookmarkIDs.length];
 		
+		// Loop through each bookmark id
 		for (int i = 0; i < bookmarkIDs.length; i++) {
+			// Create a PictureDBObject for each bookmark id
 			PictureDBObject object = AppParseAccess.getSpecificPicture(bookmarkIDs[i]);
+			
 			if (object != null) {
+				// Get the byte array from each PictureDBObject
 				byte[] data = object.getPicture();
 	
+				// Create a new BitmapDrawable for each object and store in array
 				book[i] = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(data, 0, data.length));
-
 			}
 		}
 	}

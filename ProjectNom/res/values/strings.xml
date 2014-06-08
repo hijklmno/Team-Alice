@@ -49,7 +49,7 @@
     
     <!-- News Feed -->
     <string name="toggleOn">Friends</string>
-    <string name="toggleOff">All</string>
+    <string name="toggleOff">Nearby</string>
     <string name="feed">Newsfeed</string>
     <!-- End Of News Feed -->
     

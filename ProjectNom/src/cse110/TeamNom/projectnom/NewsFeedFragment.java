@@ -28,10 +28,10 @@ public class NewsFeedFragment extends Fragment {
 	private static int MAXROWS = 4;
 	private static int OFFSET = 0;
 	private static boolean listEndFlag = false;
-	private static boolean listEndFlagAll = false;
+	private static boolean listEndFlagNearby = false;
 	private Switch switchButton;
 	private PullToRefreshListView mPullRefreshListView;
-	private CustomListAdapter cLAdapterFriends, cLAdapterAll;
+	private CustomListAdapter cLAdapterFriends, cLAdapterNearby;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +39,7 @@ public class NewsFeedFragment extends Fragment {
 
 		final View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
 				false);
-		// Refresh the posts on the newsfeed by swiping
+		// Refresh the posts on the NewsFeed by swiping
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
 		mPullRefreshListView.setMode(Mode.PULL_FROM_START);
 		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
@@ -66,18 +66,18 @@ public class NewsFeedFragment extends Fragment {
 					}
 				}
 				else {
-					if (listEndFlagAll == false) {
-						Toast.makeText(getActivity(), "Loading more all data...", Toast.LENGTH_SHORT).show();
+					if (listEndFlagNearby == false) {
+						Toast.makeText(getActivity(), "Loading more nearby data...", Toast.LENGTH_SHORT).show();
 						getMoreData();
 					}
 					else {
-						Toast.makeText(getActivity(), "No more all data", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "No more nearby data", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
 		});
 		
-		// Button that switches between friends and other posts.
+		// Button that switches between friends and nearby posts.
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
 		switchButton
 		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -92,11 +92,11 @@ public class NewsFeedFragment extends Fragment {
 					}
 				}
 				else {
-					if (cLAdapterAll != null) {
-						mPullRefreshListView.setAdapter(cLAdapterAll);
+					if (cLAdapterNearby != null) {
+						mPullRefreshListView.setAdapter(cLAdapterNearby);
 					}
 					else {
-						getProxData(rootView);
+						getNearbyData(rootView);
 					}
 				}
 			}
@@ -110,19 +110,19 @@ public class NewsFeedFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		getFriendsData(getView());
-		getProxData(getView());
+		getNearbyData(getView());
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
 
 	/*
 	 * Gets post based on proximity of users.
 	 */
-	private void getProxData(View rootView) {
-		ArrayList<PictureDBObject> all_img_details = getAllListData();
-		cLAdapterAll = new CustomListAdapter(getActivity(), all_img_details);
+	private void getNearbyData(View rootView) {
+		ArrayList<PictureDBObject> nearby_img_details = getNearbyListData();
+		cLAdapterNearby = new CustomListAdapter(getActivity(), nearby_img_details);
 	}
 
-	private ArrayList<PictureDBObject> getAllListData() {
+	private ArrayList<PictureDBObject> getNearbyListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
 		// hard code 50 mile radius
 		int radius = 50;
@@ -143,15 +143,11 @@ public class NewsFeedFragment extends Fragment {
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(currentLat, currentLong, radius, MAXROWS, OFFSET);
 
 		if (pictureArray != null) {
-			Log.d("ProxPictureArrayLen", Integer.toString(pictureArray.size()));
-			for (int i = 0; i < pictureArray.size(); i++) {
-				Log.d("ProxPictureArray", pictureArray.get(i).getCreatedDate().toString());
-			}
 			OFFSET += MAXROWS;
 		}
 		else {
 			Toast.makeText(getActivity(), "No more posts nearby", 2).show();
-			listEndFlagAll = true;
+			listEndFlagNearby = true;
 		}
 		return pictureArray;
 	}
@@ -173,11 +169,6 @@ public class NewsFeedFragment extends Fragment {
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(myFriendsArr, fMAXROWS, fOFFSET);
 
 		if (pictureArray != null) {
-			Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
-			for (int i = 0; i < pictureArray.size(); i++) {
-				Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
-			}
-
 			fOFFSET += fMAXROWS;
 		}
 		else {
@@ -201,12 +192,12 @@ public class NewsFeedFragment extends Fragment {
 			}
 		}
 		else {
-			ArrayList<PictureDBObject> newResults = getAllListData();
+			ArrayList<PictureDBObject> newResults = getNearbyListData();
 			if (newResults != null) {
-				cLAdapterAll.updateResults(newResults);
+				cLAdapterNearby.updateResults(newResults);
 			}
 			else {
-				listEndFlagAll = true;
+				listEndFlagNearby = true;
 			}
 		}
 
@@ -231,14 +222,14 @@ public class NewsFeedFragment extends Fragment {
 			}
 		}
 		else {
-			listEndFlagAll = false;
+			listEndFlagNearby = false;
 			OFFSET = 0;
-			ArrayList<PictureDBObject> image_details = getAllListData();
+			ArrayList<PictureDBObject> image_details = getNearbyListData();
 			if (image_details != null) {
-				cLAdapterAll.resetResults(image_details);
+				cLAdapterNearby.resetResults(image_details);
 			}
 			else {
-				cLAdapterAll.resetResults(new ArrayList<PictureDBObject>());
+				cLAdapterNearby.resetResults(new ArrayList<PictureDBObject>());
 			}
 		}
 	}

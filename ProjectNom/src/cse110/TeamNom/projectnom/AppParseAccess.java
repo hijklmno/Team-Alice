@@ -783,10 +783,20 @@ public class AppParseAccess {
 		return customList;
 	}
 	
+	/**
+	 * getUserObjectID() is static accessor method that returns the
+	 * user's ParseObject objectID from the FacebookAccounts database.
+	 * 
+	 * @return
+	 */
 	public static String getUserObjectID() {
 		return userObjectID;
 	}
 	
+	/**
+	 * clearUserObjectID() is a static method that clears the static
+	 * field userObjectID;
+	 */
 	public static void clearUserObjectID() {
 		userObjectID = null;
 	}

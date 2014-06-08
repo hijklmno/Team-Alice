@@ -36,10 +36,6 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		//Setting up Facebook and retrieve data
-		AppFacebookAccess.setActiveSession();
-		AppFacebookAccess.getNameAndID();
-
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -57,7 +53,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 
 		/**
-		 * on swiping the viewpager make respective tab selected
+		 * On swiping the viewpager make respective tab selected
 		 * */
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			/*
@@ -65,8 +61,7 @@ public class MainActivity extends FragmentActivity implements
 			 */
 			@Override
 			public void onPageSelected(int position) {
-				// on changing the page
-				// make respected tab selected
+				// On changing the page make corresponding tab selected
 				actionBar.setSelectedNavigationItem(position);
 			}
 			/*
@@ -83,17 +78,13 @@ public class MainActivity extends FragmentActivity implements
 		});
 	}
 	
-	/*
-	 * Method stub
-	 */
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		// on tab selected
-		// show respected fragment view
+		// On tab selected show respected fragment view
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 
