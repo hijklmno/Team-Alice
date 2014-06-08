@@ -18,10 +18,7 @@ public class PicturePopUp {
 		intent.setAction(android.content.Intent.ACTION_VIEW); 
 		intent.setDataAndType(u,"image/*");
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         
-
 		this.context = c;
-		
 		context.startActivity(intent);
 	}
 

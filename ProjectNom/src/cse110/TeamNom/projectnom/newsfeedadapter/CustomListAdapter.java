@@ -1,13 +1,10 @@
 package cse110.TeamNom.projectnom.newsfeedadapter;
 
 import java.util.ArrayList;
-
 import com.ocpsoft.pretty.time.PrettyTime;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +17,18 @@ import cse110.TeamNom.projectnom.AppParseAccess;
 import cse110.TeamNom.projectnom.PictureDBObject;
 import cse110.TeamNom.projectnom.R;
 
+/*
+ * Adapter that displays the posts taken from different users. Class
+ * that handles displaying the picture taken from facebook friends.
+ */
 public class CustomListAdapter extends BaseAdapter {
-	
+	// Variables that contains all the necessary information to
+	// display posts.
 	private ArrayList<PictureDBObject> listData;
 	private LayoutInflater layoutInflater;
-	
+	/*
+	 * Constructor that sets up the list of posts.
+	 */
 	public CustomListAdapter(Context context, ArrayList<PictureDBObject> listData) {
 		this.listData = listData;
 		layoutInflater = LayoutInflater.from(context);
@@ -35,12 +39,16 @@ public class CustomListAdapter extends BaseAdapter {
 		this.listData.addAll(results);
 		notifyDataSetChanged();
 	}
-
+	
+	// Reset newsfeed results
 	public void resetResults(ArrayList<PictureDBObject> results) {
 		this.listData = results;
 		notifyDataSetChanged();
 	}
 	
+	/*
+	 * Gets the number of posts 
+	 */
 	@Override
 	public int getCount() {
 		if (listData != null) {
@@ -49,12 +57,18 @@ public class CustomListAdapter extends BaseAdapter {
 			return 0;
 		}
 	}
-
+	
+	/*
+	 * Get PictureDBObject at the position at indicated position.
+	 */
 	@Override
 	public Object getItem(int position) {
 		return listData.get(position);
 	}
 
+	/*
+	 * Get position of the PictureDBObject.
+	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -202,6 +216,9 @@ public class CustomListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
+	/*
+	 * Method that uncompresses a byte array and displays the photo.
+	 */
 	private Bitmap uncompressImage(byte array[]) {
 		Bitmap bmp = BitmapFactory.decodeByteArray(array, 0, array.length);
 		return bmp;

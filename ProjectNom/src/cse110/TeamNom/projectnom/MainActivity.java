@@ -1,24 +1,25 @@
 package cse110.TeamNom.projectnom;
 
-import com.facebook.Session;
 import cse110.TeamNom.projectnom.tabsadapter.TabsPagerAdapter;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/*
+ * MainActivity for our application that sets up the tabs
+ * for our application.
+ */
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 	private ViewPager viewPager;
@@ -27,7 +28,6 @@ public class MainActivity extends FragmentActivity implements
 	private EditText mSearchTerm;
 	private EditText mSearchLocation;
 
-	// Testing comment
 	// Tab titles
 	private String[] tabs = { "Newsfeed", "Camera", "Search", "Profile" };
 
@@ -36,13 +36,9 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		//Facebook stuff
+		//Setting up Facebook and retrieve data
 		AppFacebookAccess.setActiveSession();
 		AppFacebookAccess.getNameAndID();
-		
-
-		// Parse stuff
-		Context context = this.getApplicationContext();
 
 		// Initialization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -64,14 +60,18 @@ public class MainActivity extends FragmentActivity implements
 		 * on swiping the viewpager make respective tab selected
 		 * */
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
+			/*
+			 * Method that goes to the selected tab
+			 */
 			@Override
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
 			}
-
+			/*
+			 * Method that goes to scrolled tab
+			 */
 			@Override
 			public void onPageScrolled(int position, float positionOffset,
 					int positionOffsetPixels) {
@@ -82,7 +82,10 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 	}
-
+	
+	/*
+	 * Method stub
+	 */
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 	}
@@ -99,12 +102,15 @@ public class MainActivity extends FragmentActivity implements
 
 	}
 
+	/*
+	 * Method that searches for restaurant with user input.
+	 */
 	public void search(View v) {
 		mSearchTerm = (EditText) findViewById(R.id.searchTerm);
 		mSearchLocation = (EditText) findViewById(R.id.searchLocation);
 		String term = mSearchTerm.getText().toString();
 		String location = mSearchLocation.getText().toString();
-		
+		// Check to indicate that user input term
 		if (term.matches("")) {
 			Toast toast = Toast
 					.makeText(this,"Please enter a search term! ",
@@ -112,6 +118,7 @@ public class MainActivity extends FragmentActivity implements
 			toast.show();
 			return;
 		}
+		// Check to indicate that user input a location
 		if (location.matches("")) {
 			Toast toast = Toast
 					.makeText(this,"Please enter a location! ",
@@ -119,19 +126,24 @@ public class MainActivity extends FragmentActivity implements
 			toast.show();
 			return;
 		}
+		// Intent that leads to calling Yelps search functionality.
 		Intent intent = new Intent(this, YelpSearchListActivity.class);
 		intent.setData(new Uri.Builder().appendQueryParameter("term", term)
 				.appendQueryParameter("location", location).build());
 		startActivity(intent);
 	}
 
+	/*
+	 * Method that displays the creators of the application. Basically an easter
+	 * egg.
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case android.R.id.home:
 			final CharSequence teamnom[] = new CharSequence[] {
 					"William Huang", "Ryan Fu", "Tiffany Wang", "Alice Chen",
-					"David Ung", "Watson Lim", "Trent Stevens", "Rex Tong",
+					"David Ung", "Watson Yim", "Trent Stevens", "Rex Tong",
 					"Raymond Tran", "Jean Park", "Exit" };
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);

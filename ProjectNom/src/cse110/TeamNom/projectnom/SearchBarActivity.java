@@ -1,15 +1,16 @@
 package cse110.TeamNom.projectnom;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 
+/*
+ * Class activity that handles term and location
+ * search through user input.
+ */
 public class SearchBarActivity extends Activity {
-	private EditText mSearchTerm;
-	private EditText mSearchLocation;
+	private EditText mSearchTerm; // Term that user input
+	private EditText mSearchLocation; // Location that user input
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,4 @@ public class SearchBarActivity extends Activity {
 		mSearchTerm = (EditText)findViewById(R.id.searchTerm);
 		mSearchLocation = (EditText)findViewById(R.id.searchLocation);
 	}
-
-	/*public void search(View v) {
-		String term = mSearchTerm.getText().toString();
-		String location = mSearchLocation.getText().toString();
-		Intent intent = new Intent(this, YelpSearchListActivity.class);
-		intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).build());
-		startActivity(intent);
-	}*/
 }

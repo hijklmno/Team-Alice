@@ -2,14 +2,11 @@ package cse110.TeamNom.projectnom;
 
 import java.net.URL;
 import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -39,8 +36,6 @@ public class AppFacebookAccess {
 	 * permissions to the NOM application.
 	 */
 	public static ArrayList<String> loadMyFriends() {
-//		allFriends = new ArrayList<String>();
-
 		// Create new thread so that the request finishes before main thread continues
 		Thread thread = new Thread(new Runnable() {
 			@Override
@@ -83,30 +78,6 @@ public class AppFacebookAccess {
 		}
 		
 		return allFriends;
-	}
-
-	/**
-	 * friendsIDBuffer() adds a new friend string to the String array.
-	 */
-	private static void friendsIDBuffer(String friend_id) {
-		allFriends.add(friend_id);
-	}
-	
-	/**
-	 * dumpfriendsIDBuffer() returns a copy of the friends array and then clears the old
-	 * friends array.
-	 */
-	private static String[] dumpfriendsIDBuffer() {
-		// Create a string array that is the length of the allFriends ArrayList
-		String[] newArr = new String[allFriends.size()];
-		
-		// Create a string array that stores allFriends elements with size of newArr
-		String[] friendsStrArr = (String[]) allFriends.toArray(newArr);
-		
-		// Clear the allFriends ArrayList
-		allFriends.clear();
-		
-		return friendsStrArr;
 	}
 	
 	/**

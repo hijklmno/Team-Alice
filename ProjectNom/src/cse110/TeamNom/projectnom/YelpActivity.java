@@ -76,6 +76,5 @@ public class YelpActivity {
 	    String tokenSecret = "F9uZ1G3pbNG73zXvboZZ9IYPh2c";
 
 	    YelpActivity yelp = new YelpActivity(consumerKey, consumerSecret, token, tokenSecret);
-	    //String response = yelp.search("burritos", 30.361471, -87.164326);
 	  }
 }

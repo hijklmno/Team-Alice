@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,14 +33,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.Session;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 public class CameraFragment extends Fragment {
 
@@ -73,8 +63,6 @@ public class CameraFragment extends Fragment {
 	// The current Photo path
 	private String mCurrentPhotoPath;
 	private String pathtophoto;
-	private String pictureID;
-
 	// Uri
 	private Uri contentUri;
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
@@ -337,15 +325,6 @@ public class CameraFragment extends Fragment {
 		});
 
 		text.bringToFront();
-		/**
-		 * image on click event
-		 */
-		mImageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PicturePopUp ppp = new PicturePopUp(contentUri, context);
-			}
-		});
 
 		/**
 		 * Capture image button click event

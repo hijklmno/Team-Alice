@@ -18,11 +18,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/*
+ * Main Yelp's search activity that obtains and displays
+ * the business names and url of searched terms and location.
+ */
 public class YelpSearchListActivity extends ListActivity{
 	class Business {
 		final String name;
 		final String url;
 
+		/*
+		 * Constructor that contains the business name and url.
+		 */
 		public Business(String name, String url) {
 			this.name = name;
 			this.url = url;
@@ -39,13 +46,16 @@ public class YelpSearchListActivity extends ListActivity{
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setTitle("Finding Location...");
-
+        // Gets the term and location the user input
         Intent intent = getIntent();
         final String searchTerm = intent.getData().getQueryParameter("term");
         final String searchLocation = intent.getData().getQueryParameter("location");
         
         setProgressBarIndeterminateVisibility(true);
         new AsyncTask<Void, Void, List<Business>>() {
+        	/*
+        	 * Method that outputs a list of businesses after calling Yelps search.
+        	 */
         	@Override
         	protected List<Business> doInBackground(Void... params) {
                 String businesses = YelpActivity.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation);
@@ -64,13 +74,20 @@ public class YelpSearchListActivity extends ListActivity{
         	}
         }.execute();
     }
-
+	
+	/*
+	 * Separates the businesses that was obtained from a list and displays the url
+	 * once clicked.
+	 */
 	@Override
 	protected void onListItemClick(ListView listView, View view, int position, long id) {
 		Business biz = (Business)listView.getItemAtPosition(position);
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(biz.url)));
 	};
 
+	/*
+	 * Method that processes Yelp's JSON files.
+	 */
 	List<Business> processJson(String jsonStuff) throws JSONException {
 		JSONObject json = new JSONObject(jsonStuff);
 		JSONArray businesses = json.getJSONArray("businesses");
@@ -79,8 +96,6 @@ public class YelpSearchListActivity extends ListActivity{
 			JSONObject business = businesses.getJSONObject(i);
 			businessObjs.add(new Business(business.optString("name"), business.optString("mobile_url")));
 		}
-		//for(int i = 0; i < businessObjs.size(); i++)
-			//System.out.println(businessObjs.get(i).name.toString() + "+++++++++++++++++" + businessObjs.get(i).url.toString());
 		return businessObjs;
 	}
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
@@ -34,12 +31,7 @@ public class NewsFeedFragment extends Fragment {
 	private static boolean listEndFlagAll = false;
 	private Switch switchButton;
 	private PullToRefreshListView mPullRefreshListView;
-	private ViewPager yourViewPager;
-
-	private CustomListAdapter cLAdapterFriends;
-	private String[] friends_list;
-
-	private CustomListAdapter cLAdapterAll;
+	private CustomListAdapter cLAdapterFriends, cLAdapterAll;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +39,7 @@ public class NewsFeedFragment extends Fragment {
 
 		final View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
 				false);
-
+		// Refresh the posts on the newsfeed by swiping
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
 		mPullRefreshListView.setMode(Mode.PULL_FROM_START);
 		mPullRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
@@ -57,7 +49,10 @@ public class NewsFeedFragment extends Fragment {
 				new RenewDataTask().execute();
 			}
 		});
-
+		
+		/*
+		 * Listener that handles loading more posts when swipe 
+		 */
 		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
@@ -81,7 +76,8 @@ public class NewsFeedFragment extends Fragment {
 				}
 			}
 		});
-
+		
+		// Button that switches between friends and other posts.
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
 		switchButton
 		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -102,7 +98,6 @@ public class NewsFeedFragment extends Fragment {
 					else {
 						getProxData(rootView);
 					}
-					// popular
 				}
 			}
 		});
@@ -119,6 +114,9 @@ public class NewsFeedFragment extends Fragment {
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
 
+	/*
+	 * Gets post based on proximity of users.
+	 */
 	private void getProxData(View rootView) {
 		ArrayList<PictureDBObject> all_img_details = getAllListData();
 		cLAdapterAll = new CustomListAdapter(getActivity(), all_img_details);
@@ -126,7 +124,6 @@ public class NewsFeedFragment extends Fragment {
 
 	private ArrayList<PictureDBObject> getAllListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
-//		Toast.makeText(getActivity(), "Getting nearby 50 miles of food...", 2).show();
 		// hard code 50 mile radius
 		int radius = 50;
 
@@ -142,7 +139,7 @@ public class NewsFeedFragment extends Fragment {
 			Toast.makeText(getActivity(), "GPS Error, defaulting to San Diego", 2).show();
 			currentLong = -117.2;
 		}
-
+		// Method call that gets posts within a 50 mile radius
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(currentLat, currentLong, radius, MAXROWS, OFFSET);
 
 		if (pictureArray != null) {
@@ -159,11 +156,17 @@ public class NewsFeedFragment extends Fragment {
 		return pictureArray;
 	}
 
+	/*
+	 * Method that get friend's post data
+	 */
 	private void getFriendsData(View rootView) {
 		ArrayList<PictureDBObject> friends_img_details = getListData();
 		cLAdapterFriends = new CustomListAdapter(getActivity(), friends_img_details);
 	}
-
+	
+	/*
+	 * Get a list of posts from friends. 
+	 */
 	private ArrayList<PictureDBObject> getListData() {
 		ArrayList<String> myFriends = AppFacebookAccess.loadMyFriends();
 		String[] myFriendsArr = myFriends.toArray(new String[myFriends.size()]);
@@ -183,7 +186,10 @@ public class NewsFeedFragment extends Fragment {
 
 		return pictureArray;
 	}
-
+	
+	/*
+	 * Method that get more data to display
+	 */
 	private void getMoreData() {
 		if (switchButton.isChecked()) {
 			ArrayList<PictureDBObject> newResults = getListData();
@@ -206,6 +212,9 @@ public class NewsFeedFragment extends Fragment {
 
 	}
 
+	/*
+	 * Method that refreshes the posts
+	 */
 	public void refresh() {
 		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();

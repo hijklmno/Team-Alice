@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,24 +17,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.Session;
-import com.facebook.widget.ProfilePictureView;
 
 /**
- * fragment for user profile
+ * Fragment class for the user profile.
  */
 public class ProfileFragment extends Fragment {
 	// variables for fragment
 	private Button buttonLogout;
 	private TextView profileUser;
-	private ProfilePictureView profilePictureView;
 	private Switch switchBut;
 	private GridView gridV;
 	private GridView bookmarks;
@@ -48,7 +42,7 @@ public class ProfileFragment extends Fragment {
 	private static Bitmap profileBitmap;
 	
 	/**
-	 * 
+	 * Setup on how the profile tab will look like.
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,8 +60,9 @@ public class ProfileFragment extends Fragment {
 		gridV = (GridView) rootView.findViewById(R.id.grid_view);
 		bookmarks = (GridView) rootView.findViewById(R.id.grid_view2);
 		refresh = (Button) rootView.findViewById(R.id.profileRefresh);
-		
+		// Loads the picture taken from the user
 		onClickLoadMyPictures();
+		// Loads the bookmark of the user.
 		onClickLoadMyBookmarks();
 		
 		gridV.setAdapter(new ProfileImageAdapter(getActivity(), pics));
@@ -80,22 +75,30 @@ public class ProfileFragment extends Fragment {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					// pic
+					// pictures
 					gridV.setVisibility(View.VISIBLE);
 					bookmarks.setVisibility(View.INVISIBLE);
 				}
 				else {
 					gridV.setVisibility(View.INVISIBLE);
 					bookmarks.setVisibility(View.VISIBLE);
-					// bookmark
+					// bookmarks
 				}
 			}
 		});
+		
+		/*
+		 * Logout button in the profile.
+		 */
 		buttonLogout.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				onClickLogout();
 			}
 		});
+		
+		/*
+		 * Refresh the profile pictures of the user
+		 */
 		refresh.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 			Toast.makeText(getActivity(), "Refreshing...", 2).show();
@@ -134,7 +137,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	/**
-	 * 
+	 * Update facebook profile picture
 	 */
 	private void onClickFacebookPicUpdate() {
 		getFacebookProfilePicture();
@@ -144,7 +147,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	/**
-	 * 
+	 * Gets the most recent facebook profile picture of the user.
 	 */
 	private void getFacebookProfilePicture() {
 		Thread thread = new Thread(new Runnable() {
@@ -171,7 +174,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	/**
-	 * 
+	 * Method that loads the user's taken photos.
 	 */
 	@SuppressLint("NewApi")
 	private void onClickLoadMyPictures() {
@@ -195,7 +198,7 @@ public class ProfileFragment extends Fragment {
 	}
 	
 	/**
-	 * 
+	 * Load the bookmark photo of other users posts.
 	 */
 	@SuppressLint("NewApi")
 	private void onClickLoadMyBookmarks() {

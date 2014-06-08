@@ -4,11 +4,14 @@ import cse110.TeamNom.projectnom.CameraFragment;
 import cse110.TeamNom.projectnom.NewsFeedFragment;
 import cse110.TeamNom.projectnom.ProfileFragment;
 import cse110.TeamNom.projectnom.SearchFragment;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/*
+ * Class that separates different functionality of the application to
+ * different tabs.
+ */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 	Fragment CameraFragment = null;
 	Fragment ProfileFragment = null;

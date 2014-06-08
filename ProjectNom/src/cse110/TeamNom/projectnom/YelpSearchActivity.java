@@ -13,6 +13,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/*
+ * Activity class that processes Yelp's JSON files. Outputs
+ * Strings that are used for businesses.
+ */
 public class YelpSearchActivity extends Activity {
 	private TextView mSearchResultsText;
 
@@ -20,7 +24,7 @@ public class YelpSearchActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-
+        // Finds the restaurant using yelps search services.
         setContentView(R.layout.fragment_yelpsearch);
         setTitle("Finding Restaurants...");
         mSearchResultsText = (TextView)findViewById(R.id.searchResults);
@@ -46,6 +50,10 @@ public class YelpSearchActivity extends Activity {
         }.execute();
     }
 
+	/*
+	 * Method that process JSON strings from Yelp and populates
+	 * a list of businesses.
+	 */
 	String processJson(String jsonStuff) throws JSONException {
 		JSONObject json = new JSONObject(jsonStuff);
 		JSONArray businesses = json.getJSONArray("businesses");

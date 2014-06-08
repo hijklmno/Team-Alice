@@ -19,36 +19,42 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+/*
+ * Class that handles GPS activity by using the services
+ * of another application.
+ */
 public class GPSFragment extends Service implements LocationListener{
 	private final Context mContext;
 
 	//flag for GPS Status
 	boolean isGPSEnabled = false;
-
 	//flag for network status
 	boolean isNetworkEnabled = false;
-
+	//flag for connection status
 	boolean canGetLocation = false;
-
+	// Location variables
 	Location location;
 	double latitude;
 	double longitude;
 
 	//The minimum distance to change updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; //10 metters
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; //10 meters
 
 	//The minimum time between updates in milliseconds
 	private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
 	//Declaring a Location Manager
 	protected LocationManager locationManager;
-
+	// Constructor of getting the location of users.
 	public GPSFragment(Context context) 
 	{
 		this.mContext = context;
 		getLocation();
 	}
-
+	
+	/*
+	 * Method that returns the location of the user by using the GPS service.
+	 */
 	public Location getLocation()
 	{
 		try
@@ -115,11 +121,16 @@ public class GPSFragment extends Service implements LocationListener{
 
 		return location;
 	}
-
+	
+	/*
+	 * Method that updates the longitude and latitude 
+	 * of the user.
+	 */
 	public void updateGPSCoordinates()
 	{
 		if (location != null)
 		{
+			// Sets the longitude and latitude of the user.
 			latitude = location.getLatitude();
 			longitude = location.getLongitude();
 		}
@@ -225,7 +236,6 @@ public class GPSFragment extends Service implements LocationListener{
 			} 
 			catch (IOException e) 
 			{
-				//e.printStackTrace();
 				Log.e("Error : Geocoder", "Impossible to connect to Geocoder", e);
 			}
 		}
@@ -313,6 +323,7 @@ public class GPSFragment extends Service implements LocationListener{
 		}
 	}
 
+	// Method stubs of unimplemented method for GPS.
 	@Override
 	public void onLocationChanged(Location location) 
 	{	

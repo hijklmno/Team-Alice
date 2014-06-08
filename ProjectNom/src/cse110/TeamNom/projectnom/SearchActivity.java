@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 public class SearchActivity extends ListActivity{
 	enum Activities {
-		//HELLO("Yelp Search Button", Hello.class),
 		SEARCH("Yelp Search 2", SearchBarActivity.class);
 
 		public final String name;

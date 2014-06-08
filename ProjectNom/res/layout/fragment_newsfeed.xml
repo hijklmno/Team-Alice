@@ -17,50 +17,23 @@
         android:textOn="@string/toggleOn"	
 	    android:thumb="@drawable/nom_switch_thumb_activated_holo_light"
 	    android:track="@drawable/nom_switch_bg_holo_light"/>
-<!--
-    <Button
-        android:id="@+id/refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/newsFeedToggle"
-        android:drawableRight="@drawable/ic_action_refresh" />
-
-    <Button
-        android:id="@+id/loadMoar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Load More" />
-
- 
-     <ListView
-        android:id="@+id/custom_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/loadMoar"
-        android:layout_below="@id/refresh"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_selector_flatcolor" />
--->
-
         
-<!-- testing drag to refresh -->
-<!-- android:divider="#FFFFFF"-->
- <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/custom_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/newsFeedToggle"
-        android:cacheColorHint="#00000000"
-        android:divider="#FFFFFF"
-        android:dividerHeight="15dp"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:background="#FFFFFF"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        android:smoothScrollbar="true" />
- <!-- end drag to refresh -->
+<!-- Drag to refresh -->
+<com.handmark.pulltorefresh.library.PullToRefreshListView
+       android:id="@+id/custom_list"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/newsFeedToggle"
+       android:cacheColorHint="#00000000"
+       android:divider="#FFFFFF"
+       android:dividerHeight="15dp"
+       android:fadingEdge="none"
+       android:fastScrollEnabled="false"
+       android:footerDividersEnabled="false"
+       android:headerDividersEnabled="false"
+       android:background="#FFFFFF"
+       android:layout_marginRight="15dp"
+       android:layout_marginLeft="15dp"
+       android:smoothScrollbar="true" />
+<!-- end drag to refresh -->
 </RelativeLayout>
