@@ -35,18 +35,18 @@ public class NewsFeedFragment extends Fragment {
 	private Switch switchButton;
 	private PullToRefreshListView mPullRefreshListView;
 	private ViewPager yourViewPager;
-	
+
 	private CustomListAdapter cLAdapterFriends;
 	private String[] friends_list;
-	
+
 	private CustomListAdapter cLAdapterAll;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 
 		final View rootView = inflater.inflate(R.layout.fragment_newsfeed, container,
-		false);
+				false);
 
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.custom_list);
 		mPullRefreshListView.setMode(Mode.PULL_FROM_START);
@@ -57,7 +57,7 @@ public class NewsFeedFragment extends Fragment {
 				new RenewDataTask().execute();
 			}
 		});
-		
+
 		mPullRefreshListView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
@@ -81,103 +81,76 @@ public class NewsFeedFragment extends Fragment {
 				}
 			}
 		});
-		
+
 		switchButton = (Switch) rootView.findViewById(R.id.newsFeedToggle);
 		switchButton
-				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						if (isChecked) {
-							if (cLAdapterFriends != null) {
-								mPullRefreshListView.setAdapter(cLAdapterFriends);
-							}
-							else {
-								getFriendsData(rootView);
-							}
-						}
-						else {
-							if (cLAdapterAll != null) {
-								mPullRefreshListView.setAdapter(cLAdapterAll);
-							}
-							else {
-								getProxData(rootView);
-							}
-							// popular
-						}
+		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					if (cLAdapterFriends != null) {
+						mPullRefreshListView.setAdapter(cLAdapterFriends);
 					}
-				});
+					else {
+						getFriendsData(rootView);
+					}
+				}
+				else {
+					if (cLAdapterAll != null) {
+						mPullRefreshListView.setAdapter(cLAdapterAll);
+					}
+					else {
+						getProxData(rootView);
+					}
+					// popular
+				}
+			}
+		});
 
 		getFriendsData(rootView);
 		getProxData(rootView);
-		
-		mPullRefreshListView.setAdapter(cLAdapterFriends);
 
-//		OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
-//			@Override
-//			public void onPageScrollStateChanged(int arg0) {
-//				Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
-//				.show();
-//			}
-//
-//			@Override
-//			public void onPageScrolled(int arg0, float arg1, int arg2) {
-//				Toast.makeText(getActivity(), "scrolled", Toast.LENGTH_LONG)
-//				.show();
-//			}
-//
-//			@Override
-//			public void onPageSelected(int pos) {
-//				Toast.makeText(getActivity(), "selected", Toast.LENGTH_LONG)
-//				.show();
-//			}
-//		};
-//
-//		yourViewPager = new ViewPager(getActivity());
-//		yourViewPager.setOnPageChangeListener(mPageChangeListener);
-		
-		
-		
+		mPullRefreshListView.setAdapter(cLAdapterFriends);
 		return rootView;
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
-	
+
 	private void getProxData(View rootView) {
 		ArrayList<PictureDBObject> all_img_details = getAllListData();
 		cLAdapterAll = new CustomListAdapter(getActivity(), all_img_details);
 	}
-	
+
 	private ArrayList<PictureDBObject> getAllListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
 		Toast.makeText(getActivity(), "Getting nearby 50 miles of food...", 2).show();
 		// hard code 50 mile radius
 		int radius = 50;
-		
+
 		// if current latitude and longitude is 0 (something is wrong with GPS), default to san diego
-		double currentLat = 0;
-		double currentLong = 0;
-		
-		if (gps.getLatitude() == 0) {
+		double currentLat = gps.getLatitude();
+		double currentLong = gps.getLongitude();
+
+		if (currentLat == 0) {
 			Toast.makeText(getActivity(), "GPS Error, defaulting to San Diego", 2).show();
 			currentLat = 32.88;
 		}
-		if (gps.getLongitude() == 0) {
+		if (currentLong == 0) {
 			Toast.makeText(getActivity(), "GPS Error, defaulting to San Diego", 2).show();
 			currentLong = -117.2;
 		}
 
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getPictureFiles(currentLat, currentLong, radius, MAXROWS, OFFSET);
-		
+
 		if (pictureArray != null) {
 			Log.d("ProxPictureArrayLen", Integer.toString(pictureArray.size()));
 			for (int i = 0; i < pictureArray.size(); i++) {
 				Log.d("ProxPictureArray", pictureArray.get(i).getCreatedDate().toString());
 			}
-			
 			OFFSET += MAXROWS;
 		}
 		else {
@@ -186,37 +159,23 @@ public class NewsFeedFragment extends Fragment {
 		}
 		return pictureArray;
 	}
-	
+
 	private void getFriendsData(View rootView) {
 		ArrayList<PictureDBObject> friends_img_details = getListData();
 		cLAdapterFriends = new CustomListAdapter(getActivity(), friends_img_details);
-//		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> a, View v, int position,
-//			long id) {
-//				Object o = mPullRefreshListView.get(position);
-//				NewsItem newsData = (NewsItem) o;
-////				Toast.makeText(getActivity(), "Selected :" + " " + newsData,
-////				Toast.LENGTH_LONG).show();
-//				Toast.makeText(getActivity(), "DAVID", Toast.LENGTH_LONG)
-//				.show();
-//			}
-//		});
-		//enable bottom and top scroll
 	}
 
 	private ArrayList<PictureDBObject> getListData() {
 		ArrayList<String> myFriends = AppFacebookAccess.loadMyFriends();
 		String[] myFriendsArr = myFriends.toArray(new String[myFriends.size()]);
 		ArrayList<PictureDBObject> pictureArray = AppParseAccess.getFriendsPictureWithLimits(myFriendsArr, fMAXROWS, fOFFSET);
-		
+
 		if (pictureArray != null) {
 			Log.d("pictureArrayLen", Integer.toString(pictureArray.size()));
 			for (int i = 0; i < pictureArray.size(); i++) {
 				Log.d("pictureArray", pictureArray.get(i).getCreatedDate().toString());
 			}
-		
+
 			fOFFSET += fMAXROWS;
 		}
 		else {
@@ -245,13 +204,13 @@ public class NewsFeedFragment extends Fragment {
 				listEndFlagAll = true;
 			}
 		}
-		
+
 	}
-	
+
 	public void refresh() {
 		Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG)
 		.show();
-		
+
 		if (switchButton.isChecked()) {
 			listEndFlag = false;
 			fOFFSET = 0;
@@ -275,21 +234,21 @@ public class NewsFeedFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	private class RenewDataTask extends AsyncTask<Void, Void, String[]> {
 
 		@Override
 		protected String[] doInBackground(Void... params) {
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(String[] result) {
 			refresh();
 			mPullRefreshListView.onRefreshComplete();
-			
+
 			super.onPostExecute(result);
 		}
 	}
-	
+
 }
