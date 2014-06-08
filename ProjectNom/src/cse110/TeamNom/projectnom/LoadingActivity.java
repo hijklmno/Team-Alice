@@ -21,15 +21,19 @@ public class LoadingActivity extends Activity {
 	private Activity activity;
 	
 	protected void onCreate(Bundle savedInstanceState) {
+		// Set window to full screen
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+		// Get the application context and activity
 		context = this.getApplicationContext();
 		activity = this;
 		
+		// Set the view
 		setContentView(R.layout.fragment_loading);
 		
+		// Start the AsyncTask
 		new Loader().execute();
 		super.onCreate(savedInstanceState);
 	}
@@ -38,10 +42,10 @@ public class LoadingActivity extends Activity {
 
 		@Override
 		protected Long doInBackground(String... arg0) {
+			// Initializing Parse and NOM
 			AppFacebookAccess.setActiveSession();
 			AppFacebookAccess.getNameAndID();
 			
-			// Parse stuff
 			AppParseAccess.initialize(activity,
 					context.getString(R.string.ParseAppID),
 					context.getString(R.string.ParseClientKey));
@@ -61,6 +65,7 @@ public class LoadingActivity extends Activity {
 		protected void onProgressUpdate(Integer... progress) {
 		}
 
+		// When everything is done loading, start the MainActivity
 		@Override
 		protected void onPostExecute(Long result) {
 			Intent intent = new Intent(LoadingActivity.this, MainActivity.class);

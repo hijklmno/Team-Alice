@@ -3,6 +3,9 @@ package cse110.TeamNom.projectnom;
 import org.scribe.model.Token;
 import org.scribe.builder.api.DefaultApi10a;
 
+/**
+ * YelpAPI2Activity.java is a helper class for YelpActivity.
+ */
 public class YelpAPI2Activity extends DefaultApi10a {
 	@Override
 	  public String getAccessTokenEndpoint() {
