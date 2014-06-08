@@ -56,7 +56,6 @@ public class AppFacebookAccess {
 							for (int i = 0; i < dataList.length(); i++) {
 								String friend_name = ((JSONObject) dataList.get(i)).getString("name");
 								String friend_id = ((JSONObject) dataList.get(i)).getString("id");
-								System.out.println(friend_name + ":" + friend_id);
 								allFriends.add(friend_id);
 							}
 						} catch (JSONException e) {

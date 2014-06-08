@@ -123,7 +123,6 @@ public class CustomListAdapter extends BaseAdapter {
 		holder.bookmark.setTag(pictureObj.getImageID());
 		
 		// Set the number count and highlight bookmark button if chosen
-//		Log.d("UserObjectID: ", AppParseAccess.getUserObjectID());
 		if (pictureObj.isBookmarked()) {
 			holder.bookmark.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite_yellow, 0, 0, 0);
 			holder.bookmark.refreshDrawableState();

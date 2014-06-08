@@ -143,7 +143,6 @@ public class PictureDBObject {
 	 */
 	public void setBookmarkStatus(String[] ids) {
 		isBookmarked = false;
-		System.out.println("User id: " + ids);
 		if(ids != null) {
 			// Loop through ids to search for a match with Facebook ID
 			for (int i = 0; i < ids.length; i++) {

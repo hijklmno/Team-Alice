@@ -93,15 +93,12 @@ public class CameraFragment extends Fragment {
 			if (storageDir != null) {
 				if (!storageDir.mkdirs()) {
 					if (!storageDir.exists()) {
-						Log.d("CameraSample", "failed to create directory");
 						return null;
 					}
 				}
 			}
 
 		} else {
-			Log.v(getString(R.string.app_name),
-					"External storage is not mounted READ/WRITE.");
 		}
 
 		return storageDir;
@@ -455,7 +452,6 @@ public class CameraFragment extends Fragment {
 		bitmap = BitmapFactory.decodeFile(path);
 
 		if (bitmap == null) {
-			System.out.println(path + "cannot be converted to a bitmap!");
 			return;
 		}
 

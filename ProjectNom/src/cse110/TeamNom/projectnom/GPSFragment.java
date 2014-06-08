@@ -83,8 +83,6 @@ public class GPSFragment extends Service implements LocationListener{
 							MIN_TIME_BW_UPDATES,
 							MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-					Log.d("Network", "Network");
-
 					if (locationManager != null)
 					{
 						location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -102,8 +100,6 @@ public class GPSFragment extends Service implements LocationListener{
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-						Log.d("GPS Enabled", "GPS Enabled");
-
 						if (locationManager != null)
 						{
 							location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -115,8 +111,7 @@ public class GPSFragment extends Service implements LocationListener{
 		}
 		catch (Exception e)
 		{
-			//e.printStackTrace();
-			Log.e("Error : Location", "Impossible to connect to LocationManager", e);
+			e.printStackTrace();
 		}
 
 		return location;
@@ -236,7 +231,6 @@ public class GPSFragment extends Service implements LocationListener{
 			} 
 			catch (IOException e) 
 			{
-				Log.e("Error : Geocoder", "Impossible to connect to Geocoder", e);
 			}
 		}
 

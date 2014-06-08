@@ -677,7 +677,6 @@ public class AppParseAccess {
 				
 				// Get the "bookmarks" string from currentUser
 				String userBookmarks = currentUser.getString("bookmarks");
-				System.out.println("BookmarksUser: " + userBookmarks);
 				
 				// Split the userBookmarks with ","
 				String[] userBookmarkArr = userBookmarks.split(",");
