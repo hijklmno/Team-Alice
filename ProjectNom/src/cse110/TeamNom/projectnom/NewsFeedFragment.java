@@ -107,9 +107,6 @@ public class NewsFeedFragment extends Fragment {
 			}
 		});
 
-		getFriendsData(rootView);
-		getProxData(rootView);
-
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 		return rootView;
 	}
@@ -117,6 +114,8 @@ public class NewsFeedFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		getFriendsData(getView());
+		getProxData(getView());
 		mPullRefreshListView.setAdapter(cLAdapterFriends);
 	}
 
@@ -127,7 +126,7 @@ public class NewsFeedFragment extends Fragment {
 
 	private ArrayList<PictureDBObject> getAllListData() {
 		GPSFragment gps = new GPSFragment(getActivity());
-		Toast.makeText(getActivity(), "Getting nearby 50 miles of food...", 2).show();
+//		Toast.makeText(getActivity(), "Getting nearby 50 miles of food...", 2).show();
 		// hard code 50 mile radius
 		int radius = 50;
 
