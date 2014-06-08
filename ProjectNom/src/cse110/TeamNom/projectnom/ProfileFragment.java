@@ -127,8 +127,8 @@ public class ProfileFragment extends Fragment {
 	}
 	// called when pressing the logout button
 	private void onClickLogout() {
-//		Session session = Session.getActiveSession();
-//		session.closeAndClearTokenInformation(); // end session and go
+		Session session = Session.getActiveSession();
+		session.closeAndClearTokenInformation(); // end session and go
 //		// create splash page
 		Intent intent = new Intent(getActivity(), SplashMain.class);
 		intent.putExtra("logoutCall", "logout");

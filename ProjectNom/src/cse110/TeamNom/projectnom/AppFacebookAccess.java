@@ -54,7 +54,6 @@ public class AppFacebookAccess {
 							
 							// Loop to add each friend's id to allFriends array
 							for (int i = 0; i < dataList.length(); i++) {
-								String friend_name = ((JSONObject) dataList.get(i)).getString("name");
 								String friend_id = ((JSONObject) dataList.get(i)).getString("id");
 								allFriends.add(friend_id);
 							}
